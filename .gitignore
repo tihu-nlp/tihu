@@ -1,0 +1,13 @@
+iph/
+obj/
+Debug/
+Release/
+bin/
+ipch/
+*.sdf
+*.opensdf
+*.bsc
+*.user*
+*.o
+temp/
+tools

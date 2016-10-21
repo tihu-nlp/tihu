@@ -1,0 +1,200 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="corpus.cpp" />
+    <ClCompile Include="correction\text_tagger\text_tagger.cpp" />
+    <ClCompile Include="diacritization\letter_to_sound\english_to_phoneme.cpp" />
+    <ClCompile Include="diacritization\letter_to_sound\g2p_seq2seq_windows.cpp" />
+    <ClCompile Include="diacritization\letter_to_sound\persian_to_phoneme.cpp" />
+    <ClCompile Include="diacritization\letter_to_sound\punctuation_to_phoneme.cpp" />
+    <ClCompile Include="entry.cpp" />
+    <ClCompile Include="event.cpp" />
+    <ClCompile Include="phoneme.cpp" />
+    <ClCompile Include="pitch_range.cpp" />
+    <ClCompile Include="word.cpp" />
+    <ClCompile Include="tihu.cpp" />
+    <ClCompile Include="engine.cpp" />
+    <ClCompile Include="parser.cpp" />
+    <ClCompile Include="path_manager.cpp" />
+    <ClCompile Include="settings.cpp" />
+    <ClCompile Include="synthesizer.cpp" />
+    <ClCompile Include="file_manager.cpp" />
+    <ClCompile Include="helper.cpp" />
+    <ClCompile Include="hunzip.cpp" />
+    <ClCompile Include="tokenization\tokenizer\char_map.cpp" />
+    <ClCompile Include="tokenization\tokenizer\char_mapper.cpp" />
+    <ClCompile Include="tokenization\tokenizer\char_map_row.cpp" />
+    <ClCompile Include="tokenization\tokenizer\tokenizer.cpp" />
+    <ClCompile Include="diacritization\letter_to_sound\letter_to_sound.cpp" />
+    <ClCompile Include="diacritization\letter_to_sound\number_to_phoneme.cpp" />
+    <ClCompile Include="morphology\pos_tagger\afx_entry.cpp" />
+    <ClCompile Include="morphology\pos_tagger\afx_manager.cpp" />
+    <ClCompile Include="morphology\pos_tagger\hash_manager.cpp" />
+    <ClCompile Include="morphology\pos_tagger\pfx_entry.cpp" />
+    <ClCompile Include="morphology\pos_tagger\pos_tagger.cpp" />
+    <ClCompile Include="morphology\pos_tagger\sfx_entry.cpp" />
+    <ClCompile Include="morphology\pos_disambiguator\pos_disambiguator.cpp" />
+    <ClCompile Include="synthesis\espeak\espeak_lib.cpp" />
+    <ClCompile Include="synthesis\espeak\espeak_syn.cpp" />
+    <ClCompile Include="synthesis\mbrola\mbrola_lib.cpp" />
+    <ClCompile Include="synthesis\mbrola\mbrola_syn.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="corpus.h" />
+    <ClInclude Include="correction\text_tagger\text_tagger.h" />
+    <ClInclude Include="diacritization\letter_to_sound\english_to_phoneme.h" />
+    <ClInclude Include="diacritization\letter_to_sound\g2p_seq2seq_windows.h" />
+    <ClInclude Include="diacritization\letter_to_sound\persian_to_phoneme.h" />
+    <ClInclude Include="diacritization\letter_to_sound\punctuation.h" />
+    <ClInclude Include="diacritization\letter_to_sound\punctuation_to_phoneme.h" />
+    <ClInclude Include="entry.h" />
+    <ClInclude Include="event.h" />
+    <ClInclude Include="phoneme.h" />
+    <ClInclude Include="pitch_range.h" />
+    <ClInclude Include="word.h" />
+    <ClInclude Include="tihu.h" />
+    <ClInclude Include="engine.h" />
+    <ClInclude Include="parser.h" />
+    <ClInclude Include="path_manager.h" />
+    <ClInclude Include="settings.h" />
+    <ClInclude Include="singleton.h" />
+    <ClInclude Include="synthesizer.h" />
+    <ClInclude Include="file_manager.h" />
+    <ClInclude Include="helper.h" />
+    <ClInclude Include="hunzip.h" />
+    <ClInclude Include="tokenization\tokenizer\char_map.h" />
+    <ClInclude Include="tokenization\tokenizer\char_mapper.h" />
+    <ClInclude Include="tokenization\tokenizer\char_map_row.h" />
+    <ClInclude Include="tokenization\tokenizer\tokenizer.h" />
+    <ClInclude Include="diacritization\letter_to_sound\letter_to_sound.h" />
+    <ClInclude Include="diacritization\letter_to_sound\number_to_phoneme.h" />
+    <ClInclude Include="morphology\pos_tagger\afx_entry.h" />
+    <ClInclude Include="morphology\pos_tagger\afx_manager.h" />
+    <ClInclude Include="morphology\pos_tagger\hash_manager.h" />
+    <ClInclude Include="morphology\pos_tagger\hentry.h" />
+    <ClInclude Include="morphology\pos_tagger\pfx_entry.h" />
+    <ClInclude Include="morphology\pos_tagger\pos_tagger.h" />
+    <ClInclude Include="morphology\pos_tagger\sfx_entry.h" />
+    <ClInclude Include="morphology\pos_disambiguator\pos_disambiguator.h" />
+    <ClInclude Include="synthesis\espeak\espeak_lib.h" />
+    <ClInclude Include="synthesis\espeak\espeak_syn.h" />
+    <ClInclude Include="synthesis\espeak\speak_lib.h" />
+    <ClInclude Include="synthesis\mbrola\mbrola_lib.h" />
+    <ClInclude Include="synthesis\mbrola\mbrola_syn.h" />
+    <ClInclude Include="synthesis\mbrola\speech.h" />
+    <ClInclude Include="synthesis\mbrola\stream.h" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{B1A2A522-99E9-47B9-94BA-1DB000C3376B}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>tihu</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(ProjectDir)\bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)\bin\$(Platform)\$(Configuration)\obj\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(ProjectDir)\bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)\bin\$(Platform)\$(Configuration)\obj\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;_DEBUG;_WINDOWS;_USRDLL;TIHU_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.</AdditionalIncludeDirectories>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <ExceptionHandling>Sync</ExceptionHandling>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
+    </Link>
+    <PostBuildEvent>
+      <Command>call $(ProjectDir)post_build.bat  $(Platform) $(Configuration)</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>Copying Dll</Message>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;NDEBUG;_WINDOWS;_USRDLL;TIHU_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.</AdditionalIncludeDirectories>
+      <TreatWarningAsError>true</TreatWarningAsError>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
+    </Link>
+    <PostBuildEvent>
+      <Command>call $(ProjectDir)post_build.bat  $(Platform) $(Configuration)</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>Copying Dll</Message>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

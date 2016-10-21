@@ -1,0 +1,102 @@
+##
+## This file is part of Tihu.
+## 
+## Tihu is free software: you can redistribute it and/or modify
+## it under the terms of the GNU General Public License as published by
+## the Free Software Foundation, either version 3 of the License, or
+## (at your option) any later version.
+## 
+## Tihu is distributed in the hope that it will be useful,
+## but WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+## GNU General Public License for more details.
+## 
+## You should have received a copy of the GNU General Public License
+## along with Tihu.  If not, see <http://www.gnu.org/licenses/>.
+##
+## Contributor(s):
+##    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
+##
+
+'	0  Apostorof
+-	0  xatetire
+­	0  _
+–	0  xattekutAh
+—	0  xatteboland
+!	0  alAmateta?ajjob
+"	0  ko?ot
+#	0  nAmbersAyn
+$	0  dolAr
+%	0  darsad
+&	0  and
+(	0  parAntezbAz
+)	0  parAntezbaste
+*	0  setAre
+,	0  kAmA
+.	0  noqte
+...	0  senoqte
+/	0  eslaS
+:	0  donoqte
+;	0  _
+?	0  alAmateso?Al
+@	0  atsAyn
+[	0  koruSebAz
+\	0  bakeslaS
+]	0  koruSebaste
+^	0  betavAne
+_	0  zirxat
+`	0  _
+{	0  AkolAdbAz
+|	0  xate?amodi
+}	0  AkolAdbaste
+~	0  mad
+¡	0  virgol
+¦	0  _
+¨	0  _
+¯	0  _
+´	0  _
+¸	0  _
+¿	0  alAmateso?Al
+،	0  virgol
+؛	0  noqtevirgol
+؟	0  alAmateso?Al
+٪	0  darsad
+٫	0  _
+٬	0  _
+’	0  _
++	0  be?alAveye
+⁄	0  eslaS
+<	0  kuCektaraz
+=	0  mosAviye
+>	0  bozorgtaraz
+±	0  mosbatmanfiye
+«	0  giyumebAz
+»	0  giyumebaste
+×	0  zarbdar
+÷	0  taqsimbar
+¢	0  sent
+£	0  p?ond
+¤	0  _
+¥	0  yen
+§	0  _
+©	0  _
+®	0  _
+°	0  _
+µ	0  _
+¶	0  _
+·	0  boledekuCak
+†	0  _
+‡	0  _
+•	0  boled
+…	0  senoqte
+€	0  yoro
+¼	0  yekCAhArom
+½	0  yekdovvom
+¾	0  seCAhArom
+¹	0  _
+²	0  _
+³	0  _
+ª	0  _
+ƒ	0  _
+º	0  _
+™	0  _

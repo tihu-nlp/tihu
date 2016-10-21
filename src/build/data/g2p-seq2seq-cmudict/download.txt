@@ -1,0 +1,2 @@
+Please download model from here:
+https://sourceforge.net/projects/cmusphinx/files/G2P%20Models/g2p-seq2seq-cmudict.tar.gz/download

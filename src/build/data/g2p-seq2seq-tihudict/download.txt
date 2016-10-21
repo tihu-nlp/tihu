@@ -1,0 +1,2 @@
+Please download model from here:
+https://github.com/tihu-nlp/g2p-seq2seq-tihudict

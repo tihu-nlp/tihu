@@ -1,0 +1,5 @@
+*.vs
+*.VC.db
+*.VC.VC.opendb
+bin/*
+libtihu*
