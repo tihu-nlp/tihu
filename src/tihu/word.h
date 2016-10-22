@@ -49,7 +49,7 @@ public:
     bool             IsEndOfParagraph() const;
     bool             IsEndOfSentence() const;
     bool             IsPersianWord() const;
-	bool             IsEnglishWord() const;
+    bool             IsEnglishWord() const;
     bool             IsPunctuation() const;
     bool             IsNumber() const;
     bool             HasDiacritic() const;

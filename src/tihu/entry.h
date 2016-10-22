@@ -47,9 +47,9 @@ public:
 
     bool            IsVerb() const;
     bool            IsNoun() const;
-	bool            IsNounCommon() const;
-	bool            IsNounProper() const; 
-	bool            IsPronoun() const;
+    bool            IsNounCommon() const;
+    bool            IsNounProper() const; 
+    bool            IsPronoun() const;
     bool            IsAdjective() const;
     bool            IsDeterminer() const;
     bool            IsAdverb() const;

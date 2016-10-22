@@ -43,9 +43,9 @@ protected:
     void ReportMessage(const char* message, ...);
 
 protected:
-	CSettings* Settings;
-	TIHU_CALLBACK Callback;
-	void* UserData;
+    CSettings* Settings;
+    TIHU_CALLBACK Callback;
+    void* UserData;
 };
 
 #endif

@@ -1,23 +1,4 @@
-/*******************************************************************************
-* This file is part of Tihu.
-*
-* Tihu is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* Tihu is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with Tihu.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Contributor(s):
-*    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
-*
-*******************************************************************************/#ifndef SPEAK_LIB_H
+#ifndef SPEAK_LIB_H
 #define SPEAK_LIB_H
 /***************************************************************************
  *   Copyright (C) 2005 to 2012 by Jonathan Duddington                     *
@@ -40,7 +21,7 @@
 
 
 /*************************************************************/
-/* This is the Header file for the library version of espeak */
+/* This is the header file for the library version of espeak */
 /*                                                           */
 /*************************************************************/
 
@@ -81,9 +62,9 @@ Revision 9  30.May.2013
   Changed function espeak_TextToPhonemes().
 
 */
-/********************/
-/*  Initialization  */
-/********************/
+         /********************/
+         /*  Initialization  */
+         /********************/
 
 // values for 'value' in espeak_SetParameter(espeakRATE, value, 0), nominally in words-per-minute
 #define espeakRATE_MINIMUM  80
@@ -92,32 +73,32 @@ Revision 9  30.May.2013
 
 
 typedef enum {
-    espeakEVENT_LIST_TERMINATED = 0, // Retrieval mode: terminates the event list.
-    espeakEVENT_WORD = 1,            // Start of word
-    espeakEVENT_SENTENCE = 2,        // Start of sentence
-    espeakEVENT_MARK = 3,            // Mark
-    espeakEVENT_PLAY = 4,            // Audio element
-    espeakEVENT_END = 5,             // End of sentence or clause
-    espeakEVENT_MSG_TERMINATED = 6,  // End of message
-    espeakEVENT_PHONEME = 7,         // Phoneme, if enabled in espeak_Initialize()
-    espeakEVENT_SAMPLERATE = 8       // internal use, set sample rate
+  espeakEVENT_LIST_TERMINATED = 0, // Retrieval mode: terminates the event list.
+  espeakEVENT_WORD = 1,            // Start of word
+  espeakEVENT_SENTENCE = 2,        // Start of sentence
+  espeakEVENT_MARK = 3,            // Mark
+  espeakEVENT_PLAY = 4,            // Audio element
+  espeakEVENT_END = 5,             // End of sentence or clause
+  espeakEVENT_MSG_TERMINATED = 6,  // End of message
+  espeakEVENT_PHONEME = 7,         // Phoneme, if enabled in espeak_Initialize()
+  espeakEVENT_SAMPLERATE = 8       // internal use, set sample rate
 } espeak_EVENT_TYPE;
 
 
 
 typedef struct {
-    espeak_EVENT_TYPE type;
-    unsigned int unique_identifier; // message identifier (or 0 for key or character)
-    int text_position;    // the number of characters from the start of the text
-    int length;           // word length, in characters (for espeakEVENT_WORD)
-    int audio_position;   // the time in mS within the generated speech output data
-    int sample;           // sample id (internal use)
-    void* user_data;      // pointer supplied by the calling program
-    union {
-        int number;        // used for WORD and SENTENCE events.
-        const char* name;  // used for MARK and PLAY events.  UTF8 string
-        char string[8];    // used for phoneme names (UTF8). Terminated by a zero byte unless the name needs the full 8 bytes.
-    } id;
+	espeak_EVENT_TYPE type;
+	unsigned int unique_identifier; // message identifier (or 0 for key or character)
+	int text_position;    // the number of characters from the start of the text
+	int length;           // word length, in characters (for espeakEVENT_WORD)
+	int audio_position;   // the time in mS within the generated speech output data
+	int sample;           // sample id (internal use)
+	void* user_data;      // pointer supplied by the calling program
+	union {
+		int number;        // used for WORD and SENTENCE events.
+		const char *name;  // used for MARK and PLAY events.  UTF8 string
+		char string[8];    // used for phoneme names (UTF8). Terminated by a zero byte unless the name needs the full 8 bytes.
+	} id;
 } espeak_EVENT;
 /*
    When a message is supplied to espeak_synth, the request is buffered and espeak_synth returns. When the message is really processed, the callback function will be repetedly called.
@@ -165,33 +146,33 @@ typedef struct {
 
 
 typedef enum {
-    POS_CHARACTER = 1,
-    POS_WORD,
-    POS_SENTENCE
+	POS_CHARACTER = 1,
+	POS_WORD,
+	POS_SENTENCE
 } espeak_POSITION_TYPE;
 
 
 typedef enum {
-    /* PLAYBACK mode: plays the audio data, supplies events to the calling program*/
-    AUDIO_OUTPUT_PLAYBACK,
+	/* PLAYBACK mode: plays the audio data, supplies events to the calling program*/
+	AUDIO_OUTPUT_PLAYBACK,
 
-    /* RETRIEVAL mode: supplies audio data and events to the calling program */
-    AUDIO_OUTPUT_RETRIEVAL,
+	/* RETRIEVAL mode: supplies audio data and events to the calling program */
+	AUDIO_OUTPUT_RETRIEVAL,
 
-    /* SYNCHRONOUS mode: as RETRIEVAL but doesn't return until synthesis is completed */
-    AUDIO_OUTPUT_SYNCHRONOUS,
+	/* SYNCHRONOUS mode: as RETRIEVAL but doesn't return until synthesis is completed */
+	AUDIO_OUTPUT_SYNCHRONOUS,
 
-    /* Synchronous playback */
-    AUDIO_OUTPUT_SYNCH_PLAYBACK
+	/* Synchronous playback */
+	AUDIO_OUTPUT_SYNCH_PLAYBACK
 
 } espeak_AUDIO_OUTPUT;
 
 
 typedef enum {
-    EE_OK=0,
-    EE_INTERNAL_ERROR=-1,
-    EE_BUFFER_FULL=1,
-    EE_NOT_FOUND=2
+	EE_OK=0,
+	EE_INTERNAL_ERROR=-1,
+	EE_BUFFER_FULL=1,
+	EE_NOT_FOUND=2
 } espeak_ERROR;
 
 #define espeakINITIALIZE_PHONEME_EVENTS 0x0001
@@ -201,7 +182,7 @@ typedef enum {
 #ifdef __cplusplus
 extern "C"
 #endif
-ESPEAK_API int espeak_Initialize(espeak_AUDIO_OUTPUT output, int buflength, const char* path, int options);
+ESPEAK_API int espeak_Initialize(espeak_AUDIO_OUTPUT output, int buflength, const char *path, int options);
 /* Must be called before any synthesis functions are called.
    output: the audio data can either be played by eSpeak or passed back by the SynthCallback function.
 
@@ -273,9 +254,9 @@ int UriCallback(int type, const char *uri, const char *base);
 */
 
 
-/********************/
-/*    Synthesis     */
-/********************/
+         /********************/
+         /*    Synthesis     */
+         /********************/
 
 
 #define espeakCHARS_AUTO   0
@@ -292,14 +273,14 @@ int UriCallback(int type, const char *uri, const char *base);
 #ifdef __cplusplus
 extern "C"
 #endif
-ESPEAK_API espeak_ERROR espeak_Synth(const void* text,
-                                     size_t size,
-                                     unsigned int position,
-                                     espeak_POSITION_TYPE position_type,
-                                     unsigned int end_position,
-                                     unsigned int flags,
-                                     unsigned int* unique_identifier,
-                                     void* user_data);
+ESPEAK_API espeak_ERROR espeak_Synth(const void *text,
+	size_t size,
+	unsigned int position,
+	espeak_POSITION_TYPE position_type,
+	unsigned int end_position,
+	unsigned int flags,
+	unsigned int* unique_identifier,
+	void* user_data);
 /* Synthesize speech for the specified text.  The speech sound data is passed to the calling
    program in buffers by means of the callback function specified by espeak_SetSynthCallback(). The command is asynchronous: it is internally buffered and returns as soon as possible. If espeak_Initialize was previously called with AUDIO_OUTPUT_PLAYBACK as argument, the sound data are played by eSpeak.
 
@@ -346,19 +327,19 @@ ESPEAK_API espeak_ERROR espeak_Synth(const void* text,
    Return: EE_OK: operation achieved
            EE_BUFFER_FULL: the command can not be buffered;
              you may try after a while to call the function again.
-       EE_INTERNAL_ERROR.
+	   EE_INTERNAL_ERROR.
 */
 
 #ifdef __cplusplus
 extern "C"
 #endif
-ESPEAK_API espeak_ERROR espeak_Synth_Mark(const void* text,
-        size_t size,
-        const char* index_mark,
-        unsigned int end_position,
-        unsigned int flags,
-        unsigned int* unique_identifier,
-        void* user_data);
+ESPEAK_API espeak_ERROR espeak_Synth_Mark(const void *text,
+	size_t size,
+	const char *index_mark,
+	unsigned int end_position,
+	unsigned int flags,
+	unsigned int* unique_identifier,
+	void* user_data);
 /* Synthesize speech for the specified text.  Similar to espeak_Synth() but the start position is
    specified by the name of a <mark> element in the text.
 
@@ -370,13 +351,13 @@ ESPEAK_API espeak_ERROR espeak_Synth_Mark(const void* text,
    Return: EE_OK: operation achieved
            EE_BUFFER_FULL: the command can not be buffered;
              you may try after a while to call the function again.
-       EE_INTERNAL_ERROR.
+	   EE_INTERNAL_ERROR.
 */
 
 #ifdef __cplusplus
 extern "C"
 #endif
-ESPEAK_API espeak_ERROR espeak_Key(const char* key_name);
+ESPEAK_API espeak_ERROR espeak_Key(const char *key_name);
 /* Speak the name of a keyboard key.
    If key_name is a single character, it speaks the name of the character.
    Otherwise, it speaks key_name as a text string.
@@ -384,7 +365,7 @@ ESPEAK_API espeak_ERROR espeak_Key(const char* key_name);
    Return: EE_OK: operation achieved
            EE_BUFFER_FULL: the command can not be buffered;
              you may try after a while to call the function again.
-       EE_INTERNAL_ERROR.
+	   EE_INTERNAL_ERROR.
 */
 
 #ifdef __cplusplus
@@ -396,40 +377,40 @@ ESPEAK_API espeak_ERROR espeak_Char(wchar_t character);
    Return: EE_OK: operation achieved
            EE_BUFFER_FULL: the command can not be buffered;
              you may try after a while to call the function again.
-       EE_INTERNAL_ERROR.
+	   EE_INTERNAL_ERROR.
 */
 
 
 
 
-/***********************/
-/*  Speech Parameters  */
-/***********************/
+         /***********************/
+         /*  Speech Parameters  */
+         /***********************/
 
 typedef enum {
-    espeakSILENCE=0, /* internal use */
-    espeakRATE=1,
-    espeakVOLUME=2,
-    espeakPITCH=3,
-    espeakRANGE=4,
-    espeakPUNCTUATION=5,
-    espeakCAPITALS=6,
-    espeakWORDGAP=7,
-    espeakOPTIONS=8,   // reserved for misc. options.  not yet used
-    espeakINTONATION=9,
+  espeakSILENCE=0, /* internal use */
+  espeakRATE=1,
+  espeakVOLUME=2,
+  espeakPITCH=3,
+  espeakRANGE=4,
+  espeakPUNCTUATION=5,
+  espeakCAPITALS=6,
+  espeakWORDGAP=7,
+  espeakOPTIONS=8,   // reserved for misc. options.  not yet used
+  espeakINTONATION=9,
 
-    espeakRESERVED1=10,
-    espeakRESERVED2=11,
-    espeakEMPHASIS,   /* internal use */
-    espeakLINELENGTH, /* internal use */
-    espeakVOICETYPE,  // internal, 1=mbrola
-    N_SPEECH_PARAM    /* last enum */
+  espeakRESERVED1=10,
+  espeakRESERVED2=11,
+  espeakEMPHASIS,   /* internal use */
+  espeakLINELENGTH, /* internal use */
+  espeakVOICETYPE,  // internal, 1=mbrola
+  N_SPEECH_PARAM    /* last enum */
 } espeak_PARAMETER;
 
 typedef enum {
-    espeakPUNCT_NONE=0,
-    espeakPUNCT_ALL=1,
-    espeakPUNCT_SOME=2
+  espeakPUNCT_NONE=0,
+  espeakPUNCT_ALL=1,
+  espeakPUNCT_SOME=2
 } espeak_PUNCT_TYPE;
 
 #ifdef __cplusplus
@@ -466,7 +447,7 @@ ESPEAK_API espeak_ERROR espeak_SetParameter(espeak_PARAMETER parameter, int valu
    Return: EE_OK: operation achieved
            EE_BUFFER_FULL: the command can not be buffered;
              you may try after a while to call the function again.
-       EE_INTERNAL_ERROR.
+	   EE_INTERNAL_ERROR.
 */
 
 #ifdef __cplusplus
@@ -480,7 +461,7 @@ ESPEAK_API int espeak_GetParameter(espeak_PARAMETER parameter, int current);
 #ifdef __cplusplus
 extern "C"
 #endif
-ESPEAK_API espeak_ERROR espeak_SetPunctuationList(const wchar_t* punctlist);
+ESPEAK_API espeak_ERROR espeak_SetPunctuationList(const wchar_t *punctlist);
 /* Specified a list of punctuation characters whose names are to be spoken when the
    value of the Punctuation parameter is set to "some".
 
@@ -489,13 +470,13 @@ ESPEAK_API espeak_ERROR espeak_SetPunctuationList(const wchar_t* punctlist);
    Return: EE_OK: operation achieved
            EE_BUFFER_FULL: the command can not be buffered;
              you may try after a while to call the function again.
-       EE_INTERNAL_ERROR.
+	   EE_INTERNAL_ERROR.
 */
 
 #ifdef __cplusplus
 extern "C"
 #endif
-ESPEAK_API void espeak_SetPhonemeTrace(int value, FILE* stream);
+ESPEAK_API void espeak_SetPhonemeTrace(int value, FILE *stream);
 /* Controls the output of phoneme symbols for the text
    value=0  No phoneme output (default)
    value=1  Output the translated phoneme symbols for the text
@@ -508,7 +489,7 @@ ESPEAK_API void espeak_SetPhonemeTrace(int value, FILE* stream);
 #ifdef __cplusplus
 extern "C"
 #endif
-ESPEAK_API const char* espeak_TextToPhonemes(const void** textptr, int textmode, int phonememode);
+ESPEAK_API const char *espeak_TextToPhonemes(const void **textptr, int textmode, int phonememode);
 /* Translates text into phonemes.  Call espeak_SetVoiceByName() first, to select a language.
 
    It returns a pointer to a character string which contains the phonemes for the text up to
@@ -531,7 +512,7 @@ ESPEAK_API const char* espeak_TextToPhonemes(const void** textptr, int textmode,
       2= include zero-width-joiner for phoneme names of more than one letter.
       3= separate phonemes with underscore characters.
 
-     bits 4-7:
+	 bits 4-7:
       0= eSpeak's ascii phoneme names.
       1= International Phonetic Alphabet (as UTF-8 characters).
 */
@@ -539,7 +520,7 @@ ESPEAK_API const char* espeak_TextToPhonemes(const void** textptr, int textmode,
 #ifdef __cplusplus
 extern "C"
 #endif
-ESPEAK_API void espeak_CompileDictionary(const char* path, FILE* log, int flags);
+ESPEAK_API void espeak_CompileDictionary(const char *path, FILE *log, int flags);
 /* Compile pronunciation dictionary for a language which corresponds to the currently
    selected voice.  The required voice should be selected before calling this function.
 
@@ -550,22 +531,22 @@ ESPEAK_API void espeak_CompileDictionary(const char* path, FILE* log, int flags)
    flags:  Bit 0: include source line information for debug purposes (This is displayed with the
           -X command line option).
 */
-/***********************/
-/*   Voice Selection   */
-/***********************/
+         /***********************/
+         /*   Voice Selection   */
+         /***********************/
 
 
 // voice table
 typedef struct {
-    const char* name;      // a given name for this voice. UTF8 string.
-    const char* languages;       // list of pairs of (byte) priority + (string) language (and dialect qualifier)
-    const char* identifier;      // the filename for this voice within espeak-data/voices
-    unsigned char gender;  // 0=none 1=male, 2=female,
-    unsigned char age;     // 0=not specified, or age in years
-    unsigned char variant; // only used when passed as a parameter to espeak_SetVoiceByProperties
-    unsigned char xx1;     // for internal use
-    int score;       // for internal use
-    void* spare;     // for internal use
+	const char *name;      // a given name for this voice. UTF8 string.
+	const char *languages;       // list of pairs of (byte) priority + (string) language (and dialect qualifier)
+	const char *identifier;      // the filename for this voice within espeak-data/voices
+	unsigned char gender;  // 0=none 1=male, 2=female,
+	unsigned char age;     // 0=not specified, or age in years
+	unsigned char variant; // only used when passed as a parameter to espeak_SetVoiceByProperties
+	unsigned char xx1;     // for internal use
+	int score;       // for internal use
+	void *spare;     // for internal use
 } espeak_VOICE;
 
 /* Note: The espeak_VOICE structure is used for two purposes:
@@ -592,7 +573,7 @@ typedef struct {
 #ifdef __cplusplus
 extern "C"
 #endif
-ESPEAK_API const espeak_VOICE** espeak_ListVoices(espeak_VOICE* voice_spec);
+ESPEAK_API const espeak_VOICE **espeak_ListVoices(espeak_VOICE *voice_spec);
 /* Reads the voice files from espeak-data/voices and creates an array of espeak_VOICE pointers.
    The list is terminated by a NULL pointer
 
@@ -604,20 +585,20 @@ ESPEAK_API const espeak_VOICE** espeak_ListVoices(espeak_VOICE* voice_spec);
 #ifdef __cplusplus
 extern "C"
 #endif
-ESPEAK_API espeak_ERROR espeak_SetVoiceByName(const char* name);
+ESPEAK_API espeak_ERROR espeak_SetVoiceByName(const char *name);
 /* Searches for a voice with a matching "name" field.  Language is not considered.
    "name" is a UTF8 string.
 
    Return: EE_OK: operation achieved
            EE_BUFFER_FULL: the command can not be buffered;
              you may try after a while to call the function again.
-       EE_INTERNAL_ERROR.
+	   EE_INTERNAL_ERROR.
 */
 
 #ifdef __cplusplus
 extern "C"
 #endif
-ESPEAK_API espeak_ERROR espeak_SetVoiceByProperties(espeak_VOICE* voice_spec);
+ESPEAK_API espeak_ERROR espeak_SetVoiceByProperties(espeak_VOICE *voice_spec);
 /* An espeak_VOICE structure is used to pass criteria to select a voice.  Any of the following
    fields may be set:
 
@@ -637,7 +618,7 @@ ESPEAK_API espeak_ERROR espeak_SetVoiceByProperties(espeak_VOICE* voice_spec);
 #ifdef __cplusplus
 extern "C"
 #endif
-ESPEAK_API espeak_VOICE* espeak_GetCurrentVoice(void);
+ESPEAK_API espeak_VOICE *espeak_GetCurrentVoice(void);
 /* Returns the espeak_VOICE data for the currently selected voice.
    This is not affected by temporary voice changes caused by SSML elements such as <voice> and <s>
 */
@@ -651,7 +632,7 @@ ESPEAK_API espeak_ERROR espeak_Cancel(void);
    synthesize a new message.
 
    Return: EE_OK: operation achieved
-       EE_INTERNAL_ERROR.
+	   EE_INTERNAL_ERROR.
 */
 
 
@@ -668,7 +649,7 @@ extern "C"
 ESPEAK_API espeak_ERROR espeak_Synchronize(void);
 /* This function returns when all data have been spoken.
    Return: EE_OK: operation achieved
-       EE_INTERNAL_ERROR.
+	   EE_INTERNAL_ERROR.
 */
 
 #ifdef __cplusplus
@@ -677,14 +658,14 @@ extern "C"
 ESPEAK_API espeak_ERROR espeak_Terminate(void);
 /* last function to be called.
    Return: EE_OK: operation achieved
-       EE_INTERNAL_ERROR.
+	   EE_INTERNAL_ERROR.
 */
 
 
 #ifdef __cplusplus
 extern "C"
 #endif
-ESPEAK_API const char* espeak_Info(const char** path_data);
+ESPEAK_API const char *espeak_Info(const char **path_data);
 /* Returns the version number string.
    path_data  returns the path to espeak_data
 */

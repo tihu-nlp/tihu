@@ -111,28 +111,28 @@ char16_t* u16chr(const char16_t* wcs_, char16_t wch_)
 
 char16_t* u16sep(char16_t** stringp, const char16_t delim)
 {
-	char16_t* mp = *stringp;
-	if (*mp != '\0') {
-	    char16_t* dp;
-	    if (delim) {
-	        dp = u16chr(mp, delim);
-	    }
-	    else {
-	        // don't use isspace() here, the string can be in some random charset
-	        // that's way different than the locale's
-	        for (dp = mp; (*dp && *dp != ' ' && *dp != '\t'); dp++);
-	        if (!*dp) dp = NULL;
-	    }
-	    if (dp) {
-	        *stringp = dp + 1;
-	        *dp = '\0';
-	    }
-	    else {
-	        *stringp = mp + u16len(mp);
-	    }
-	    return mp;
-	}
-	return NULL;
+    char16_t* mp = *stringp;
+    if (*mp != '\0') {
+        char16_t* dp;
+        if (delim) {
+            dp = u16chr(mp, delim);
+        }
+        else {
+            // don't use isspace() here, the string can be in some random charset
+            // that's way different than the locale's
+            for (dp = mp; (*dp && *dp != ' ' && *dp != '\t'); dp++);
+            if (!*dp) dp = NULL;
+        }
+        if (dp) {
+            *stringp = dp + 1;
+            *dp = '\0';
+        }
+        else {
+            *stringp = mp + u16len(mp);
+        }
+        return mp;
+    }
+    return NULL;
 }
 
 char GetLastChar(const std::string &value)
@@ -298,33 +298,33 @@ bool EndsWith(const std::string &value, std::string ending)
 
 bool StartsWith(const std::string &value, std::string starting)
 {
-	if (starting.size() > value.size()) {
-		return false;
-	}
-	return std::equal(starting.begin(), starting.end(), value.begin());
+    if (starting.size() > value.size()) {
+        return false;
+    }
+    return std::equal(starting.begin(), starting.end(), value.begin());
 }
 
 bool IsLeadingByte(char c)
 {
-	auto first_bit_set = (c & 0x80) != 0;
-	auto second_bit_set = (c & 0X40) != 0;
-	return !first_bit_set || second_bit_set;
+    auto first_bit_set = (c & 0x80) != 0;
+    auto second_bit_set = (c & 0X40) != 0;
+    return !first_bit_set || second_bit_set;
 }
 
 std::string& RemoveFirst(std::string &value)
 {
-	while (!IsLeadingByte(value.front()))
-		value.erase(0,1);
-	value.erase(0, 1);
+    while (!IsLeadingByte(value.front()))
+        value.erase(0,1);
+    value.erase(0, 1);
 
-	return value;
+    return value;
 }
 
 std::string& RemoveLast(std::string &value)
 {
-	while (!IsLeadingByte(value.back()))
-		value.pop_back();
-	value.pop_back();
+    while (!IsLeadingByte(value.back()))
+        value.pop_back();
+    value.pop_back();
 
-	return value;
+    return value;
 }

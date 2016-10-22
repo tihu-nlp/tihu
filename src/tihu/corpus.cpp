@@ -51,8 +51,8 @@ bool CCorpus::IsEmpty() const
 
 void CCorpus::Clear()
 {
-	Text.clear();
-	WordList.clear();
+    Text.clear();
+    WordList.clear();
 }
 
 void CCorpus::AddWord(CWordPtr &word)
@@ -62,20 +62,20 @@ void CCorpus::AddWord(CWordPtr &word)
 
 const CWordPtr &CCorpus::GetLastWord() const
 {
-	if (WordList.empty()) {
-		return null_word;
-	}
+    if (WordList.empty()) {
+        return null_word;
+    }
 
-	return WordList.back();
+    return WordList.back();
 }
 
 const CWordPtr &CCorpus::GetFirstWord() const
 {
-	if (WordList.empty()) {
-		return null_word;
-	}
+    if (WordList.empty()) {
+        return null_word;
+    }
 
-	return WordList.front();
+    return WordList.front();
 }
 
 void CCorpus::Dump(const std::string &filename) const

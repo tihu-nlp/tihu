@@ -73,14 +73,14 @@ void CeSpeakSyn::ParsText(CCorpus* corpus)
 
         const CWordPtr &word = *itt;
 
-		FireEvents(word);
+        FireEvents(word);
 
-		phonetic.clear();
+        phonetic.clear();
 
-		if (word->IsEnglishWord()) {
-			phonetic.append(word->GetText());
-		}
-		else {
+        if (word->IsEnglishWord()) {
+            phonetic.append(word->GetText());
+        }
+        else {
             word->ParsPronunciation();
 
             phonetic.append("[[");
@@ -98,13 +98,13 @@ void CeSpeakSyn::ParsText(CCorpus* corpus)
             phonetic.append("]]");
         }
 
-		eSpeakLib.Synthesize(phonetic.c_str(), this);
+        eSpeakLib.Synthesize(phonetic.c_str(), this);
     }
 }
 
 void CeSpeakSyn::Stop()
 {
-	IsStop = true;
+    IsStop = true;
     eSpeakLib.Stop();
 }
 
@@ -131,7 +131,7 @@ int CeSpeakSyn::GetFrequency() const
 int CeSpeakSyn::ParsEvent(short* samples, int length, espeak_EVENT* espeak_event)
 {
     if(espeak_event->type != espeakEVENT_MSG_TERMINATED) {
-		PlaySamples(samples, length);
+        PlaySamples(samples, length);
 
         switch(espeak_event->type) {
         case espeakEVENT_PLAY: {

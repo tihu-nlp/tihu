@@ -42,7 +42,7 @@ public:
 
     bool IsEmpty() const;
 
-	void Clear();
+    void Clear();
 
     void Dump(const std::string &filename) const;
 

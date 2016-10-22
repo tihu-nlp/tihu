@@ -78,7 +78,7 @@ void CMbrolaSyn::ParsText(CCorpus* corpus)
 
 
         phoneme_line.clear();
-		
+        
         word->ParsPronunciation();
 
         CPhonemeList &phoneme_list = word->GetPhonemeList();
@@ -90,20 +90,20 @@ void CMbrolaSyn::ParsText(CCorpus* corpus)
             phoneme_line.append(mbr);
         }
 
-        if(!Synthesize(phoneme_line)) {
+        if(!Synthesize((char*)phoneme_line.c_str())) {
             break;
         }
         /// -------------------------
     }
 }
 
-bool CMbrolaSyn::Synthesize(std::string phoneme_line)
+bool CMbrolaSyn::Synthesize(char* line)
 {
-	static const int sample_length = 2048;
+    static const int sample_length = 2048;
     static short samples[sample_length];
     int length = 0;
 
-    MbrolaLib.Write((char*)phoneme_line.c_str());
+    MbrolaLib.Write(line);
 
     if(MbrolaLib.GetLastError() != 0) {
         char bufa[255];
@@ -117,7 +117,7 @@ bool CMbrolaSyn::Synthesize(std::string phoneme_line)
     while((length = MbrolaLib.Read(samples, sample_length)) > 0) {
 
         if(!PlaySamples(samples, length)) {
-			MbrolaLib.Clear();
+            MbrolaLib.Clear();
 
             return false;
         }

@@ -34,26 +34,26 @@ ISynthesizer::~ISynthesizer()
 
 void ISynthesizer::FireEvents(const CWordPtr& word) const
 {
-	if (Callback) {
+    if (Callback) {
 
-		/// word boundary
-		Callback(TIHU_EVENT_WORD_BOUNDRY,
-			word->GetOffset(),
-			word->GetLength(),
-			UserData);
-	}
+        /// word boundary
+        Callback(TIHU_EVENT_WORD_BOUNDRY,
+            word->GetOffset(),
+            word->GetLength(),
+            UserData);
+    }
 }
 
 bool ISynthesizer::PlaySamples(short* samples, int length) const
 {
-	if (Callback) {
-		if (Callback(TIHU_WAVE_BUFFER,
-			reinterpret_cast<int>(samples),
-			length * 2,
-			UserData) == TIHU_DATA_ABORT) {
-			return false;
-		}
-	}
+    if (Callback) {
+        if (Callback(TIHU_WAVE_BUFFER,
+            reinterpret_cast<int>(samples),
+            length * 2,
+            UserData) == TIHU_DATA_ABORT) {
+            return false;
+        }
+    }
 
-	return true;
+    return true;
 }

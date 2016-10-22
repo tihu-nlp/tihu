@@ -45,7 +45,7 @@ public:
     int  GetFrequency() const override;
 
 private:
-    bool Synthesize(std::string phoneme_line);
+    bool Synthesize(char* line);
     void ApplyVolume(int volume);
     void ApplyRate(int rate);
     void ApplyPitch(int pitch);

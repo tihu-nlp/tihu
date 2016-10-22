@@ -45,7 +45,7 @@ public:
     void Diacritize(const std::string &text);
     void AutoTag(const std::string &text);
 
-	void Dump(const std::string &filename);
+    void Dump(const std::string &filename);
     void Stop();
 
     bool SetParam(TIHU_PARAM param, int value);
@@ -53,12 +53,12 @@ public:
 
 private:
     void SetText(const std::string &text) const;
-	void Tokenize() const;
-	void POSTag() const;
-	void Diacritize() const;
-	void Synthesize() const;
-	void LogText(const std::string& filename) const;
-	void LogCorpus(const std::string& filename) const;
+    void Tokenize() const;
+    void POSTag() const;
+    void Diacritize() const;
+    void Synthesize() const;
+    void LogText(const std::string& filename) const;
+    void LogCorpus(const std::string& filename) const;
 
 
 private:

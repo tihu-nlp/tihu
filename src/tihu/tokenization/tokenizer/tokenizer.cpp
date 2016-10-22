@@ -26,7 +26,7 @@
 
 CTokenizer::CTokenizer()
 {
-	Offset = 0;
+    Offset = 0;
 }
 
 CTokenizer::~CTokenizer()
@@ -74,8 +74,8 @@ void CTokenizer::ParsText(CCorpus* corpus)
     std::u16string  text_16 = UTF8ToUTF16(corpus->GetText());
     const char16_t* text = text_16.c_str();
 
-	  /// reset text offset
-	  Offset = 0;
+      /// reset text offset
+      Offset = 0;
 
     while(1) {
         CCharMap char_map = CharMapper.GetCharMap(*text);
@@ -102,7 +102,7 @@ void CTokenizer::ParsText(CCorpus* corpus)
 
             // ---
             normed.clear();
-			      Offset += length;
+                  Offset += length;
             length = 0;
             token_type = char_map.GetType();
         }
@@ -172,19 +172,19 @@ void CTokenizer::ParsText(CCorpus* corpus)
         break;
 
         case TIHU_TOKEN_TYPE::PUNCTUATION: { //
-			      int event_size = ParsEvents(word, text);
+                  int event_size = ParsEvents(word, text);
 
-			      if(event_size == 1) {
-			      	  /// it's slash
-			      	  text += event_size;
-			      } else if (event_size > 1) {
-			      	  /// it's event, ignore them
-			      	  text += event_size;
-			      	  token_type = TIHU_TOKEN_TYPE::DELIMITER;
-			      	  continue;
+                  if(event_size == 1) {
+                        /// it's slash
+                        text += event_size;
+                  } else if (event_size > 1) {
+                        /// it's event, ignore them
+                        text += event_size;
+                        token_type = TIHU_TOKEN_TYPE::DELIMITER;
+                        continue;
             } else {
-			      	  normed += char_map.GetNormed();
-			      }
+                        normed += char_map.GetNormed();
+                  }
         }
         break;
 
@@ -215,31 +215,31 @@ void CTokenizer::ParsText(CCorpus* corpus)
 
 int CTokenizer::ParsEvents(const CWordPtr &word, const char16_t* text)
 {
-	const char16_t* start_tag = text;
+    const char16_t* start_tag = text;
 
     /// it's an event!
     while(1) {
 
-		if(*start_tag != '/') {
+        if(*start_tag != '/') {
             break;
         }
 
         /// it's not an event if two slashes come together.
         /// it is a slash character: '/'.
         if(*(start_tag +1) == '/') {
-			start_tag++;
+            start_tag++;
             break;
         }
 
         const char16_t* colon = u16chr(start_tag +1, ':');
         if(!colon) {
-			TIHU_WARNING(stderr, "Wrong event at offset %d", Offset);
+            TIHU_WARNING(stderr, "Wrong event at offset %d", Offset);
             break;
         }
 
         const char16_t* end_tag = u16chr(colon+1, '/');
         if(!end_tag) {
-			TIHU_WARNING(stderr, "Wrong event at offset %d", Offset);
+            TIHU_WARNING(stderr, "Wrong event at offset %d", Offset);
             break;
         }
 
@@ -273,7 +273,7 @@ int CTokenizer::ParsEvents(const CWordPtr &word, const char16_t* text)
             word->AddEvent(TIHU_EVENT_TYPE::UNKNOWN, event_value);
         }
 
-		start_tag += event_length+1;
+        start_tag += event_length+1;
     }
 
     return start_tag - text;

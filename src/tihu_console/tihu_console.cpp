@@ -62,7 +62,8 @@ TihuConsole::TihuConsole(QWidget *parent, Qt::WindowFlags flags)
     procGetParam = 0;
     procSetCallback = 0;
     procLoadVoice = 0;
-    ao = 0;
+    m_audioOutput = 0;
+    m_output = 0;
 
     ui.setupUi(this);
 
@@ -214,17 +215,24 @@ bool TihuConsole::LoadTihu(const QString& library)
     int frequency = -1;
     procGetParam(TIHU_PARAM_FREQUENCY, frequency);
 
-    QAudioFormat format;
-    format.setSampleRate( frequency );
-    format.setChannelCount(1);
-    format.setSampleSize(16);
-    format.setCodec("audio/pcm");
-    format.setByteOrder(QAudioFormat::LittleEndian);
-    format.setSampleType(QAudioFormat::UnSignedInt);
+    m_format.setSampleRate( frequency );
+    m_format.setChannelCount(1);
+    m_format.setSampleSize(16);
+    m_format.setCodec("audio/pcm");
+    m_format.setByteOrder(QAudioFormat::LittleEndian);
+    m_format.setSampleType(QAudioFormat::UnSignedInt);
 
-    ao = new QAudioOutput(format, this);
+    m_device = QAudioDeviceInfo::defaultInputDevice();
 
-    io = ao->start();
+    QAudioDeviceInfo info(m_device);
+    if (!info.isFormatSupported(m_format))
+    {
+        qWarning() << "Default format not supported - trying to use nearest";
+        m_format = info.nearestFormat(m_format);
+    }
+
+    m_audioOutput = new QAudioOutput(m_device, m_format, this);
+    m_output = m_audioOutput->start();
 
     ui.splitter->setStretchFactor(0, 1);
     ui.splitter->setStretchFactor(1, 0);
@@ -245,10 +253,10 @@ void TihuConsole::onUnload()
         procClose();
     }
 
-    if(ao)
+    if(m_audioOutput)
     {
-        delete ao;
-        ao = 0;
+        delete m_audioOutput;
+        m_audioOutput = 0;
     }
 
     ui.btnLoad->setEnabled(true);
@@ -380,7 +388,7 @@ void TihuConsole::WriteAudioBuffer(char* buffer, int length)
     qint64 data_remaining = length; // assign correct value here
 
     while (data_remaining) {
-        qint64 bytes_written = io->write(buffer, data_remaining);
+        qint64 bytes_written = m_output->write(buffer, data_remaining);
         data_remaining -= bytes_written;
         buffer += bytes_written;
     }

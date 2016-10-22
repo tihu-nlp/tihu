@@ -94,7 +94,7 @@ bool CWord::IsPersianWord() const
 
 bool CWord::IsEnglishWord() const
 {
-	return (Type == TIHU_TOKEN_TYPE::ENGLISH);
+    return (Type == TIHU_TOKEN_TYPE::ENGLISH);
 }
 
 bool CWord::IsPunctuation() const

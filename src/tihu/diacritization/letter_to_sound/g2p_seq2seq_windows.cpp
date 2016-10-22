@@ -1,4 +1,4 @@
-﻿/*******************************************************************************
+/*******************************************************************************
 * This file is part of Tihu.
 *
 * Tihu is free software: you can redistribute it and/or modify
@@ -28,7 +28,7 @@
 
 Cg2pSeq2Seq::Cg2pSeq2Seq()
 {
-    
+
 }
 
 Cg2pSeq2Seq::~Cg2pSeq2Seq()
@@ -43,7 +43,7 @@ bool Cg2pSeq2Seq::LoadModel(const std::string& model)
 std::string Cg2pSeq2Seq::Convert(const std::string &word)
 {
     std::string phonemes;
-    
+
 
     return phonemes;
 }

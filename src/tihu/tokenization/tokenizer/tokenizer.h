@@ -44,7 +44,7 @@ private:
 
 private:
     CCharMapper CharMapper;
-	int Offset;
+    int Offset;
 };
 
 #endif

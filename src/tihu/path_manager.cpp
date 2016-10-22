@@ -84,10 +84,10 @@ std::string CPathManager::GetDataFolder() const
 
 std::string CPathManager::GetLogFile(const std::string& filename) const
 {
-	std::string path = GetLogFolder();
-	path.append(filename);
+    std::string path = GetLogFolder();
+    path.append(filename);
 
-	return path;
+    return path;
 }
 
 std::string CPathManager::GetPath(std::string dir_key) const

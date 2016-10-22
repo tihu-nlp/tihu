@@ -41,12 +41,12 @@ CEngine::CEngine()
 {
     Tokenizer       = nullptr;
     POSTagger       = nullptr;
-    POSDisamb		= nullptr;
-	LetterToSound	= nullptr;
+    POSDisamb       = nullptr;
+    LetterToSound   = nullptr;
     Normalizer      = nullptr;
     Synthesizer     = nullptr;
     TextTagger      = nullptr;
-	Corpus		    = new CCorpus();
+    Corpus          = new CCorpus();
 }
 
 CEngine::~CEngine()
@@ -72,7 +72,7 @@ CEngine::~CEngine()
     if(TextTagger) {
         delete TextTagger;
     }
-	delete Corpus;
+    delete Corpus;
 }
 
 int CEngine::LoadModules()
@@ -83,33 +83,33 @@ int CEngine::LoadModules()
     Tokenizer = new CTokenizer();
     POSTagger = new CPOSTagger();
     POSDisamb = new CPOSDisambiguator();
-	LetterToSound = new CLetterToSound();
+    LetterToSound = new CLetterToSound();
     TextTagger = new CTextTagger();
-    
+
     std::string tokens_path = CPathManager::GetInstance()->GetDataFolder();
     std::string affixes_path = CPathManager::GetInstance()->GetDataFolder();
     std::string dictionary_path = CPathManager::GetInstance()->GetDataFolder();
     std::string g2p_persian_model = CPathManager::GetInstance()->GetDataFolder();
     std::string g2p_english_model = CPathManager::GetInstance()->GetDataFolder();
-	std::string punctuations_path = CPathManager::GetInstance()->GetDataFolder();
+    std::string punctuations_path = CPathManager::GetInstance()->GetDataFolder();
 
     tokens_path += "tokens.txt";
     affixes_path += "lexicon.aff";
     dictionary_path += "lexicon.dic";
     g2p_english_model += "g2p-seq2seq-cmudict";
     g2p_persian_model += "g2p-seq2seq-tihudict";
-	punctuations_path += "punctuations.txt";
-    
+    punctuations_path += "punctuations.txt";
+
     if(!static_cast<CTokenizer*>(Tokenizer)->Load(tokens_path)) {
         return TIHU_ERROR_LOAD_DATA;
     }
 
-    if(!static_cast<CPOSTagger*>(POSTagger)->Load(affixes_path, 
+    if(!static_cast<CPOSTagger*>(POSTagger)->Load(affixes_path,
         dictionary_path, "")) {
         return TIHU_ERROR_LOAD_DATA;
     }
-    
-    if(!static_cast<CLetterToSound*>(LetterToSound)->Load(g2p_persian_model, 
+
+    if(!static_cast<CLetterToSound*>(LetterToSound)->Load(g2p_persian_model,
         g2p_english_model, punctuations_path)) {
         return TIHU_ERROR_LOAD_DATA;
     }
@@ -163,40 +163,40 @@ void CEngine::SetCallback(TIHU_CALLBACK callback, void* userData)
     Tokenizer->SetCallBack(callback, userData);
     POSTagger->SetCallBack(callback, userData);
     POSDisamb->SetCallBack(callback, userData);
-	LetterToSound->SetCallBack(callback, userData);
+    LetterToSound->SetCallBack(callback, userData);
     Synthesizer->SetCallBack(callback, userData);
     TextTagger->SetCallBack(callback, userData);
 }
 
 void CEngine::Stop()
 {
-	if (Synthesizer) {
-		Synthesizer->Stop();
-	}
+    if (Synthesizer) {
+        Synthesizer->Stop();
+    }
 }
 
 void CEngine::Speak(const std::string &text)
 {
-	SetText(text);
-	Tokenize();
-	POSTag();
-	Diacritize();
-	Synthesize();
+    SetText(text);
+    Tokenize();
+    POSTag();
+    Diacritize();
+    Synthesize();
 }
 
 void CEngine::Diacritize(const std::string &text)
 {
-	SetText(text);
-	Tokenize();
-	POSTag();
-	Diacritize();
+    SetText(text);
+    Tokenize();
+    POSTag();
+    Diacritize();
 }
 
 void CEngine::AutoTag(const std::string &text)
 {
-	SetText(text);
-	Tokenize();
-	POSTag();
+    SetText(text);
+    Tokenize();
+    POSTag();
 }
 
 bool CEngine::SetParam(TIHU_PARAM param, int value)
@@ -245,48 +245,48 @@ bool CEngine::GetParam(TIHU_PARAM param, int &value)
 
 void CEngine::SetText(const std::string &text) const
 {
-	Corpus->Clear();
-	Corpus->SetText(text);
+    Corpus->Clear();
+    Corpus->SetText(text);
 
 #ifdef LOG_ENABLED
-	LogText("text.txt");
+    LogText("text.txt");
 #endif
 }
 
 void CEngine::Tokenize() const
 {
-	Tokenizer->ParsText(Corpus);
+    Tokenizer->ParsText(Corpus);
 #ifdef LOG_ENABLED
-	LogCorpus("tokenize.xml");
+    LogCorpus("tokenize.xml");
 #endif
 }
 
 void CEngine::POSTag() const
 {
-	POSTagger->ParsText(Corpus);
+    POSTagger->ParsText(Corpus);
 #ifdef LOG_ENABLED
-	LogCorpus("pos-tagger.xml");
+    LogCorpus("pos-tagger.xml");
 #endif
 
-	POSDisamb->ParsText(Corpus);
+    POSDisamb->ParsText(Corpus);
 
 #ifdef LOG_ENABLED
-	LogCorpus("pos-disamb.txt");
+    LogCorpus("pos-disamb.txt");
 #endif
 }
 
 void CEngine::Diacritize() const
 {
-	LetterToSound->ParsText(Corpus);
+    LetterToSound->ParsText(Corpus);
 
 #ifdef LOG_ENABLED
-	LogCorpus("letter-to-sound.txt");
+    LogCorpus("letter-to-sound.txt");
 #endif
 }
 
 void CEngine::Synthesize() const
 {
-	Synthesizer->ParsText(Corpus);
+    Synthesizer->ParsText(Corpus);
 }
 
 void CEngine::LogText(const std::string& filename) const
@@ -312,12 +312,12 @@ void CEngine::LogText(const std::string& filename) const
 
 void CEngine::LogCorpus(const std::string& filename) const
 {
-	std::string path = CPathManager::GetInstance()->GetLogFile(filename);
+    std::string path = CPathManager::GetInstance()->GetLogFile(filename);
 
-	Corpus->Dump(path);
+    Corpus->Dump(path);
 }
 
 void CEngine::Dump(const std::string &filename)
 {
-	Corpus->Dump(filename);
+    Corpus->Dump(filename);
 }

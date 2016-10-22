@@ -17,7 +17,8 @@
 * Contributor(s):
 *    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
 *
-*******************************************************************************/#ifndef __TIHU__POS_TAGGER__AFX_MANAGER_H
+*******************************************************************************/
+#ifndef __TIHU__POS_TAGGER__AFX_MANAGER_H
 #define __TIHU__POS_TAGGER__AFX_MANAGER_H
 
 #pragma once

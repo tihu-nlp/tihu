@@ -20,6 +20,7 @@
 *******************************************************************************/
 #include "espeak_lib.h"
 #include "path_manager.h"
+#include "helper.h"
 
 #include <cstring>
 
@@ -67,9 +68,9 @@ bool CeSpeakLib::Initialize(const char* data_path)
     Finalize();
 #ifdef WIN32
     char espeak[1024];
-    sprintf(espeak, "%sespeak.dll", 
+    sprintf(espeak, "%sespeak.dll",
         CPathManager::GetInstance()->GetBuildFolder().c_str());
-        
+
     Module = LoadLibraryA(espeak);
 
     if(!Module) {
@@ -99,10 +100,10 @@ bool CeSpeakLib::Initialize(const char* data_path)
     procInfo                = (ESPEAK_PROC_INFO) GetProcAddress(Module, "espeak_Info");
 #else
     char espeak[1024];
-    sprintf(espeak, "%slibespeak.so.1.1.47", 
+    sprintf(espeak, "%slibespeak.so.1.1.48",
         CPathManager::GetInstance()->GetBuildFolder().c_str());
-        
-    Module = dlopen(espeak, RTLD_LAZY);
+
+    Module = dlopen("libespeak.so.1.1.48", RTLD_LAZY);
 
     if(!Module) {
         fputs(dlerror(), stderr);
@@ -190,6 +191,11 @@ void CeSpeakLib::SetCallback(t_espeak_callback callback)
 
 bool CeSpeakLib::Synthesize(const char* text, void* user_data)
 {
+    if(!procSynth){
+        TIHU_WARNING(stderr, "eSpeak hasn't' loaded properly.");
+        return false;
+    }
+
     int error =
         procSynth(text, strlen(text),
                   0, POS_CHARACTER, 0, espeakPHONEMES, 0, user_data);
@@ -199,7 +205,9 @@ bool CeSpeakLib::Synthesize(const char* text, void* user_data)
 
 void CeSpeakLib::Stop()
 {
-    procCancel();
+    if(procCancel){
+        procCancel();
+    }
 }
 
 int CeSpeakLib::GetFrequency() const

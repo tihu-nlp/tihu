@@ -45,7 +45,7 @@ bool CPunctuationToPhoneme::Load(const std::string &filename)
         
         std::string text = file_manager.NextPiece();
         std::string status = file_manager.NextPiece();
-		std::string pron = file_manager.NextPiece();
+        std::string pron = file_manager.NextPiece();
         
         CPunctuationPtr punctuation = std::make_unique<CPunctuation>();
         
@@ -53,12 +53,12 @@ bool CPunctuationToPhoneme::Load(const std::string &filename)
         punctuation->Pronunciation = pron;
         punctuation->ReadStatus = (CPunctuation::READ_STATUS)std::stoi(status);
         
-		Punctuations.insert(
-			std::pair<std::string, CPunctuationPtr>(
-				text, std::move(punctuation)));
+        Punctuations.insert(
+            std::pair<std::string, CPunctuationPtr>(
+                text, std::move(punctuation)));
     }
 
-	return true;
+    return true;
 }
 
 std::string CPunctuationToPhoneme::Convert(const std::string &text)

@@ -88,32 +88,32 @@ bool CEntry::IsVerb() const
 
 bool CEntry::IsNoun() const
 {
-	return StartsWith(Lable, "N");
+    return StartsWith(Lable, "N");
 }
 
 bool CEntry::IsPronoun() const
 {
-	return StartsWith(Lable, "P");
+    return StartsWith(Lable, "P");
 }
 
 bool CEntry::IsAdjective() const
 {
-	return StartsWith(Lable, "ADJ");
+    return StartsWith(Lable, "ADJ");
 }
 
 bool CEntry::IsDeterminer() const
 {
-	return StartsWith(Lable, "DET");
+    return StartsWith(Lable, "DET");
 }
 
 bool CEntry::IsAdverb() const
 {
-	return StartsWith(Lable, "ADV");
+    return StartsWith(Lable, "ADV");
 }
 
 bool CEntry::IsAdposition() const
 {
-	return StartsWith(Lable, "POS");
+    return StartsWith(Lable, "POS");
 }
 
 bool CEntry::IsConjunction() const
@@ -123,7 +123,7 @@ bool CEntry::IsConjunction() const
 
 bool CEntry::IsNumeral() const
 {
-	return StartsWith(Lable, "NUM");
+    return StartsWith(Lable, "NUM");
 }
 
 bool CEntry::IsInterjection() const
@@ -140,7 +140,7 @@ bool CEntry::IsNounCommon() const
 
 bool CEntry::IsNounProper() const
 {
-	assert(IsNoun());
+    assert(IsNoun());
 
-	return false;
+    return false;
 }

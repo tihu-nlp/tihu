@@ -47,7 +47,7 @@ public:
     std::string GetDataFolder() const;    
     std::string GetTokensPath() const;
 
-	std::string GetLogFile(const std::string& filename) const;
+    std::string GetLogFile(const std::string& filename) const;
 
 private:
     std::string GetPath(std::string dir_key) const;

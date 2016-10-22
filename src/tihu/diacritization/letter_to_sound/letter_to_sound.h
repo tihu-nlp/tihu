@@ -39,7 +39,7 @@ public:
 
     bool Load(const std::string &persian_model,
               const std::string &english_model,
-			  const std::string &punctuations_path);
+              const std::string &punctuations_path);
         
     void ParsText(CCorpus* corpus) override;
 
@@ -47,7 +47,7 @@ private:
     CPersianToPhoneme PersianToPhoneme;
     CEnglishToPhoneme EnglishToPhoneme;
     CNumberToPhoneme NumberToPhoneme;
-	CPunctuationToPhoneme PunctuationToPhoneme;
+    CPunctuationToPhoneme PunctuationToPhoneme;
 };
 
 #endif

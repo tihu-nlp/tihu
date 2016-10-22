@@ -81,8 +81,10 @@ private:
 
     QFuture<void> SpeakFuture;
 
-    QAudioOutput *ao;
-    QIODevice *io;
+    QAudioDeviceInfo m_device;
+    QAudioFormat m_format;
+    QAudioOutput *m_audioOutput;
+    QIODevice *m_output; // not owned
 
     QActionGroup *actionGroup;
 };

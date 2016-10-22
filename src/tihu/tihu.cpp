@@ -98,11 +98,13 @@ TIHU_FN_DECLARE void tihu_Speak(const char* text)
 
 TIHU_FN_DECLARE void tihu_Stop()
 {
-	if (!g_engine) {
-		return;
-	}
+    MUTEX_LOCK
 
-	g_engine->Stop();
+    if (!g_engine) {
+        return;
+    }
+
+    g_engine->Stop();
 }
 
 TIHU_FN_DECLARE void tihu_TagText(const char* text)
@@ -162,9 +164,9 @@ TIHU_FN_DECLARE const char* tihu_GetVersion()
 
 TIHU_FN_DECLARE  void tihu_Dump(const char* filename)
 {
-	if (!g_engine) {
-		return;
-	}
+    if (!g_engine) {
+        return;
+    }
 
-	g_engine->Dump(filename);
+    g_engine->Dump(filename);
 }

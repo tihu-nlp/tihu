@@ -60,6 +60,6 @@ void IParser::ReportMessage(const char* message, ...)
 
     if(Callback) {
         static_cast<TIHU_CALLBACK>(Callback)
-			(TIHU_TEXT_MESSAGE, (long)temp, strlen(temp)-1, UserData);
+            (TIHU_TEXT_MESSAGE, (long)temp, strlen(temp)-1, UserData);
     }
 }

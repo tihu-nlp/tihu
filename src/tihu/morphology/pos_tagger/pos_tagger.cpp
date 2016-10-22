@@ -102,7 +102,7 @@ void CPOSTagger::ParsText(CCorpus* corpus)
 {
     CWordList &word_list = corpus->GetWordList();
     for(auto itr = word_list.begin(); 
-			itr != word_list.end();) {
+            itr != word_list.end();) {
 
         CWordPtr &word = (*itr);
 
@@ -110,10 +110,10 @@ void CPOSTagger::ParsText(CCorpus* corpus)
 
             ///
             if(!TagCompound(word_list, itr)) {
-				if(Breakdown(word_list, itr)) {
-					/// 
-					continue;
-				}
+                if(Breakdown(word_list, itr)) {
+                    /// 
+                    continue;
+                }
             }
         } 
 
@@ -230,22 +230,22 @@ bool CPOSTagger::CanBeCompoundWord(const std::vector<std::string> &compound) con
 bool CPOSTagger::Breakdown(CWordList &word_list, CWordList::iterator &itr)
 {
     std::string text = (*itr)->GetText();
-	std::u16string text_16 = UTF8ToUTF16(text);
-	const char16_t* c_str_16 = text_16.c_str();
+    std::u16string text_16 = UTF8ToUTF16(text);
+    const char16_t* c_str_16 = text_16.c_str();
     std::list<std::u16string> partials;
-	const char16_t* p = 0;
+    const char16_t* p = 0;
     
     while(*c_str_16) {
         p = c_str_16;
     
-		std::u16string partial;
-		std::u16string temp;
+        std::u16string partial;
+        std::u16string temp;
 
         while(*p) {
-			temp += *p;
+            temp += *p;
     
             if(IsDetached(*p) || *(p+1)==0) {
-				std::string temp_u8 = UTF16ToUTF8(temp);
+                std::string temp_u8 = UTF16ToUTF8(temp);
                 if(CheckWord(temp_u8)) {
                     partial = temp;
                 }
@@ -258,7 +258,7 @@ bool CPOSTagger::Breakdown(CWordList &word_list, CWordList::iterator &itr)
             return false;
         }
     
-		c_str_16 += partial.length();
+        c_str_16 += partial.length();
         partials.push_back(partial);
         partial.clear();
         temp.clear();
@@ -275,7 +275,7 @@ bool CPOSTagger::Breakdown(CWordList &word_list, CWordList::iterator &itr)
     
         word->SetText(UTF16ToUTF8(partial));
         word->SetOffset(offset);
-		word->SetLength(partial.length());
+        word->SetLength(partial.length());
         word->SetType((*itr)->GetType());
         
         word_list.insert(itr, std::move(word));
@@ -295,16 +295,16 @@ bool CPOSTagger::Breakdown(CWordList &word_list, CWordList::iterator &itr)
 
 bool CPOSTagger::IsDetached(char16_t c)
 {
-	switch (c) {
-	case 0x0627: //ا
-	case 0x062F: //د
-	case 0x0630: //ذ
-	case 0x0631: //ر
-	case 0x0632: //ز
-	case 0x0698: //ژ
-	case 0x0648: //و
-		return true;
-	}
+    switch (c) {
+    case 0x0627: //ا
+    case 0x062F: //د
+    case 0x0630: //ذ
+    case 0x0631: //ر
+    case 0x0632: //ز
+    case 0x0698: //ژ
+    case 0x0648: //و
+        return true;
+    }
 
-	return false;
+    return false;
 }

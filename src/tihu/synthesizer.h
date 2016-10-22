@@ -44,8 +44,8 @@ public:
     virtual void ApplyVolume(int volume_adjust) = 0;
 
 protected:
-	void FireEvents(const CWordPtr& word) const;
-	bool PlaySamples(short* samples, int length) const;
+    void FireEvents(const CWordPtr& word) const;
+    bool PlaySamples(short* samples, int length) const;
 
 protected:
     bool IsStop;
