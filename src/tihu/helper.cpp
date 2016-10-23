@@ -304,6 +304,33 @@ bool StartsWith(const std::string &value, std::string starting)
     return std::equal(starting.begin(), starting.end(), value.begin());
 }
 
+bool EndsWithDetached(const std::string &value)
+{
+    return
+      EndsWith(value, CHR_U8_ALEF)||
+      EndsWith(value, CHR_U8_DAL) ||
+      EndsWith(value, CHR_U8_ZAL) ||
+      EndsWith(value, CHR_U8_RE)  ||
+      EndsWith(value, CHR_U8_ZE)  ||
+      EndsWith(value, CHR_U8_WAW) ||
+      EndsWith(value, CHR_U8_ZHE);
+}
+
+std::string& ReplaceSubstring(std::string &value, const std::string &search, const std::string &replace)
+{
+    if (search.empty()) {
+        return value;
+    }
+
+    std::string::size_type pos = 0;
+    while((pos = value.find(search, pos)) != std::string::npos) {
+         value.replace(pos, search.length(), replace);
+         pos += replace.length();
+    }
+
+    return value;
+}
+
 bool IsLeadingByte(char c)
 {
     auto first_bit_set = (c & 0x80) != 0;

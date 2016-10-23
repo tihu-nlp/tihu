@@ -106,6 +106,9 @@ int CAfxManager::ParseAffix(char afx_type, CFileManager &file_manager)
             afx_entry = new CPfxEntry(this);
         }
 
+        ///
+        ReplaceSubstring(morph_append, "_", CHR_U8_ZWNJ);
+
         afx_entry->Flag     = flag;
         afx_entry->Appnd    = morph_append;
         afx_entry->Pronunce = morph_pronunce;

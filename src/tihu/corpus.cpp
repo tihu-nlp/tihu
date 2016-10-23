@@ -118,10 +118,10 @@ void CCorpus::DumpToXml(const std::string &path) const
 
         for(auto &entry : word->GetEntryList()) {
 
-            snprintf(buffer, 1024, "\t\t<entry pronunciation=\"%s\" loabel=\"%s\" dictation=\"%s\" />",
+            snprintf(buffer, 1024, "\t\t<entry pronunciation=\"%s\" label=\"%s\" root=\"%s\" />",
                      entry->GetPronunciation().c_str(),
                      entry->GetLabel().c_str(),
-                     entry->GetDictation().c_str());
+                     entry->GetRoot().c_str());
 
             writer << buffer << std::endl;
         }
@@ -158,7 +158,7 @@ void CCorpus::DumpToTxt(const std::string &path) const
             } else {
                 writer << std::endl;
 
-                snprintf(buffer, 1024, "%-40s %s",
+                snprintf(buffer, 1024, "                    %-12s %s",
                          entry->GetLabel().c_str(),
                          entry->GetPronunciation().c_str());
             }

@@ -3,4 +3,5 @@ libsamplerate*
 libsndfile*
 log/*
 data/espeak/*
-
+libespeak*
+lexicon*

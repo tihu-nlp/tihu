@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<corpus>
+	<word offset="0" length="5" text="بحران"  >
+	</word>
+	<word offset="6" length="2" text="آب"  >
+	</word>
+	<word offset="9" length="4" text="حیات"  >
+	</word>
+	<word offset="14" length="4" text="تمدن"  >
+	</word>
+	<word offset="19" length="6" text="ایرانی"  >
+	</word>
+	<word offset="26" length="2" text="را"  >
+	</word>
+	<word offset="29" length="5" text="تهدید"  >
+	</word>
+	<word offset="35" length="2" text="می"  >
+	</word>
+	<word offset="38" length="3" text="کند"  >
+	</word>
+	<word offset="41" length="1" text="."  >
+	</word>
+</corpus>

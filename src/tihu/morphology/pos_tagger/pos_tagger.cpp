@@ -101,7 +101,7 @@ bool CPOSTagger::TagWord(CWordPtr &word, const std::string &_text)
 void CPOSTagger::ParsText(CCorpus* corpus)
 {
     CWordList &word_list = corpus->GetWordList();
-    for(auto itr = word_list.begin(); 
+    for(auto itr = word_list.begin();
             itr != word_list.end();) {
 
         CWordPtr &word = (*itr);
@@ -111,11 +111,11 @@ void CPOSTagger::ParsText(CCorpus* corpus)
             ///
             if(!TagCompound(word_list, itr)) {
                 if(Breakdown(word_list, itr)) {
-                    /// 
+                    ///
                     continue;
                 }
             }
-        } 
+        }
 
         ++itr;
     }
@@ -167,7 +167,9 @@ std::string CPOSTagger::GetCompoundText(const std::vector<std::string> &compound
     text = *iter;
 
     for(++iter; iter != compound.end(); ++iter) {
-        text.append(CHR_U8_ZWNJ);
+        if(!EndsWithDetached(text))
+            text.append(CHR_U8_ZWNJ);
+
         text.append(*iter);
     }
 
@@ -234,57 +236,57 @@ bool CPOSTagger::Breakdown(CWordList &word_list, CWordList::iterator &itr)
     const char16_t* c_str_16 = text_16.c_str();
     std::list<std::u16string> partials;
     const char16_t* p = 0;
-    
+
     while(*c_str_16) {
         p = c_str_16;
-    
+
         std::u16string partial;
         std::u16string temp;
 
         while(*p) {
             temp += *p;
-    
+
             if(IsDetached(*p) || *(p+1)==0) {
                 std::string temp_u8 = UTF16ToUTF8(temp);
                 if(CheckWord(temp_u8)) {
                     partial = temp;
                 }
             }
-    
+
             p++;
         }
-    
+
         if(partial.length() == 0) {
             return false;
         }
-    
+
         c_str_16 += partial.length();
         partials.push_back(partial);
         partial.clear();
         temp.clear();
     }
-    
+
     if(partials.size()<=1) {
         return false;
     }
-    
+
     size_t offset = (*itr)->GetOffset();
-    
+
     for(auto &partial : partials) {
         CWordPtr word = std::make_unique<CWord>();
-    
+
         word->SetText(UTF16ToUTF8(partial));
         word->SetOffset(offset);
         word->SetLength(partial.length());
         word->SetType((*itr)->GetType());
-        
+
         word_list.insert(itr, std::move(word));
-    
+
         offset += partial.length();
     }
-    
+
     itr = word_list.erase(itr);
-    
+
     size_t s = partials.size();
     while(s--) {
         --itr;

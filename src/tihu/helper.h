@@ -91,6 +91,11 @@ static inline void TIHU_WARNING(FILE*, const char*, ...) {}
 #define CHR_U8_GAF                 "\xda\xaf"
 #define CHR_U8_HAMZE               "\xd9\x94"
 #define CHR_U8_LAM                 "\xd9\x84"
+#define CHR_U8_DAL                 "\xd8\xaf"
+#define CHR_U8_ZAL                 "\xd8\xb0"
+#define CHR_U8_RE                  "\xd8\xb1"
+#define CHR_U8_ZE                  "\xd8\xb2"
+#define CHR_U8_ZHE                 "\xda\x98"
 
 
 #ifndef ASSERT
@@ -157,10 +162,12 @@ std::string ConcatPronunciations(const std::string &pronunciation_1, const std::
 
 
 bool IsLeadingByte(char c);
+bool EndsWithDetached(const std::string &value);
 bool EndsWith(const std::string &value, std::string ending);
 bool StartsWith(const std::string &value, std::string starting);
 std::string& RemoveLast(std::string &value);
 std::string& RemoveFirst(std::string &value);
+std::string& ReplaceSubstring(std::string &value, const std::string &search, const std::string &replace);
 
 std::string& ToLower(std::string &value);
 std::string& ToUpper(std::string &value);

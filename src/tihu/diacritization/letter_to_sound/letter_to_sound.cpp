@@ -28,13 +28,13 @@ CLetterToSound::~CLetterToSound()
 {
 }
 
-bool CLetterToSound::Load(const std::string &persian_model, 
+bool CLetterToSound::Load(const std::string &persian_model,
     const std::string &english_model, const std::string &punctuations_path)
 {
     if(!PersianToPhoneme.LoadModel(persian_model)) {
         return false;
     }
-    
+
     if(!EnglishToPhoneme.LoadModel(english_model)) {
         return false;
     }
@@ -42,7 +42,7 @@ bool CLetterToSound::Load(const std::string &persian_model,
     if (!PunctuationToPhoneme.Load(punctuations_path)) {
         return false;
     }
-    
+
     return true;
 }
 
@@ -64,13 +64,17 @@ void CLetterToSound::ParsText(CCorpus* corpus)
                 phonemes =
                     EnglishToPhoneme.Convert(word->GetText());
             } else if (word->IsNumber()) {
-                /// 
+                ///
                 phonemes =
                     NumberToPhoneme.Convert(word->GetText());
+
+                entry->SetLabel("N");
             } else if (word->IsPunctuation()) {
-                /// 
+                ///
                 phonemes =
                     PunctuationToPhoneme.Convert(word->GetText());
+
+                entry->SetLabel("DEL");
             }
 
             entry->SetPronunciation(phonemes);

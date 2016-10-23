@@ -98,8 +98,6 @@ TIHU_FN_DECLARE void tihu_Speak(const char* text)
 
 TIHU_FN_DECLARE void tihu_Stop()
 {
-    MUTEX_LOCK
-
     if (!g_engine) {
         return;
     }
