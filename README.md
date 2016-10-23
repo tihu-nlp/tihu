@@ -20,8 +20,3 @@ Windows users can compile tihu by visual studio.
 
 Tihu is Persian name for Partridge.
 
-
-##Contact Me
-
-Please feel free to contact me by this email address:
-mostafa.sedaghat@gmail.com (Mostafa Sedaghat Joo)
