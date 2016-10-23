@@ -92,7 +92,6 @@
     <ClInclude Include="synthesis\mbrola\mbrola_lib.h" />
     <ClInclude Include="synthesis\mbrola\mbrola_syn.h" />
     <ClInclude Include="synthesis\mbrola\speech.h" />
-    <ClInclude Include="synthesis\mbrola\stream.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{B1A2A522-99E9-47B9-94BA-1DB000C3376B}</ProjectGuid>

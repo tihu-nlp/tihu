@@ -182,6 +182,10 @@ void CEngine::Speak(const std::string &text)
     POSTag();
     Diacritize();
     Synthesize();
+
+#ifdef LOG_ENABLED
+    LogCorpus("text.lbl");
+#endif
 }
 
 void CEngine::Diacritize(const std::string &text)
@@ -271,7 +275,7 @@ void CEngine::POSTag() const
     POSDisamb->ParsText(Corpus);
 
 #ifdef LOG_ENABLED
-    LogCorpus("pos-disamb.txt");
+    LogCorpus("pos-disamb.xml");
 #endif
 }
 
@@ -280,7 +284,7 @@ void CEngine::Diacritize() const
     LetterToSound->ParsText(Corpus);
 
 #ifdef LOG_ENABLED
-    LogCorpus("letter-to-sound.txt");
+    LogCorpus("letter-to-sound.xml");
 #endif
 }
 

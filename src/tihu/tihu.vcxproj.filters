@@ -152,9 +152,6 @@
     <ClInclude Include="synthesis\mbrola\speech.h">
       <Filter>synthesis\mbrola</Filter>
     </ClInclude>
-    <ClInclude Include="synthesis\mbrola\stream.h">
-      <Filter>synthesis\mbrola</Filter>
-    </ClInclude>
     <ClInclude Include="synthesis\espeak\espeak_lib.h">
       <Filter>synthesis\espeak</Filter>
     </ClInclude>

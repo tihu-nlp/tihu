@@ -53,6 +53,7 @@ TIHU_CALLBACK_RETURN callback(TIHU_CALLBACK_MESSAGE Message, int lParam, int wPa
 
 TihuConsole::TihuConsole(QWidget *parent, Qt::WindowFlags flags)
     : QMainWindow(parent, flags)
+    , m_device(QAudioDeviceInfo::defaultInputDevice())
 {
     procInit = 0;
     procClose = 0;
@@ -222,16 +223,14 @@ bool TihuConsole::LoadTihu(const QString& library)
     m_format.setByteOrder(QAudioFormat::LittleEndian);
     m_format.setSampleType(QAudioFormat::UnSignedInt);
 
-    m_device = QAudioDeviceInfo::defaultInputDevice();
-
     QAudioDeviceInfo info(m_device);
     if (!info.isFormatSupported(m_format))
     {
         qWarning() << "Default format not supported - trying to use nearest";
-        m_format = info.nearestFormat(m_format);
+        //m_format = info.nearestFormat(m_format);
     }
 
-    m_audioOutput = new QAudioOutput(m_device, m_format, this);
+    m_audioOutput = new QAudioOutput(m_format, this);
     m_output = m_audioOutput->start();
 
     ui.splitter->setStretchFactor(0, 1);
@@ -385,6 +384,11 @@ void TihuConsole::onOpenFile()
 
 void TihuConsole::WriteAudioBuffer(char* buffer, int length)
 {
+    if(!m_output) {
+        qWarning() << "no output io.";
+        return;
+    }
+
     qint64 data_remaining = length; // assign correct value here
 
     while (data_remaining) {
