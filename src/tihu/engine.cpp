@@ -160,12 +160,12 @@ int CEngine::LoadSynthesizer(TIHU_VOICE vocie)
 
 void CEngine::SetCallback(TIHU_CALLBACK callback, void* userData)
 {
-    Tokenizer->SetCallBack(callback, userData);
-    POSTagger->SetCallBack(callback, userData);
-    POSDisamb->SetCallBack(callback, userData);
-    LetterToSound->SetCallBack(callback, userData);
-    Synthesizer->SetCallBack(callback, userData);
-    TextTagger->SetCallBack(callback, userData);
+    (Tokenizer) ? Tokenizer->SetCallBack(callback, userData) : void();
+    (POSTagger) ? POSTagger->SetCallBack(callback, userData) : void();
+    (POSDisamb) ? POSDisamb->SetCallBack(callback, userData) : void();
+    (LetterToSound) ? LetterToSound->SetCallBack(callback, userData) : void();
+	(Synthesizer) ? Synthesizer->SetCallBack(callback, userData) : void();
+	(TextTagger) ? TextTagger->SetCallBack(callback, userData) : void();
 }
 
 void CEngine::Stop()

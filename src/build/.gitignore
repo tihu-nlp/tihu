@@ -5,3 +5,6 @@ log/*
 data/espeak/*
 libespeak*
 lexicon*
+#Qt Dlls
+Qt*
+icu*
