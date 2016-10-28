@@ -1,0 +1,14 @@
+language: cpp
+
+compiler:
+  - gcc
+
+sudo: false
+
+os:
+  - linux
+
+
+script:
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then cd ./src/tihu && make && make test; fi
+  
