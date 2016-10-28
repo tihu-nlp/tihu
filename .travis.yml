@@ -3,7 +3,8 @@ language: cpp
 compiler:
   - gcc
 
-sudo: false
+sudo: required
+dist: trusty
 
 os:
   - linux
