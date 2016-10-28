@@ -507,7 +507,16 @@ void CAfxManager::ParsEntry(struct hentry* he, CPfxEntry* pfx, CSfxEntry* sfx, C
     if(pfx) {
         dictation = pfx->Appnd + dictation;
         if(pfx->Label != ".") {
-            lable = pfx->Label;
+			if (pfx->Label[0] == '*') {
+				std::string attr = pfx->Label.substr(1);
+
+				if (lable.find(attr) == std::string::npos) {
+					lable.append("_");
+					lable.append(attr);
+				}
+			} else {
+				lable = pfx->Label;
+			}
         }
         pronunce = ConcatPronunciations(pfx->Pronunce, pronunce);
     }

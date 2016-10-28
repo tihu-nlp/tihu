@@ -16,7 +16,7 @@
 	<word offset="19" length="6" text="ایرانی"  >
 		<entry pronunciation="irAni" label="N_PR" root="ایرانی" />
 		<entry pronunciation="irAni" label="ADJ" root="ایرانی" />
-		<entry pronunciation="irAnie" label="N_PR" root="ایران" />
+		<entry pronunciation="irAni" label="V_PRS" root="ایران" />
 		<entry pronunciation="irAni" label="N_PR" root="ایران" />
 	</word>
 	<word offset="26" length="2" text="را"  >

@@ -1,16 +1,16 @@
 ##
 ## This file is part of Tihu.
-## 
+##
 ## Tihu is free software: you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
 ## the Free Software Foundation, either version 3 of the License, or
 ## (at your option) any later version.
-## 
+##
 ## Tihu is distributed in the hope that it will be useful,
 ## but WITHOUT ANY WARRANTY; without even the implied warranty of
 ## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ## GNU General Public License for more details.
-## 
+##
 ## You should have received a copy of the GNU General Public License
 ## along with Tihu.  If not, see <http://www.gnu.org/licenses/>.
 ##
@@ -23,135 +23,135 @@
 ## clitics
 
 PFX pa      1
-PFX pa      بی_            .        bi
+PFX pa      بی_            .            bi
 
 
 
 SFX sa      6
-SFX sa      م              .        am
-SFX sa      ت              .        at
-SFX sa      ش              .        aS
-SFX sa      مان            .        emAn
-SFX sa      تان            .        etAn
-SFX sa      شان            .        eSAn
+SFX sa      م              .            am
+SFX sa      ت              .            at
+SFX sa      ش              .            aS
+SFX sa      مان            .            emAn
+SFX sa      تان            .            etAn
+SFX sa      شان            .            eSAn
 
 
 SFX sb      6
-SFX sb      یم             .        yam
-SFX sb      یت             .        yat
-SFX sb      یش             .        yaS
-SFX sb      یمان           .        yemAn
-SFX sb      یتان           .        yetAn
-SFX sb      یشان           .        yeSAn
+SFX sb      یم             .            yam
+SFX sb      یت             .            yat
+SFX sb      یش             .            yaS
+SFX sb      یمان           .            yemAn
+SFX sb      یتان           .            yetAn
+SFX sb      یشان           .            yeSAn
 
 
 SFX sc      6
-SFX sc      _ام            .        am
-SFX sc      _ات            .        at
-SFX sc      _اش            .        aS
-SFX sc      _مان           .        emAn
-SFX sc      _تان           .        etAn
-SFX sc      _شان           .        eSAn
+SFX sc      _ام            .            am
+SFX sc      _ات            .            at
+SFX sc      _اش            .            aS
+SFX sc      _مان           .            emAn
+SFX sc      _تان           .            etAn
+SFX sc      _شان           .            eSAn
 
 
 SFX sd      3
-SFX sd      ها             .        ha
-SFX sd      های            .        hay
-SFX sd      هایی           .        haie
+SFX sd      ها             .            ha
+SFX sd      های            .            hay
+SFX sd      هایی           .            haie
 
 
 SFX se      6
-SFX se      هایم           .        hayam
-SFX se      هایت           .        hayat
-SFX se      هایش           .        hayaS
-SFX se      هایمان         .        hayemAn
-SFX se      هایتان         .        hayetAn
-SFX se      هایشان         .        hayeSAn
+SFX se      هایم           .            hayam
+SFX se      هایت           .            hayat
+SFX se      هایش           .            hayaS
+SFX se      هایمان         .            hayemAn
+SFX se      هایتان         .            hayetAn
+SFX se      هایشان         .            hayeSAn
 
 SFX sf      1
-SFX sf      هاست           .        hAst
+SFX sf      هاست           .            hAst
 
 
 SFX sg      3
-SFX sg      _ها            .        ha
-SFX sg      _های           .        hay
-SFX sg      _هایی          .        haie
+SFX sg      _ها            .            ha
+SFX sg      _های           .            hay
+SFX sg      _هایی          .            haie
 
 
 SFX sh      6
-SFX sh      _هایم          .        hayam
-SFX sh      _هایت          .        hayat
-SFX sh      _هایش          .        hayaS
-SFX sh      _هایمان        .        hayemAn
-SFX sh      _هایتان        .        hayetAn
-SFX sh      _هایشان        .        hayeSAn
+SFX sh      _هایم          .            hayam
+SFX sh      _هایت          .            hayat
+SFX sh      _هایش          .            hayaS
+SFX sh      _هایمان        .            hayemAn
+SFX sh      _هایتان        .            hayetAn
+SFX sh      _هایشان        .            hayeSAn
 
 
 SFX si      1
-SFX si      _هاست          .        hAst
+SFX si      _هاست          .            hAst
 
 
 SFX sj      2
-SFX sj      ان             .        An
-SFX sj      انی            .        Ani
+SFX sj      ان             .            An
+SFX sj      انی            .            Ani
 
 
 SFX sk      2
-SFX sk      _ی             _GEN     ye
-SFX sk                     _GEN     ye
+SFX sk      _ی             *GEN         ye
+SFX sk      ٔ               *GEN         ye
 
 
 SFX sl      1
-SFX sl      ی              .        i
+SFX sl      ی              .            i
 
 
 SFX sm      1
-SFX sm      _ای            .        ie
+SFX sm      _ای            .            ie
 
 
 SFX sn      1
-SFX sn      یی             .        yi
+SFX sn      یی             .            yi
 
 
 SFX so      6
-SFX so      م              .        am
-SFX so      ی              .        ie
-SFX so      ست             .        ast
-SFX so      یم             .        im
-SFX so      ید             .        id
-SFX so      ند             .        and
+SFX so      م              V_PRS        am
+SFX so      ی              V_PRS        i
+SFX so      ست             V_PRS        ast
+SFX so      یم             V_PRS        im
+SFX so      ید             V_PRS        id
+SFX so      ند             V_PRS        and
 
 
 SFX sp      5
-SFX sp      _ام            .        am
-SFX sp      _ای            .        ie
-SFX sp      _ایم           .        im
-SFX sp      _اید           .        id
-SFX sp      _اند           .        and
+SFX sp      _ام            V_PRS        am
+SFX sp      _ای            V_PRS        i
+SFX sp      _ایم           V_PRS        im
+SFX sp      _اید           V_PRS        id
+SFX sp      _اند           V_PRS        and
 
 
 SFX sq      6
-SFX sq      یم             .        yam
-SFX sq      یی             .        ie
-SFX sq      ست             .        ast
-SFX sq      ییم            .        im
-SFX sq      یید            .        id
-SFX sq      یند            .        and
+SFX sq      یم             V_PRS        yam
+SFX sq      یی             V_PRS        yi
+SFX sq      ست             V_PRS        st
+SFX sq      ییم            V_PRS        yim
+SFX sq      یید            V_PRS        yid
+SFX sq      یند            V_PRS        yand
 
 
 SFX sr      5
-SFX sr      م              .        am
-SFX sr      ی              .        ie
-SFX sr      یم             .        im
-SFX sr      ید             .        id
-SFX sr      ند             .        and
+SFX sr      م              V_PRS        am
+SFX sr      ی              V_PRS        ie
+SFX sr      یم             V_PRS        im
+SFX sr      ید             V_PRS        id
+SFX sr      ند             V_PRS        and
 
 
 SFX st      2
-SFX st      تر             .        tar
-SFX st      ترین           .        tarin
+SFX st      تر             *CMPR        tar
+SFX st      ترین           *SUP         tarin
 
 
 SFX su      2
-SFX su      _تر            .        tar
-SFX su      _ترین          .        tarin
+SFX su      _تر            *CMPR        tar
+SFX su      _ترین          *SUP         tarin
