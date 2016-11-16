@@ -41,17 +41,17 @@ public:
     void ParsText(CCorpus* corpus) override;
 
 protected:
-    bool TagCompound(CWordList &word_list, CWordList::iterator &itr);
+    bool TagCompound(CWordList &word_list, CWordList::iterator &word_itr);
     bool CanBeCompoundWord(const std::vector<std::string> &compound) const;
     std::string GetCompoundText(const std::vector<std::string> &compound);
 
     std::vector<std::string> MakeCompound(const CWordList &word_list,
-                                          CWordList::const_iterator itr, int compound_count);
+                                          CWordList::const_iterator word_itr, int compound_count);
 
 
     bool CheckWord(const std::string &text);
     bool TagWord(CWordPtr &word, const std::string &text);
-    bool Breakdown(CWordList &word_list, CWordList::iterator &itr);
+    bool Breakdown(CWordList &word_list, CWordList::iterator &word_itr);
     bool CanBeDetached(std::u16string str);
 
 private:

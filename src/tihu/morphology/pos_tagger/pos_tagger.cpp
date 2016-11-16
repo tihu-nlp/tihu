@@ -74,8 +74,6 @@ bool CPOSTagger::CheckWord(const std::string &_text)
 
 bool CPOSTagger::TagWord(CWordPtr &word, const std::string &_text)
 {
-    std::string w2;
-
     const char* text = _text.c_str();
     int len = _text.size();
 
@@ -121,33 +119,31 @@ void CPOSTagger::ParsText(CCorpus* corpus)
     }
 }
 
-
-
-bool CPOSTagger::TagCompound(CWordList &word_list, CWordList::iterator &itr)
+bool CPOSTagger::TagCompound(CWordList &word_list, CWordList::iterator &word_itr)
 {
     int compound_count = MAX_COMPOUND;
 
     while(compound_count > 0) {
         std::vector<std::string> compound =
-            MakeCompound(word_list, itr, compound_count);
+            MakeCompound(word_list, word_itr, compound_count);
 
-        if(compound.empty()) {
-            break;
-        }
+		if (compound.empty()) {
+			return false;
+		}
 
         std::string text = GetCompoundText(compound);
 
-        if(TagWord(*itr, text)) {
+        if(TagWord(*word_itr, text)) {
             if(compound.size() > 1) {
                 /// --- update word -----
-                (*itr)->SetText(text);
-                (*itr)->SetLength(text.length());
+                (*word_itr)->SetText(text);
+                (*word_itr)->SetLength(text.length());
 
-                ++itr;
+                ++word_itr;
                 for(size_t index = 0; index < compound.size()-1; ++index) {
-                    itr = word_list.erase(itr);
+					word_itr = word_list.erase(word_itr);
                 }
-                --itr;
+                --word_itr;
             }
 
             return true;
@@ -162,11 +158,11 @@ bool CPOSTagger::TagCompound(CWordList &word_list, CWordList::iterator &itr)
 std::string CPOSTagger::GetCompoundText(const std::vector<std::string> &compound)
 {
     std::string text;
-    std::vector<std::string>::const_iterator iter = compound.begin();
+    auto& iter = compound.cbegin();
 
     text = *iter;
 
-    for(++iter; iter != compound.end(); ++iter) {
+    for(++iter; iter != compound.cend(); ++iter) {
         if(!EndsWithDetached(text))
             text.append(CHR_U8_ZWNJ);
 
@@ -176,13 +172,13 @@ std::string CPOSTagger::GetCompoundText(const std::vector<std::string> &compound
     return text;
 }
 
-std::vector<std::string> CPOSTagger::MakeCompound(const CWordList &word_list, CWordList::const_iterator itr, int compound_count)
+std::vector<std::string> CPOSTagger::MakeCompound(const CWordList &word_list, CWordList::const_iterator word_itr, int compound_count)
 {
     std::vector<std::string> compound;
     compound.reserve(compound_count);
 
     int index = 0;
-    for(; itr != word_list.end() &&
+    for(auto itr = word_itr; itr != word_list.end() &&
         index < compound_count; ++itr, ++index) {
         const CWordPtr &word = (*itr);
 
@@ -205,7 +201,7 @@ std::vector<std::string> CPOSTagger::MakeCompound(const CWordList &word_list, CW
 
     /// Check last word
     if(!CanBeCompoundWord(compound)) {
-        compound.clear();
+        compound = MakeCompound(word_list, word_itr, index-1);
     }
 
     return compound;
@@ -232,9 +228,9 @@ bool CPOSTagger::CanBeCompoundWord(const std::vector<std::string> &compound) con
 /// try to decompose the word
 /// وزیرکارواموراجتماعی --> وزیر + کار + و + امور + اجتماعی
 ///
-bool CPOSTagger::Breakdown(CWordList &word_list, CWordList::iterator &itr)
+bool CPOSTagger::Breakdown(CWordList &word_list, CWordList::iterator &word_itr)
 {
-    std::string text = (*itr)->GetText();
+    std::string text = (*word_itr)->GetText();
     std::u16string text_16 = UTF8ToUTF16(text);
     const char16_t* c_str_16 = text_16.c_str();
     std::list<std::u16string> partials;
@@ -273,7 +269,7 @@ bool CPOSTagger::Breakdown(CWordList &word_list, CWordList::iterator &itr)
         return false;
     }
 
-    size_t offset = (*itr)->GetOffset();
+    size_t offset = (*word_itr)->GetOffset();
 
     for(auto &partial : partials) {
         CWordPtr word = std::make_unique<CWord>();
@@ -281,18 +277,18 @@ bool CPOSTagger::Breakdown(CWordList &word_list, CWordList::iterator &itr)
         word->SetText(UTF16ToUTF8(partial));
         word->SetOffset(offset);
         word->SetLength(partial.length());
-        word->SetType((*itr)->GetType());
+        word->SetType((*word_itr)->GetType());
 
-        word_list.insert(itr, std::move(word));
+        word_list.insert(word_itr, std::move(word));
 
         offset += partial.length();
     }
 
-    itr = word_list.erase(itr);
+	word_itr = word_list.erase(word_itr);
 
     size_t s = partials.size();
     while(s--) {
-        --itr;
+        --word_itr;
     }
 
     return true;
