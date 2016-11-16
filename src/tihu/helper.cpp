@@ -135,6 +135,24 @@ char16_t* u16sep(char16_t** stringp, const char16_t delim)
     return NULL;
 }
 
+int u16cmp(const char16_t* str1, const char16_t* str2, size_t n)
+{
+    for (; n > 0;)
+    {
+        char16_t c1 = *str1++;
+        char16_t c2 = *str2++;
+        if (c1 == c2)
+        {
+            n--;
+            continue;
+        }
+        
+        return (int)c1 - (int)c2;
+    }
+
+    return 0;
+}
+
 char GetLastChar(const std::string &value)
 {
     if(value.empty()) {

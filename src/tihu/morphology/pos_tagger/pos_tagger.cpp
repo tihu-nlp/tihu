@@ -219,6 +219,9 @@ bool CPOSTagger::CanBeCompoundWord(const std::vector<std::string> &compound) con
     }
 
     std::string last = compound.back();
+	/// می و نمی نمی‌توانند در انتهای یک ترکیب ظاهر شوند
+	if(last == "می" || last == "نمی")
+		return false;
 
     /// the last word shouldn't be a prefix
     return !AfxManager->IsPrefix(last.c_str());
@@ -246,7 +249,7 @@ bool CPOSTagger::Breakdown(CWordList &word_list, CWordList::iterator &itr)
         while(*p) {
             temp += *p;
 
-            if(IsDetached(*p) || *(p+1)==0) {
+            if(CanBeDetached(temp.c_str()) || *(p+1)==0) {
                 std::string temp_u8 = UTF16ToUTF8(temp);
                 if(CheckWord(temp_u8)) {
                     partial = temp;
@@ -295,9 +298,11 @@ bool CPOSTagger::Breakdown(CWordList &word_list, CWordList::iterator &itr)
     return true;
 }
 
-bool CPOSTagger::IsDetached(char16_t c)
+bool CPOSTagger::CanBeDetached(std::u16string str)
 {
-    switch (c) {
+	char16_t last = str.back();
+
+    switch (last) {
     case 0x0627: //ا
     case 0x062F: //د
     case 0x0630: //ذ
@@ -307,6 +312,11 @@ bool CPOSTagger::IsDetached(char16_t c)
     case 0x0648: //و
         return true;
     }
+	
+	if (str == u"\u0645\u06CC" ||   /// می
+		str == u"\u0646\u0645\u06CC") {   /// نمی
+		return true;
+	}
 
     return false;
 }

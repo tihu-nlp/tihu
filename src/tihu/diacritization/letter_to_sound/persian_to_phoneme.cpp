@@ -47,7 +47,8 @@ bool CPersianToPhoneme::LoadModel(const std::string &model)
 
 void CPersianToPhoneme::LoadWordFrequency()
 {
-    std::string log_file = CPathManager::GetInstance()->GetLogFile("unknown_frquency.txt");
+    std::string log_file = CPathManager::GetInstance()->GetLogFolder();
+    log_file += "unknown_word_freqeuncy.txt";
     
     FILE* file = fopen(log_file.c_str(), "r");
 
@@ -80,9 +81,24 @@ void CPersianToPhoneme::SaveWordFrequency()
         return;
     }
 
+    /// make it sorted
+    std::vector<std::pair<std::string, int>> sorted;
+    for (auto const &i : WordFrequency) {
+        sorted.push_back(
+            std::pair<std::string, int>
+                (i.first, i.second));
+    }
 
+    struct {
+        bool operator()(const std::pair<std::string, int>& a, const std::pair<std::string, int>& b) {
+            return a.second > b.second;
+        }
+    } sort_by_frequency;
+
+    std::sort(sorted.begin(), sorted.end(), sort_by_frequency);
+    
     char buf[1024];
-    for(auto const &i : WordFrequency) {
+    for(auto const &i : sorted) {
         std::string word = i.first;
         int freq = i.second;
 

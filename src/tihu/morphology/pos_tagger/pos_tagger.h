@@ -52,7 +52,7 @@ protected:
     bool CheckWord(const std::string &text);
     bool TagWord(CWordPtr &word, const std::string &text);
     bool Breakdown(CWordList &word_list, CWordList::iterator &itr);
-    bool IsDetached(char16_t c);
+    bool CanBeDetached(std::u16string str);
 
 private:
     CAfxManager*  AfxManager;

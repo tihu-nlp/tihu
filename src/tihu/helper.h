@@ -74,28 +74,33 @@ static inline void TIHU_WARNING(FILE*, const char*, ...) {}
 #endif
 
 
-#define CHR_U8_ZWNJ                "\xe2\x80\x8c"
-#define CHR_U8_TANVIN_NASB         "\xd9\x8c"
-#define CHR_U8_TANVIN_ZAM          "\xd9\x8c"
-#define CHR_U8_TANCIN_JAR          "\xd9\x8d"
-#define CHR_U8_FATHE               "\xd9\x8e"
-#define CHR_U8_ZAME                "\xd9\x8f"
-#define CHR_U8_KASRE               "\xd9\x90"
-#define CHR_U8_TASHDID             "\xd9\x91"
-#define CHR_U8_SUKUN               "\xd9\x92"
-#define CHR_U8_YEH                 "\xdb\x8c"
-#define CHR_U8_ALEF                "\xd8\xa7"
-#define CHR_U8_HE                  "\xd9\x87"
-#define CHR_U8_WAW                 "\xd9\x88"
-#define CHR_U8_KAF                 "\xda\xa9"
-#define CHR_U8_GAF                 "\xda\xaf"
-#define CHR_U8_HAMZE               "\xd9\x94"
-#define CHR_U8_LAM                 "\xd9\x84"
-#define CHR_U8_DAL                 "\xd8\xaf"
-#define CHR_U8_ZAL                 "\xd8\xb0"
-#define CHR_U8_RE                  "\xd8\xb1"
-#define CHR_U8_ZE                  "\xd8\xb2"
-#define CHR_U8_ZHE                 "\xda\x98"
+#define CHR_U8_ZWNJ                 "\xe2\x80\x8c"
+#define CHR_U8_TANVIN_NASB          "\xd9\x8c"
+#define CHR_U8_TANVIN_ZAM           "\xd9\x8c"
+#define CHR_U8_TANCIN_JAR           "\xd9\x8d"
+#define CHR_U8_FATHE                "\xd9\x8e"
+#define CHR_U8_ZAME                 "\xd9\x8f"
+#define CHR_U8_KASRE                "\xd9\x90"
+#define CHR_U8_TASHDID              "\xd9\x91"
+#define CHR_U8_SUKUN                "\xd9\x92"
+#define CHR_U8_YE                   "\xdb\x8c"
+#define CHR_U8_ALEF                 "\xd8\xa7"
+#define CHR_U8_HE                   "\xd9\x87"
+#define CHR_U8_WAW                  "\xd9\x88"
+#define CHR_U8_KAF                  "\xda\xa9"
+#define CHR_U8_GAF                  "\xda\xaf"
+#define CHR_U8_HAMZE                "\xd9\x94"
+#define CHR_U8_LAM                  "\xd9\x84"
+#define CHR_U8_DAL                  "\xd8\xaf"
+#define CHR_U8_ZAL                  "\xd8\xb0"
+#define CHR_U8_RE                   "\xd8\xb1"
+#define CHR_U8_ZE                   "\xd8\xb2"
+#define CHR_U8_ZHE                  "\xda\x98"
+#define CHR_U8_MIM                  "\xd9\x85"
+#define CHR_U8_NON                  "\xd9\x86"
+
+#define STR_U8_MI                   "\xd9\x85\xdb\x8c"
+#define STR_U8_NEMI                 "\xd9\x86\xd9\x85\xdb\x8c"
 
 
 #ifndef ASSERT
@@ -153,7 +158,7 @@ void mychomp(std::string &s);
 size_t u16len(const char16_t* wcs_);
 char16_t* u16chr(const char16_t* wcs_, char16_t wch_);
 char16_t* u16sep(char16_t** stringp, const char16_t delim);
-
+int u16cmp(const char16_t* str1, const char16_t* str2, size_t n = -1);
 
 bool IsVowelPhoneme(char c);
 bool IsPronunciationEndsWithVowels(const std::string &pronunciation);
