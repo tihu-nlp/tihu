@@ -18,13 +18,13 @@
 *    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
 *
 *******************************************************************************/
-#include "tokenization/tokenizer/tokenizer.h"
-#include "morphology/pos_tagger/pos_tagger.h"
-#include "morphology/pos_disambiguator/pos_disambiguator.h"
-#include "correction/text_tagger/text_tagger.h"
-#include "diacritization/letter_to_sound/letter_to_sound.h"
+
+#include "ipa_transcript/tihu_dict/tihu_dict.h"
+#include "ipa_transcript/letter_to_sound/letter_to_sound.h"
 #include "synthesis/mbrola/mbrola_syn.h"
 #include "synthesis/espeak/espeak_syn.h"
+#include "hazm/hazm.h"
+#include "text_tagger.h"
 #include "path_manager.h"
 #include "engine.h"
 #include "tihu.h"
@@ -39,11 +39,9 @@
 
 CEngine::CEngine()
 {
-    Tokenizer       = nullptr;
-    POSTagger       = nullptr;
-    POSDisamb       = nullptr;
+    Hazm            = nullptr;
+    TihuDict        = nullptr;
     LetterToSound   = nullptr;
-    Normalizer      = nullptr;
     Synthesizer     = nullptr;
     TextTagger      = nullptr;
     Corpus          = new CCorpus();
@@ -51,20 +49,14 @@ CEngine::CEngine()
 
 CEngine::~CEngine()
 {
-    if(Tokenizer) {
-        delete Tokenizer;
+    if(Hazm) {
+        delete Hazm;
     }
-    if(POSTagger) {
-        delete POSTagger;
-    }
-    if(POSDisamb) {
-        delete POSDisamb;
+    if(TihuDict) {
+        delete TihuDict;
     }
     if(LetterToSound) {
         delete LetterToSound;
-    }
-    if(Normalizer) {
-        delete Normalizer;
     }
     if(Synthesizer) {
         delete Synthesizer;
@@ -80,31 +72,30 @@ int CEngine::LoadModules()
     /// if module re-loaded, it's better to re-initialize it.
     CPathManager::GetInstance()->Initialize();
 
-    Tokenizer = new CTokenizer();
-    POSTagger = new CPOSTagger();
-    POSDisamb = new CPOSDisambiguator();
+    Hazm = new CHazm();
+    TihuDict = new CTihuDict();
     LetterToSound = new CLetterToSound();
     TextTagger = new CTextTagger();
 
-    std::string tokens_path = CPathManager::GetInstance()->GetDataFolder();
     std::string affixes_path = CPathManager::GetInstance()->GetDataFolder();
     std::string dictionary_path = CPathManager::GetInstance()->GetDataFolder();
     std::string g2p_persian_model = CPathManager::GetInstance()->GetDataFolder();
     std::string g2p_english_model = CPathManager::GetInstance()->GetDataFolder();
     std::string punctuations_path = CPathManager::GetInstance()->GetDataFolder();
+    std::string hazm_model_path = CPathManager::GetInstance()->GetDataFolder();
 
-    tokens_path += "tokens.txt";
     affixes_path += "lexicon.aff";
     dictionary_path += "lexicon.dic";
     g2p_english_model += "g2p-seq2seq-cmudict";
     g2p_persian_model += "g2p-seq2seq-tihudict";
     punctuations_path += "punctuations.txt";
+    hazm_model_path += "postagger.model";
 
-    if(!static_cast<CTokenizer*>(Tokenizer)->Load(tokens_path)) {
+    if (!static_cast<CHazm*>(Hazm)->Load(hazm_model_path)) {
         return TIHU_ERROR_LOAD_DATA;
     }
 
-    if(!static_cast<CPOSTagger*>(POSTagger)->Load(affixes_path,
+    if(!static_cast<CTihuDict*>(TihuDict)->Load(affixes_path,
         dictionary_path, "")) {
         return TIHU_ERROR_LOAD_DATA;
     }
@@ -160,12 +151,10 @@ int CEngine::LoadSynthesizer(TIHU_VOICE vocie)
 
 void CEngine::SetCallback(TIHU_CALLBACK callback, void* userData)
 {
-    (Tokenizer) ? Tokenizer->SetCallBack(callback, userData) : void();
-    (POSTagger) ? POSTagger->SetCallBack(callback, userData) : void();
-    (POSDisamb) ? POSDisamb->SetCallBack(callback, userData) : void();
+    (TihuDict) ? TihuDict->SetCallBack(callback, userData) : void();
     (LetterToSound) ? LetterToSound->SetCallBack(callback, userData) : void();
-	(Synthesizer) ? Synthesizer->SetCallBack(callback, userData) : void();
-	(TextTagger) ? TextTagger->SetCallBack(callback, userData) : void();
+    (Synthesizer) ? Synthesizer->SetCallBack(callback, userData) : void();
+    (TextTagger) ? TextTagger->SetCallBack(callback, userData) : void();
 }
 
 void CEngine::Stop()
@@ -177,30 +166,29 @@ void CEngine::Stop()
 
 void CEngine::Speak(const std::string &text)
 {
-    SetText(text);
-    Tokenize();
-    POSTag();
-    Diacritize();
-    Synthesize();
+    Corpus->Clear();
+    Corpus->SetText(text);
+
+    Hazm->ParsText(Corpus);
+    TihuDict->ParsText(Corpus);
+    LetterToSound->ParsText(Corpus);
+    Synthesizer->ParsText(Corpus);
 
 #ifdef LOG_ENABLED
+    LogText("text.txt");
     LogCorpus("text.lbl");
+    LogCorpus("text.xml");
 #endif
 }
 
 void CEngine::Diacritize(const std::string &text)
 {
-    SetText(text);
-    Tokenize();
-    POSTag();
-    Diacritize();
+    
 }
 
 void CEngine::AutoTag(const std::string &text)
 {
-    SetText(text);
-    Tokenize();
-    POSTag();
+    
 }
 
 bool CEngine::SetParam(TIHU_PARAM param, int value)
@@ -257,40 +245,10 @@ void CEngine::SetText(const std::string &text) const
 #endif
 }
 
-void CEngine::Tokenize() const
+void CEngine::Process() const
 {
-    Tokenizer->ParsText(Corpus);
-#ifdef LOG_ENABLED
-    LogCorpus("tokenize.xml");
-#endif
-}
 
-void CEngine::POSTag() const
-{
-    POSTagger->ParsText(Corpus);
-#ifdef LOG_ENABLED
-    LogCorpus("pos-tagger.xml");
-#endif
 
-    POSDisamb->ParsText(Corpus);
-
-#ifdef LOG_ENABLED
-    LogCorpus("pos-disamb.xml");
-#endif
-}
-
-void CEngine::Diacritize() const
-{
-    LetterToSound->ParsText(Corpus);
-
-#ifdef LOG_ENABLED
-    LogCorpus("letter-to-sound.xml");
-#endif
-}
-
-void CEngine::Synthesize() const
-{
-    Synthesizer->ParsText(Corpus);
 }
 
 void CEngine::LogText(const std::string& filename) const

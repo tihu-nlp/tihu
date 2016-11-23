@@ -35,6 +35,7 @@
 #define TEMP_FOLDER_KEY           "TEMP_PATH"
 #define LOG_FOLDER_KEY            "LOG_PATH"
 #define DATA_FOLDER_KEY           "DATA_PATH"
+#define HAZM_FOLDER_KEY           "HAZM_PATH"
 
 
 
@@ -56,15 +57,17 @@ void CPathManager::Initialize()
 
     std::string build_directory = GetCurrentModulePath();
 
-    std::string build_path         = build_directory;
-    std::string temp_path          = build_directory + "temp" + DIR_SEP;
-    std::string log_path           = build_directory + "log" + DIR_SEP;
-    std::string data_path          = build_directory + "data" + DIR_SEP;
+    std::string build_path  = build_directory;
+    std::string temp_path   = build_directory + "temp" + DIR_SEP;
+    std::string log_path    = build_directory + "log" + DIR_SEP;
+    std::string data_path   = build_directory + "data" + DIR_SEP;
+    std::string hazm_path   = build_directory + "hazm" + DIR_SEP;
 
     SetPath(BUILD_FOLDER_KEY, build_path);
     SetPath(TEMP_FOLDER_KEY, temp_path);
     SetPath(LOG_FOLDER_KEY, log_path);
     SetPath(DATA_FOLDER_KEY, data_path);
+    SetPath(HAZM_FOLDER_KEY, hazm_path);
 }
 
 std::string CPathManager::GetBuildFolder() const
@@ -80,6 +83,11 @@ std::string CPathManager::GetLogFolder() const
 std::string CPathManager::GetDataFolder() const
 {
     return GetPath(DATA_FOLDER_KEY);
+}
+
+std::string CPathManager::GetHazmFolder() const
+{
+    return GetPath(HAZM_FOLDER_KEY);
 }
 
 std::string CPathManager::GetLogFile(const std::string& filename) const

@@ -12,11 +12,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="corpus.cpp" />
-    <ClCompile Include="correction\text_tagger\text_tagger.cpp" />
-    <ClCompile Include="diacritization\letter_to_sound\english_to_phoneme.cpp" />
-    <ClCompile Include="diacritization\letter_to_sound\g2p_seq2seq_windows.cpp" />
-    <ClCompile Include="diacritization\letter_to_sound\persian_to_phoneme.cpp" />
-    <ClCompile Include="diacritization\letter_to_sound\punctuation_to_phoneme.cpp" />
+    <ClCompile Include="hazm\hazm.cpp" />
+    <ClCompile Include="hunzip.cpp" />
+    <ClCompile Include="ipa_transcript\tihu_dict\afx_entry.cpp" />
+    <ClCompile Include="ipa_transcript\tihu_dict\afx_manager.cpp" />
+    <ClCompile Include="ipa_transcript\tihu_dict\hash_manager.cpp" />
+    <ClCompile Include="ipa_transcript\tihu_dict\pfx_entry.cpp" />
+    <ClCompile Include="ipa_transcript\tihu_dict\sfx_entry.cpp" />
+    <ClCompile Include="ipa_transcript\tihu_dict\tihu_dict.cpp" />
+    <ClCompile Include="text_tagger.cpp" />
     <ClCompile Include="entry.cpp" />
     <ClCompile Include="event.cpp" />
     <ClCompile Include="phoneme.cpp" />
@@ -30,20 +34,12 @@
     <ClCompile Include="synthesizer.cpp" />
     <ClCompile Include="file_manager.cpp" />
     <ClCompile Include="helper.cpp" />
-    <ClCompile Include="hunzip.cpp" />
-    <ClCompile Include="tokenization\tokenizer\char_map.cpp" />
-    <ClCompile Include="tokenization\tokenizer\char_mapper.cpp" />
-    <ClCompile Include="tokenization\tokenizer\char_map_row.cpp" />
-    <ClCompile Include="tokenization\tokenizer\tokenizer.cpp" />
-    <ClCompile Include="diacritization\letter_to_sound\letter_to_sound.cpp" />
-    <ClCompile Include="diacritization\letter_to_sound\number_to_phoneme.cpp" />
-    <ClCompile Include="morphology\pos_tagger\afx_entry.cpp" />
-    <ClCompile Include="morphology\pos_tagger\afx_manager.cpp" />
-    <ClCompile Include="morphology\pos_tagger\hash_manager.cpp" />
-    <ClCompile Include="morphology\pos_tagger\pfx_entry.cpp" />
-    <ClCompile Include="morphology\pos_tagger\pos_tagger.cpp" />
-    <ClCompile Include="morphology\pos_tagger\sfx_entry.cpp" />
-    <ClCompile Include="morphology\pos_disambiguator\pos_disambiguator.cpp" />
+    <ClCompile Include="ipa_transcript\letter_to_sound\english_to_phoneme.cpp" />
+    <ClCompile Include="ipa_transcript\letter_to_sound\g2p_seq2seq_windows.cpp" />
+    <ClCompile Include="ipa_transcript\letter_to_sound\persian_to_phoneme.cpp" />
+    <ClCompile Include="ipa_transcript\letter_to_sound\punctuation_to_phoneme.cpp" />
+    <ClCompile Include="ipa_transcript\letter_to_sound\letter_to_sound.cpp" />
+    <ClCompile Include="ipa_transcript\letter_to_sound\number_to_phoneme.cpp" />
     <ClCompile Include="synthesis\espeak\espeak_lib.cpp" />
     <ClCompile Include="synthesis\espeak\espeak_syn.cpp" />
     <ClCompile Include="synthesis\mbrola\mbrola_lib.cpp" />
@@ -51,12 +47,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="corpus.h" />
-    <ClInclude Include="correction\text_tagger\text_tagger.h" />
-    <ClInclude Include="diacritization\letter_to_sound\english_to_phoneme.h" />
-    <ClInclude Include="diacritization\letter_to_sound\g2p_seq2seq_windows.h" />
-    <ClInclude Include="diacritization\letter_to_sound\persian_to_phoneme.h" />
-    <ClInclude Include="diacritization\letter_to_sound\punctuation.h" />
-    <ClInclude Include="diacritization\letter_to_sound\punctuation_to_phoneme.h" />
+    <ClInclude Include="hazm\hazm.h" />
+    <ClInclude Include="hunzip.h" />
+    <ClInclude Include="ipa_transcript\tihu_dict\afx_entry.h" />
+    <ClInclude Include="ipa_transcript\tihu_dict\afx_manager.h" />
+    <ClInclude Include="ipa_transcript\tihu_dict\hash_manager.h" />
+    <ClInclude Include="ipa_transcript\tihu_dict\hentry.h" />
+    <ClInclude Include="ipa_transcript\tihu_dict\pfx_entry.h" />
+    <ClInclude Include="ipa_transcript\tihu_dict\sfx_entry.h" />
+    <ClInclude Include="ipa_transcript\tihu_dict\tihu_dict.h" />
+    <ClInclude Include="text_tagger.h" />
     <ClInclude Include="entry.h" />
     <ClInclude Include="event.h" />
     <ClInclude Include="phoneme.h" />
@@ -71,21 +71,13 @@
     <ClInclude Include="synthesizer.h" />
     <ClInclude Include="file_manager.h" />
     <ClInclude Include="helper.h" />
-    <ClInclude Include="hunzip.h" />
-    <ClInclude Include="tokenization\tokenizer\char_map.h" />
-    <ClInclude Include="tokenization\tokenizer\char_mapper.h" />
-    <ClInclude Include="tokenization\tokenizer\char_map_row.h" />
-    <ClInclude Include="tokenization\tokenizer\tokenizer.h" />
-    <ClInclude Include="diacritization\letter_to_sound\letter_to_sound.h" />
-    <ClInclude Include="diacritization\letter_to_sound\number_to_phoneme.h" />
-    <ClInclude Include="morphology\pos_tagger\afx_entry.h" />
-    <ClInclude Include="morphology\pos_tagger\afx_manager.h" />
-    <ClInclude Include="morphology\pos_tagger\hash_manager.h" />
-    <ClInclude Include="morphology\pos_tagger\hentry.h" />
-    <ClInclude Include="morphology\pos_tagger\pfx_entry.h" />
-    <ClInclude Include="morphology\pos_tagger\pos_tagger.h" />
-    <ClInclude Include="morphology\pos_tagger\sfx_entry.h" />
-    <ClInclude Include="morphology\pos_disambiguator\pos_disambiguator.h" />
+    <ClInclude Include="ipa_transcript\letter_to_sound\english_to_phoneme.h" />
+    <ClInclude Include="ipa_transcript\letter_to_sound\g2p_seq2seq_windows.h" />
+    <ClInclude Include="ipa_transcript\letter_to_sound\persian_to_phoneme.h" />
+    <ClInclude Include="ipa_transcript\letter_to_sound\punctuation.h" />
+    <ClInclude Include="ipa_transcript\letter_to_sound\punctuation_to_phoneme.h" />
+    <ClInclude Include="ipa_transcript\letter_to_sound\letter_to_sound.h" />
+    <ClInclude Include="ipa_transcript\letter_to_sound\number_to_phoneme.h" />
     <ClInclude Include="synthesis\espeak\espeak_lib.h" />
     <ClInclude Include="synthesis\espeak\espeak_syn.h" />
     <ClInclude Include="synthesis\espeak\speak_lib.h" />
@@ -142,7 +134,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;_DEBUG;_WINDOWS;_USRDLL;TIHU_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;$(PYTHONPATH)\include\</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
       <MinimalRebuild>false</MinimalRebuild>
@@ -154,8 +146,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>
       </AdditionalDependencies>
-      <AdditionalLibraryDirectories>
-      </AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(PYTHONPATH)\libs\</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>call $(ProjectDir)post_build.bat  $(Platform) $(Configuration)</Command>
@@ -173,7 +164,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;NDEBUG;_WINDOWS;_USRDLL;TIHU_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;$(PYTHONPATH)\include\</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -183,8 +174,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>
       </AdditionalDependencies>
-      <AdditionalLibraryDirectories>
-      </AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(PYTHONPATH)\libs\</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>call $(ProjectDir)post_build.bat  $(Platform) $(Configuration)</Command>

@@ -107,26 +107,12 @@ void CCorpus::DumpToXml(const std::string &path) const
     char buffer[1024];
 
     for(auto &word : WordList) {
-        snprintf(buffer, 1024, "\t<word offset=\"%d\" length=\"%d\" text=\"%s\" %s %s>",
-                 word->GetOffset(),
-                 word->GetLength(),
-                 word->GetText().c_str(),
-                 word->IsEndOfParagraph() ? "eop=\"true\"" : "",
-                 word->IsEndOfSentence() ? "eos=\"true\"" : "");
+        snprintf(buffer, 1024, "\t<word text=\"%s\" pronunciation=\"%s\" label=\"%s\"/>",
+                word->GetText().c_str(),
+                word->GetPronunc().c_str(),
+                word->GetLable().c_str());
 
         writer << buffer << std::endl;
-
-        for(auto &entry : word->GetEntryList()) {
-
-            snprintf(buffer, 1024, "\t\t<entry pronunciation=\"%s\" label=\"%s\" root=\"%s\" />",
-                     entry->GetPronunciation().c_str(),
-                     entry->GetLabel().c_str(),
-                     entry->GetRoot().c_str());
-
-            writer << buffer << std::endl;
-        }
-
-        writer << "\t</word>" << std::endl;
     }
 
     writer << "</corpus>";
@@ -145,28 +131,12 @@ void CCorpus::DumpToTxt(const std::string &path) const
     char buffer[1024];
 
     for(auto &word : WordList) {
-        snprintf(buffer, 1024, "%-30s", word->GetText().c_str());
-        writer << buffer;
-
-        bool first_entry = true;
-        for(auto &entry : word->GetEntryList()) {
-
-            if(first_entry) {
-                snprintf(buffer, 1024, "%-12s %s",
-                         entry->GetLabel().c_str(),
-                         entry->GetPronunciation().c_str());
-            } else {
-                writer << std::endl;
-
-                snprintf(buffer, 1024, "                    %-12s %s",
-                         entry->GetLabel().c_str(),
-                         entry->GetPronunciation().c_str());
-            }
-
-            writer << buffer;
-            first_entry = false;
-        }
-
+        
+        snprintf(buffer, 1024, "%-30s%-12s %s",
+            word->GetText().c_str(),
+            word->GetLable().c_str(),
+            word->GetPronunc().c_str());
+    
         writer << std::endl;
     }
 

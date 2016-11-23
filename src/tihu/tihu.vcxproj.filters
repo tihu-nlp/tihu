@@ -1,26 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="tokenization">
-      <UniqueIdentifier>{a2e05665-0fd9-4668-aa5d-75db62f9a135}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="tokenization\tokenizer">
-      <UniqueIdentifier>{a1cf175c-37a3-4ebd-9ed7-35cab95ac2df}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="correction">
-      <UniqueIdentifier>{76f95424-9850-4bad-bb43-6f2d4ffb87fb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="diacritization">
+    <Filter Include="ipa_transcript">
       <UniqueIdentifier>{b21bf03d-aa5c-40ac-a0fe-eb3e4e22dd87}</UniqueIdentifier>
     </Filter>
-    <Filter Include="diacritization\letter_to_sound">
+    <Filter Include="ipa_transcript\letter_to_sound">
       <UniqueIdentifier>{b38d8fc3-bab3-4442-a80e-8d0ca7a069b3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="morphology">
-      <UniqueIdentifier>{6aa5425b-18d0-4b38-ab3f-80604fd8a4f2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="morphology\pos_tagger">
-      <UniqueIdentifier>{05ab96b6-49f8-4d5c-b22f-a2b02e0e02c2}</UniqueIdentifier>
     </Filter>
     <Filter Include="synthesis">
       <UniqueIdentifier>{665de6c0-8cf6-4728-8e28-8e4dcc62afb7}</UniqueIdentifier>
@@ -31,11 +16,11 @@
     <Filter Include="synthesis\espeak">
       <UniqueIdentifier>{ab29fba3-99aa-46db-bd6c-485494c70a52}</UniqueIdentifier>
     </Filter>
-    <Filter Include="morphology\pos_disambiguator">
-      <UniqueIdentifier>{2dcac137-e5db-4bd1-ad45-ba55508a3135}</UniqueIdentifier>
+    <Filter Include="hazm">
+      <UniqueIdentifier>{ef32eb0a-f2be-4e21-ada8-9432fd0f3c8d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="correction\text_tagger">
-      <UniqueIdentifier>{1011a1d4-2582-4417-a6ee-47837c41e617}</UniqueIdentifier>
+    <Filter Include="ipa_transcript\tihu_dict">
+      <UniqueIdentifier>{f43d1a28-a635-46e8-ac48-d131b47a5b0c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -44,18 +29,6 @@
     <ClCompile Include="settings.cpp" />
     <ClCompile Include="synthesizer.cpp" />
     <ClCompile Include="tihu.cpp" />
-    <ClCompile Include="tokenization\tokenizer\tokenizer.cpp">
-      <Filter>tokenization\tokenizer</Filter>
-    </ClCompile>
-    <ClCompile Include="tokenization\tokenizer\char_map.cpp">
-      <Filter>tokenization\tokenizer</Filter>
-    </ClCompile>
-    <ClCompile Include="tokenization\tokenizer\char_map_row.cpp">
-      <Filter>tokenization\tokenizer</Filter>
-    </ClCompile>
-    <ClCompile Include="tokenization\tokenizer\char_mapper.cpp">
-      <Filter>tokenization\tokenizer</Filter>
-    </ClCompile>
     <ClCompile Include="synthesis\mbrola\mbrola_lib.cpp">
       <Filter>synthesis\mbrola</Filter>
     </ClCompile>
@@ -71,35 +44,11 @@
     <ClCompile Include="engine.cpp" />
     <ClCompile Include="file_manager.cpp" />
     <ClCompile Include="helper.cpp" />
-    <ClCompile Include="diacritization\letter_to_sound\letter_to_sound.cpp">
-      <Filter>diacritization\letter_to_sound</Filter>
+    <ClCompile Include="ipa_transcript\letter_to_sound\letter_to_sound.cpp">
+      <Filter>ipa_transcript\letter_to_sound</Filter>
     </ClCompile>
-    <ClCompile Include="diacritization\letter_to_sound\number_to_phoneme.cpp">
-      <Filter>diacritization\letter_to_sound</Filter>
-    </ClCompile>
-    <ClCompile Include="morphology\pos_tagger\pfx_entry.cpp">
-      <Filter>morphology\pos_tagger</Filter>
-    </ClCompile>
-    <ClCompile Include="morphology\pos_tagger\pos_tagger.cpp">
-      <Filter>morphology\pos_tagger</Filter>
-    </ClCompile>
-    <ClCompile Include="morphology\pos_tagger\sfx_entry.cpp">
-      <Filter>morphology\pos_tagger</Filter>
-    </ClCompile>
-    <ClCompile Include="morphology\pos_tagger\afx_manager.cpp">
-      <Filter>morphology\pos_tagger</Filter>
-    </ClCompile>
-    <ClCompile Include="morphology\pos_tagger\afx_entry.cpp">
-      <Filter>morphology\pos_tagger</Filter>
-    </ClCompile>
-    <ClCompile Include="morphology\pos_tagger\hash_manager.cpp">
-      <Filter>morphology\pos_tagger</Filter>
-    </ClCompile>
-    <ClCompile Include="hunzip.cpp">
-      <Filter>morphology\pos_tagger</Filter>
-    </ClCompile>
-    <ClCompile Include="morphology\pos_disambiguator\pos_disambiguator.cpp">
-      <Filter>morphology\pos_disambiguator</Filter>
+    <ClCompile Include="ipa_transcript\letter_to_sound\number_to_phoneme.cpp">
+      <Filter>ipa_transcript\letter_to_sound</Filter>
     </ClCompile>
     <ClCompile Include="corpus.cpp" />
     <ClCompile Include="entry.cpp" />
@@ -107,21 +56,41 @@
     <ClCompile Include="phoneme.cpp" />
     <ClCompile Include="pitch_range.cpp" />
     <ClCompile Include="word.cpp" />
-    <ClCompile Include="correction\text_tagger\text_tagger.cpp">
-      <Filter>correction\text_tagger</Filter>
+    <ClCompile Include="text_tagger.cpp" />
+    <ClCompile Include="ipa_transcript\letter_to_sound\g2p_seq2seq_windows.cpp">
+      <Filter>ipa_transcript\letter_to_sound</Filter>
     </ClCompile>
-    <ClCompile Include="diacritization\letter_to_sound\g2p_seq2seq_windows.cpp">
-      <Filter>diacritization\letter_to_sound</Filter>
+    <ClCompile Include="ipa_transcript\letter_to_sound\persian_to_phoneme.cpp">
+      <Filter>ipa_transcript\letter_to_sound</Filter>
     </ClCompile>
-    <ClCompile Include="diacritization\letter_to_sound\persian_to_phoneme.cpp">
-      <Filter>diacritization\letter_to_sound</Filter>
+    <ClCompile Include="ipa_transcript\letter_to_sound\punctuation_to_phoneme.cpp">
+      <Filter>ipa_transcript\letter_to_sound</Filter>
     </ClCompile>
-    <ClCompile Include="diacritization\letter_to_sound\punctuation_to_phoneme.cpp">
-      <Filter>diacritization\letter_to_sound</Filter>
+    <ClCompile Include="ipa_transcript\letter_to_sound\english_to_phoneme.cpp">
+      <Filter>ipa_transcript\letter_to_sound</Filter>
     </ClCompile>
-    <ClCompile Include="diacritization\letter_to_sound\english_to_phoneme.cpp">
-      <Filter>diacritization\letter_to_sound</Filter>
+    <ClCompile Include="hazm\hazm.cpp">
+      <Filter>hazm</Filter>
     </ClCompile>
+    <ClCompile Include="ipa_transcript\tihu_dict\afx_entry.cpp">
+      <Filter>ipa_transcript\tihu_dict</Filter>
+    </ClCompile>
+    <ClCompile Include="ipa_transcript\tihu_dict\afx_manager.cpp">
+      <Filter>ipa_transcript\tihu_dict</Filter>
+    </ClCompile>
+    <ClCompile Include="ipa_transcript\tihu_dict\hash_manager.cpp">
+      <Filter>ipa_transcript\tihu_dict</Filter>
+    </ClCompile>
+    <ClCompile Include="ipa_transcript\tihu_dict\pfx_entry.cpp">
+      <Filter>ipa_transcript\tihu_dict</Filter>
+    </ClCompile>
+    <ClCompile Include="ipa_transcript\tihu_dict\sfx_entry.cpp">
+      <Filter>ipa_transcript\tihu_dict</Filter>
+    </ClCompile>
+    <ClCompile Include="ipa_transcript\tihu_dict\tihu_dict.cpp">
+      <Filter>ipa_transcript\tihu_dict</Filter>
+    </ClCompile>
+    <ClCompile Include="hunzip.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="parser.h" />
@@ -131,18 +100,6 @@
     <ClInclude Include="synthesizer.h" />
     <ClInclude Include="helper.h" />
     <ClInclude Include="tihu.h" />
-    <ClInclude Include="tokenization\tokenizer\tokenizer.h">
-      <Filter>tokenization\tokenizer</Filter>
-    </ClInclude>
-    <ClInclude Include="tokenization\tokenizer\char_map.h">
-      <Filter>tokenization\tokenizer</Filter>
-    </ClInclude>
-    <ClInclude Include="tokenization\tokenizer\char_map_row.h">
-      <Filter>tokenization\tokenizer</Filter>
-    </ClInclude>
-    <ClInclude Include="tokenization\tokenizer\char_mapper.h">
-      <Filter>tokenization\tokenizer</Filter>
-    </ClInclude>
     <ClInclude Include="synthesis\mbrola\mbrola_lib.h">
       <Filter>synthesis\mbrola</Filter>
     </ClInclude>
@@ -162,38 +119,11 @@
       <Filter>synthesis\espeak</Filter>
     </ClInclude>
     <ClInclude Include="file_manager.h" />
-    <ClInclude Include="diacritization\letter_to_sound\letter_to_sound.h">
-      <Filter>diacritization\letter_to_sound</Filter>
+    <ClInclude Include="ipa_transcript\letter_to_sound\letter_to_sound.h">
+      <Filter>ipa_transcript\letter_to_sound</Filter>
     </ClInclude>
-    <ClInclude Include="diacritization\letter_to_sound\number_to_phoneme.h">
-      <Filter>diacritization\letter_to_sound</Filter>
-    </ClInclude>
-    <ClInclude Include="morphology\pos_tagger\pfx_entry.h">
-      <Filter>morphology\pos_tagger</Filter>
-    </ClInclude>
-    <ClInclude Include="morphology\pos_tagger\pos_tagger.h">
-      <Filter>morphology\pos_tagger</Filter>
-    </ClInclude>
-    <ClInclude Include="morphology\pos_tagger\sfx_entry.h">
-      <Filter>morphology\pos_tagger</Filter>
-    </ClInclude>
-    <ClInclude Include="morphology\pos_tagger\afx_manager.h">
-      <Filter>morphology\pos_tagger</Filter>
-    </ClInclude>
-    <ClInclude Include="morphology\pos_tagger\afx_entry.h">
-      <Filter>morphology\pos_tagger</Filter>
-    </ClInclude>
-    <ClInclude Include="morphology\pos_tagger\hash_manager.h">
-      <Filter>morphology\pos_tagger</Filter>
-    </ClInclude>
-    <ClInclude Include="morphology\pos_tagger\hentry.h">
-      <Filter>morphology\pos_tagger</Filter>
-    </ClInclude>
-    <ClInclude Include="hunzip.h">
-      <Filter>morphology\pos_tagger</Filter>
-    </ClInclude>
-    <ClInclude Include="morphology\pos_disambiguator\pos_disambiguator.h">
-      <Filter>morphology\pos_disambiguator</Filter>
+    <ClInclude Include="ipa_transcript\letter_to_sound\number_to_phoneme.h">
+      <Filter>ipa_transcript\letter_to_sound</Filter>
     </ClInclude>
     <ClInclude Include="corpus.h" />
     <ClInclude Include="entry.h" />
@@ -201,24 +131,47 @@
     <ClInclude Include="phoneme.h" />
     <ClInclude Include="pitch_range.h" />
     <ClInclude Include="word.h" />
-    <ClInclude Include="correction\text_tagger\text_tagger.h">
-      <Filter>correction\text_tagger</Filter>
+    <ClInclude Include="text_tagger.h" />
+    <ClInclude Include="ipa_transcript\letter_to_sound\g2p_seq2seq_windows.h">
+      <Filter>ipa_transcript\letter_to_sound</Filter>
     </ClInclude>
-    <ClInclude Include="diacritization\letter_to_sound\g2p_seq2seq_windows.h">
-      <Filter>diacritization\letter_to_sound</Filter>
+    <ClInclude Include="ipa_transcript\letter_to_sound\persian_to_phoneme.h">
+      <Filter>ipa_transcript\letter_to_sound</Filter>
     </ClInclude>
-    <ClInclude Include="diacritization\letter_to_sound\persian_to_phoneme.h">
-      <Filter>diacritization\letter_to_sound</Filter>
+    <ClInclude Include="ipa_transcript\letter_to_sound\punctuation.h">
+      <Filter>ipa_transcript\letter_to_sound</Filter>
     </ClInclude>
-    <ClInclude Include="diacritization\letter_to_sound\punctuation.h">
-      <Filter>diacritization\letter_to_sound</Filter>
+    <ClInclude Include="ipa_transcript\letter_to_sound\punctuation_to_phoneme.h">
+      <Filter>ipa_transcript\letter_to_sound</Filter>
     </ClInclude>
-    <ClInclude Include="diacritization\letter_to_sound\punctuation_to_phoneme.h">
-      <Filter>diacritization\letter_to_sound</Filter>
+    <ClInclude Include="ipa_transcript\letter_to_sound\english_to_phoneme.h">
+      <Filter>ipa_transcript\letter_to_sound</Filter>
     </ClInclude>
-    <ClInclude Include="diacritization\letter_to_sound\english_to_phoneme.h">
-      <Filter>diacritization\letter_to_sound</Filter>
+    <ClInclude Include="hazm\hazm.h">
+      <Filter>hazm</Filter>
     </ClInclude>
+    <ClInclude Include="ipa_transcript\tihu_dict\afx_entry.h">
+      <Filter>ipa_transcript\tihu_dict</Filter>
+    </ClInclude>
+    <ClInclude Include="ipa_transcript\tihu_dict\afx_manager.h">
+      <Filter>ipa_transcript\tihu_dict</Filter>
+    </ClInclude>
+    <ClInclude Include="ipa_transcript\tihu_dict\hash_manager.h">
+      <Filter>ipa_transcript\tihu_dict</Filter>
+    </ClInclude>
+    <ClInclude Include="ipa_transcript\tihu_dict\hentry.h">
+      <Filter>ipa_transcript\tihu_dict</Filter>
+    </ClInclude>
+    <ClInclude Include="ipa_transcript\tihu_dict\pfx_entry.h">
+      <Filter>ipa_transcript\tihu_dict</Filter>
+    </ClInclude>
+    <ClInclude Include="ipa_transcript\tihu_dict\sfx_entry.h">
+      <Filter>ipa_transcript\tihu_dict</Filter>
+    </ClInclude>
+    <ClInclude Include="ipa_transcript\tihu_dict\tihu_dict.h">
+      <Filter>ipa_transcript\tihu_dict</Filter>
+    </ClInclude>
+    <ClInclude Include="hunzip.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="engine.h" />
