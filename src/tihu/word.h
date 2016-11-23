@@ -24,59 +24,67 @@
 #pragma once
 
 #include "event.h"
-#include "entry.h"
 #include "phoneme.h"
 
 class CWord
 {
 public:
     CWord();
-    CWord(CWord &word);
     ~CWord();
 
-    void             SetText(const std::string &text);
-    void             SetType(TIHU_TOKEN_TYPE type);
-    void             SetLength(size_t length);
-    void             SetOffset(size_t offset);
-    void             SetIsEndOfParagraph(bool is_end_of_paragraph);
-    void             SetIsEndOfSentence(bool is_end_of_sentence);
-    void             SetHasDiacritic(bool has_diacritic);
+    void            SetText(const std::string &text);
+    void            SetPronunc(const std::string &pronunc);
+    void            SetLable(const std::string &lable);
+    void            SetFrequency(size_t frequency);
+    void            SetLength(size_t length);
+    void            SetOffset(size_t offset);
+    void            SetIsEndOfSentence(bool is_end_of_sentence);
 
-    std::string      GetText() const;
-    TIHU_TOKEN_TYPE  GetType() const;
-    size_t           GetLength() const;
-    size_t           GetOffset() const;
-    bool             IsEndOfParagraph() const;
-    bool             IsEndOfSentence() const;
-    bool             IsPersianWord() const;
-    bool             IsEnglishWord() const;
-    bool             IsPunctuation() const;
-    bool             IsNumber() const;
-    bool             HasDiacritic() const;
-    bool             IsEmpty() const;
+    std::string     GetText() const;
+    std::string     GetPronunc() const;
+    std::string     GetLable() const;
+    size_t          GetFrequency() const;
+    size_t          GetLength() const;
+    size_t          GetOffset() const;
+    bool            IsPersianWord() const;
+    bool            IsEnglishWord() const;
+    bool            IsPunctuation() const;
+    bool            IsNumber() const;
+
+    bool            IsVerb() const;
+    bool            IsNoun() const;
+    bool            IsNounCommon() const;
+    bool            IsNounProper() const;
+    bool            IsPronoun() const;
+    bool            IsAdjective() const;
+    bool            IsDeterminer() const;
+    bool            IsAdverb() const;
+    bool            IsAdposition() const;
+    bool            IsConjunction() const;
+    bool            IsNumeral() const;
+    bool            IsInterjection() const;
+
 
     CPhonemeList    &GetPhonemeList();
     CEventList      &GetEventList();
-    CEntryList      &GetEntryList();
 
-    const CEntryPtr &GetBestEntry() const;
 
-    void             ParsPronunciation(std::string pronuciation = std::string());
+    void            ParsPronunciation(std::string pronuciation = std::string());
 
-    void             AddEntry(CEntryPtr &entry);
-    void             AddEvent(CEventPtr &event);
-    void             AddEvent(TIHU_EVENT_TYPE event_type, TIHU_EVENT_VALUE &event_value);
+    void            AddEvent(CEventPtr &event);
+    void            AddEvent(TIHU_EVENT_TYPE event_type, TIHU_EVENT_VALUE &event_value);
 
 protected:
-    std::string      Text;       // Normal word text
-    TIHU_TOKEN_TYPE  Type;       // Type of the the word(word)
-    size_t           Length;     // Length of the current word inside of input text
-    size_t           Offset;     // offset of the current word inside of input text
-    uint32_t         ExtraInfo;  // Extra information
+    std::string      Text;            // Normal word text
+    std::string      Pronunc;        // Pronunciation
+    std::string      Lable;         // lable
+    size_t           Frequency;     // Frequency
+    size_t           Length;        // Length of the current word inside of input text
+    size_t           Offset;        // offset of the current word inside of input text
+    size_t           Flags;
 
     CEventList       EventList;
     CPhonemeList     PhonemeList;
-    CEntryList       EntryList;
 };
 
 typedef std::unique_ptr<CWord> CWordPtr;

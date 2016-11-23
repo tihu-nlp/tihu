@@ -1,8 +1,10 @@
+hazm/*
 tihu*
 libsamplerate*
 libsndfile*
 log/*
 data/espeak/*
+data/postagger.model
 libespeak*
 lexicon*
 #Qt Dlls

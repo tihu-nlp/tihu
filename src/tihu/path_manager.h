@@ -45,7 +45,7 @@ public:
     std::string GetBuildFolder() const;
     std::string GetLogFolder() const;
     std::string GetDataFolder() const;    
-    std::string GetTokensPath() const;
+    std::string GetHazmFolder() const;
 
     std::string GetLogFile(const std::string& filename) const;
 

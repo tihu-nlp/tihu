@@ -42,8 +42,8 @@ public:
     void SetCallback(TIHU_CALLBACK callback, void* userData);
 
     void Speak(const std::string &text);
-    void Diacritize(const std::string &text);
-    void AutoTag(const std::string &text);
+    void Diacritize(const std::string &text); //TODO:
+    void AutoTag(const std::string &text); //TODO:
 
     void Dump(const std::string &filename);
     void Stop();
@@ -53,20 +53,16 @@ public:
 
 private:
     void SetText(const std::string &text) const;
-    void Tokenize() const;
-    void POSTag() const;
-    void Diacritize() const;
-    void Synthesize() const;
+    void Process() const;
+    
     void LogText(const std::string& filename) const;
     void LogCorpus(const std::string& filename) const;
 
 
 private:
-    IParser* Tokenizer;
-    IParser* POSTagger;
-    IParser* POSDisamb;
+    IParser* Hazm;
+    IParser* TihuDict;
     IParser* LetterToSound;
-    IParser* Normalizer;
     IParser* TextTagger;
 
     ISynthesizer* Synthesizer;
