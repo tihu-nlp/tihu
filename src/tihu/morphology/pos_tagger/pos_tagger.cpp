@@ -158,7 +158,7 @@ bool CPOSTagger::TagCompound(CWordList &word_list, CWordList::iterator &word_itr
 std::string CPOSTagger::GetCompoundText(const std::vector<std::string> &compound)
 {
     std::string text;
-    auto& iter = compound.cbegin();
+    auto iter = compound.cbegin();
 
     text = *iter;
 
