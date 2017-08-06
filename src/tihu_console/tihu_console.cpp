@@ -29,6 +29,8 @@
 #include <QCloseEvent>
 #include <QDir>
 
+#define APP_NAME "tihu-with-hazm"
+
 
 TIHU_CALLBACK_RETURN callback(TIHU_CALLBACK_MESSAGE Message, int lParam, int wParam, void* pData)
 {
@@ -114,7 +116,7 @@ TihuConsole::TihuConsole(QWidget *parent, Qt::WindowFlags flags)
 
     ReadSettings();
 
-    QSettings settings("Tihu", "Tihu");
+    QSettings settings("Tihu", APP_NAME);
     QString path = settings.value("library_path").toString();
 
     onUnload();
@@ -199,7 +201,7 @@ bool TihuConsole::LoadTihu(const QString& library)
         return false;
     }
 
-    QSettings settings("Tihu", "Tihu");
+    QSettings settings("Tihu", APP_NAME);
     settings.setValue("library_path", library);
     TIHU_VOICE voice = (TIHU_VOICE)settings.value("devault_voice").toInt();
 
@@ -317,7 +319,7 @@ void TihuConsole::Speak(const QString& text)
 
 void TihuConsole::ReadSettings()
 {
-    QSettings settings("Tihu", "Tihu");
+    QSettings settings("Tihu", APP_NAME);
 
     settings.beginGroup("TihuConsole");
     QString text = settings.value("text").toString();
@@ -332,7 +334,7 @@ void TihuConsole::ReadSettings()
 
 void TihuConsole::WriteSettings()
 {
-    QSettings settings("Tihu", "Tihu");
+    QSettings settings("Tihu", APP_NAME);
 
     QString text = ui.txtInput->toPlainText();
     text.truncate(1024*4);
@@ -348,7 +350,7 @@ void TihuConsole::onOpenFile()
 {
     const QString DEFAULT_DIR_KEY("default_dir_text_file");
 
-    QSettings settings("Tihu", "Tihu");
+    QSettings settings("Tihu", APP_NAME);
 
     QString path = QFileDialog::getOpenFileName(this, tr("Open Text File"),
         settings.value(DEFAULT_DIR_KEY).toString(), "*.txt");
@@ -420,6 +422,6 @@ void TihuConsole::onVoiceChange(QAction* action)
     procLoadVoice(voice);
     procSetCallback(callback, this);
 
-    QSettings settings("Dana", "Tihu");
+    QSettings settings("Dana", APP_NAME);
     settings.setValue("default_voice", voice);
 }

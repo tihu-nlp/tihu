@@ -532,6 +532,7 @@ void CAfxManager::ParsEntry(struct hentry* he, CPfxEntry* pfx, CSfxEntry* sfx, C
     if(!lable.empty() && !word->GetLable().empty()) {
         if(lable[0] == word->GetLable()[0]) {
             word->SetPronunc(pronunce);
+            word->SetFrequency(frequency);
         }
     }
 }

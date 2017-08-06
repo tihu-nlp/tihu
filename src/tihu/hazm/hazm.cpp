@@ -21,10 +21,11 @@
 #include "hazm.h"
 #include "path_manager.h"
 
-#include <python.h>
+#include <Python.h>
+
 
 CHazm::CHazm()
-{
+{    
     TokenizerObj = nullptr;
     NormalizerObj = nullptr;
     POSTaggerObj = nullptr;
@@ -43,12 +44,16 @@ CHazm::~CHazm()
 
 bool CHazm::Load(const std::string &hazm_model)
 {
-    std::string hazm_folder = CPathManager::GetInstance()->GetHazmFolder();
+    //std::string hazm_folder = CPathManager::GetInstance()->GetHazmFolder();
+    std::string hazm_folder = "/home/mostafa/Projects/tihu-nlp/hazm/hazm/";
     
-    PyObject* tokenizer_name  = PyUnicode_FromString((char*)(hazm_folder + "WordTokenizer").c_str());
-    PyObject* normalizer_name = PyUnicode_FromString((char*)(hazm_folder + "Normalizer").c_str());
-    PyObject* postagger_name  = PyUnicode_FromString((char*)(hazm_folder + "POSTagger").c_str());
+    PyRun_SimpleString("import sys");
+    PyRun_SimpleString("sys.path.append(\"/home/mostafa/Projects/tihu-nlp/hazm/hazm/\")");
     
+    PyObject* tokenizer_name  = PyUnicode_FromString("WordTokenizer");
+    PyObject* normalizer_name = PyUnicode_FromString("Normalizer");
+    PyObject* postagger_name  = PyUnicode_FromString("POSTagger");
+
     PyObject* tokenizer_module  = PyImport_Import(tokenizer_name);
     PyObject* normalizer_module = PyImport_Import(normalizer_name);
     PyObject* postagger_module  = PyImport_Import(postagger_name);
@@ -59,19 +64,21 @@ bool CHazm::Load(const std::string &hazm_model)
 
     if (tokenizer_module  == NULL ||
         normalizer_module == NULL ||
-        postagger_module  == NULL) {
+        postagger_module == NULL) {
         PyErr_Print();
+
         return false;
     }
+    return true;
 
     PyObject* tokenizer_dict  = PyModule_GetDict(tokenizer_module);
     PyObject* normalizer_dict = PyModule_GetDict(normalizer_name);
     PyObject* postagger_dict  = PyModule_GetDict(postagger_name);
 
     // Build the name of a callable class 
-    PyObject* tokenizer_class  = PyDict_GetItemString(tokenizer_dict, "WordTokenizer");
-    PyObject* normalizer_class = PyDict_GetItemString(tokenizer_dict, "Normalizer");
-    PyObject* postagger_class  = PyDict_GetItemString(tokenizer_dict, "POSTagger");
+    PyObject* tokenizer_class  = PyDict_GetItemString(tokenizer_dict,  "WordTokenizer.py");
+    PyObject* normalizer_class = PyDict_GetItemString(normalizer_dict, "Normalizer.py");
+    PyObject* postagger_class  = PyDict_GetItemString(postagger_dict,  "POSTagger.py");
 
     // Create an instance of the class
     if (!PyCallable_Check(tokenizer_class) ||
@@ -81,20 +88,20 @@ bool CHazm::Load(const std::string &hazm_model)
         return false;
     }
 
-    char args[1024];
-    sprintf(args, "model='%s'", hazm_model.c_str());
-    PyObject* postagger_args = PyUnicode_DecodeFSDefault(args);
-
-    PyObject *TokenizerObj  = PyObject_CallObject(tokenizer_class, NULL);
-    PyObject *NormalizerObj = PyObject_CallObject(normalizer_class, NULL);
-    PyObject *POSTaggerObj  = PyObject_CallObject(postagger_class, postagger_args);
-    
-    if (TokenizerObj  == NULL ||
-        NormalizerObj == NULL ||
-        POSTaggerObj  == NULL) {
-        PyErr_Print();
-        return false;
-    }
+    //char args[1024];
+    //sprintf(args, "model='%s'", hazm_model.c_str());
+    //PyObject* postagger_args = PyUnicode_DecodeFSDefault(args);
+    //
+    //PyObject *TokenizerObj  = PyObject_CallObject(tokenizer_class, NULL);
+    //PyObject *NormalizerObj = PyObject_CallObject(normalizer_class, NULL);
+    //PyObject *POSTaggerObj  = PyObject_CallObject(postagger_class, postagger_args);
+    //
+    //if (TokenizerObj  == NULL ||
+    //    NormalizerObj == NULL ||
+    //    POSTaggerObj  == NULL) {
+    //    PyErr_Print();
+    //    return false;
+    //}
 
     return true;
 }

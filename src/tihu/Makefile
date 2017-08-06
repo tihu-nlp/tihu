@@ -2,38 +2,35 @@ LIBNAME = tihu
 TARGET=lib$(LIBNAME).so
 TARGET_TEST=$(LIBNAME)_test
 CC = g++
-INC = .
-CXXFLAGS = -c -m32 -Wall -std=c++14 -I$(INC) -O3 -DDEBUG -g
-LDFLAGS = -shared -m32 -Wl,-soname,$(TARGET) -o $(TARGET)
-LIBS = 
+INC =  `python-config --includes` -I.
+##CXXFLAGS = -c -Wall -std=c++14 $(INC) -O3 -g
+## for debugging
+CXXFLAGS = -c -Wall -std=c++14 $(INC) -DDEBUG -g -fPIC  
+LDFLAGS = `python-config --ldflags` -shared -Wl,-soname,$(TARGET) -o $(TARGET) 
+LIBS =  `python-config --libs`
 RM = rm -f
 
 SRCS= \
-	tokenization/tokenizer/char_map.cpp \
-	tokenization/tokenizer/char_map_row.cpp \
-	tokenization/tokenizer/char_mapper.cpp \
-	tokenization/tokenizer/tokenizer.cpp \
-	morphology/pos_tagger/afx_manager.cpp \
-	morphology/pos_tagger/afx_entry.cpp \
-	morphology/pos_tagger/hash_manager.cpp \
-	morphology/pos_tagger/pfx_entry.cpp \
-	morphology/pos_tagger/sfx_entry.cpp \
-	morphology/pos_tagger/pos_tagger.cpp \
-	morphology/pos_disambiguator/pos_disambiguator.cpp \
-	correction/text_tagger/text_tagger.cpp \
-	diacritization/letter_to_sound/persian_to_phoneme.cpp \
-    diacritization/letter_to_sound/english_to_phoneme.cpp \
-    diacritization/letter_to_sound/punctuation_to_phoneme.cpp \
-    diacritization/letter_to_sound/number_to_phoneme.cpp \
-    diacritization/letter_to_sound/letter_to_sound.cpp \
-    diacritization/letter_to_sound/g2p_seq2seq_linux.cpp \
+	ipa_transcript/tihu_dict/afx_manager.cpp \
+	ipa_transcript/tihu_dict/afx_entry.cpp \
+	ipa_transcript/tihu_dict/hash_manager.cpp \
+	ipa_transcript/tihu_dict/pfx_entry.cpp \
+	ipa_transcript/tihu_dict/sfx_entry.cpp \
+	ipa_transcript/tihu_dict/tihu_dict.cpp \
+	ipa_transcript/letter_to_sound/persian_to_phoneme.cpp \
+    ipa_transcript/letter_to_sound/english_to_phoneme.cpp \
+    ipa_transcript/letter_to_sound/punctuation_to_phoneme.cpp \
+    ipa_transcript/letter_to_sound/number_to_phoneme.cpp \
+    ipa_transcript/letter_to_sound/letter_to_sound.cpp \
+    ipa_transcript/letter_to_sound/g2p_seq2seq_linux.cpp \
 	synthesis/espeak/espeak_lib.cpp \
 	synthesis/espeak/espeak_syn.cpp \
 	synthesis/mbrola/mbrola_lib.cpp \
 	synthesis/mbrola/mbrola_syn.cpp \
 	synthesis/mbrola/mbrowrap.cpp \
+    hazm/hazm.cpp \
+    text_tagger.cpp \
 	corpus.cpp \
-	entry.cpp \
 	event.cpp \
     phoneme.cpp \
 	pitch_range.cpp \

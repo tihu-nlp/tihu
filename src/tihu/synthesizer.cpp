@@ -48,7 +48,7 @@ bool ISynthesizer::PlaySamples(short* samples, int length) const
 {
     if (Callback) {
         if (Callback(TIHU_WAVE_BUFFER,
-            reinterpret_cast<int>(samples),
+            reinterpret_cast<size_t>(samples),
             length * 2,
             UserData) == TIHU_DATA_ABORT) {
             return false;

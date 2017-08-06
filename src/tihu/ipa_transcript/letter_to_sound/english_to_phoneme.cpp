@@ -34,6 +34,7 @@ CEnglishToPhoneme::~CEnglishToPhoneme()
 
 bool CEnglishToPhoneme::LoadModel(const std::string &model)
 {
+    return true;
     return g2p.LoadModel(model);
 }
 
