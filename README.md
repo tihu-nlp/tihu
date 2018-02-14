@@ -9,7 +9,7 @@ Letter-To-Sound module doesn't work on windows yet. It's because [tensorflow](ht
 ## build requirements
 Before compiling tihu you need to make sure you have installed following packages:
 
-### Qt
+## Qt
 for running tihu_console you need to install Qt framework. Find latest Qt framework and Qt Creator [here](https://www.qt.io/).
 
 ## Compiling
