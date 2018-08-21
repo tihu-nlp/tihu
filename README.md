@@ -17,7 +17,7 @@ To compile tihu on linux operation system run 'make' on tihu folder.
 
 Windows users can compile tihu by visual studio.
 
-##Part-Of-Speech tags
+## Part-Of-Speech tags
 Tihu has several tags for showing Part-Of-Speech. These tags are listed here with some explanations:
 
 | Tag            | Description            |
