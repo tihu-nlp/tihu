@@ -3,9 +3,5 @@ Comment=Tihu console app.
 Exec=tihu_console
 GenericName=Tihu console
 Name=Tihu console
-NoDisplay=false
-StartupNotify=true
-Terminal=false
-Type=Application
-Icon=application-x-executable
+
 
