@@ -140,13 +140,13 @@ int CEngine::LoadSynthesizer(TIHU_VOICE vocie)
 
     case TIHU_VOICE_ESPEAK_MALE: {
         Synthesizer = new CeSpeakSyn();
-        data_path += "espeak";
+        data_path += "";
     }
     break;
 
     case TIHU_VOICE_ESPEAK_FEMALE: {
         Synthesizer = new CeSpeakSyn();
-        data_path += "espeak";
+        data_path += "";
     }
     break;
     }

@@ -71,7 +71,7 @@ enum TIHU_VOICE {
     TIHU_VOICE_ESPEAK_FEMALE             ,
 };
 
-typedef TIHU_CALLBACK_RETURN(*TIHU_CALLBACK)(TIHU_CALLBACK_MESSAGE message, int l_param, int w_param, void* user_data);
+typedef TIHU_CALLBACK_RETURN(*TIHU_CALLBACK)(TIHU_CALLBACK_MESSAGE message, long l_param, long w_param, void* user_data);
 
 
 typedef bool (*TIHU_PROC_INIT)();
