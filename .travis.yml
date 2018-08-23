@@ -26,10 +26,28 @@ install:
 
 # Build steps
 script:
+  # espeak data
+  - curl -sLO http://sourceforge.net/projects/espeak/files/espeak/espeak-1.48/espeak-1.48.04-source.zip
+  - unzip espeak-1.48.04-source.zip
+  - cp -r espeak-1.48.04-source/espeak-data src/build/data/
+  # g2p-seq2seq-tihudict
+  - curl -sLO https://github.com/tihu-nlp/g2p-seq2seq-tihudict/raw/master/g2p-seq2seq-tihudict.tar.gz
+  - tar zxvf g2p-seq2seq-tihudict.tar.gz
+  - cp -r g2p-seq2seq-tihudict src/build/data/g2p-seq2seq-tihudict
+  # g2p-seq2seq-model-6.2-cmudict
+  - curl -sLO https://sourceforge.net/projects/cmusphinx/files/G2P%20Models/g2p-seq2seq-model-6.2-cmudict-nostress.tar.gz
+  - tar zxvf g2p-seq2seq-model-6.2-cmudict-nostress.tar.gz
+  - cp -r g2p-seq2seq-model-6.2-cmudict-nostress src/build/data/g2p-seq2seq-cmudict
+  # remove unnecessary files
+  - rm src/build/mbrolla.dll
+  - rm src/build/ttsapp.exe
+  - rm src/build/.gitignore
+  # tihu dll
   - cd src/tihu
   - make
   - make test
   - make install
+  # tihu console => appimage
   - cd ../tihu_console
   - qmake CONFIG+=release PREFIX=/usr
   - make -j$(nproc)
@@ -38,6 +56,7 @@ script:
   - chmod a+x linuxdeployqt-continuous-x86_64.AppImage
   - unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH
   - ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -appimage
+  
 
 deploy:
   provider: releases
