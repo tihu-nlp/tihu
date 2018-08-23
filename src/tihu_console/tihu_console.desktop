@@ -7,5 +7,5 @@ NoDisplay=false
 StartupNotify=true
 Terminal=false
 Type=Application
-Icon=tihu.png
+Icon=tihu
 
