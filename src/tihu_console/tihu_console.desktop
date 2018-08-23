@@ -7,4 +7,5 @@ NoDisplay=false
 StartupNotify=true
 Terminal=false
 Type=Application
-Icon=AppImage
+Icon=application-x-executable
+
