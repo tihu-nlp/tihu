@@ -107,7 +107,7 @@ void CCorpus::DumpToXml(const std::string &path) const
     char buffer[1024];
 
     for(auto &word : WordList) {
-        snprintf(buffer, 1024, "\t<word offset=\"%d\" length=\"%d\" text=\"%s\" %s %s>",
+        snprintf(buffer, 1024, "\t<word offset=\"%zd\" length=\"%zd\" text=\"%s\" %s %s>",
                  word->GetOffset(),
                  word->GetLength(),
                  word->GetText().c_str(),

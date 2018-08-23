@@ -3,9 +3,9 @@ TARGET=lib$(LIBNAME).so
 TARGET_TEST=$(LIBNAME)_test
 CC = g++
 INC = .
-CXXFLAGS = -c -m32 -Wall -std=c++14 -I$(INC) -O3 -g
-LDFLAGS = -shared -m32 -Wl,-soname,$(TARGET) -o $(TARGET)
-LIBS = 
+CXXFLAGS = -c -fPIC -Wall -std=c++11 -I$(INC) -O3 -g
+LDFLAGS = -shared -Wl,-soname,$(TARGET) -o $(TARGET)
+LIBS =
 RM = rm -f
 
 SRCS= \

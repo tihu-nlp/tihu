@@ -100,10 +100,10 @@ bool CeSpeakLib::Initialize(const char* data_path)
     procInfo                = (ESPEAK_PROC_INFO) GetProcAddress(Module, "espeak_Info");
 #else
     char espeak[1024];
-    sprintf(espeak, "%slibespeak.so.1.1.48",
+    sprintf(espeak, "%slibespeak.so",
         CPathManager::GetInstance()->GetBuildFolder().c_str());
 
-    Module = dlopen("libespeak.so.1.1.48", RTLD_LAZY);
+    Module = dlopen(espeak, RTLD_LAZY);
 
     if(!Module) {
         fputs(dlerror(), stderr);

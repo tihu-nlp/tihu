@@ -30,7 +30,7 @@
 #include <QDir>
 
 
-TIHU_CALLBACK_RETURN callback(TIHU_CALLBACK_MESSAGE Message, int lParam, int wParam, void* pData)
+TIHU_CALLBACK_RETURN callback(TIHU_CALLBACK_MESSAGE Message, long lParam, long wParam, void* pData)
 {
     TihuConsole* consol = static_cast<TihuConsole*>(pData);
 
@@ -144,7 +144,7 @@ void TihuConsole::onLoad()
 
     if(!LoadTihu(path))
     {
-        QMessageBox::information(this, "Tihu", "Can not load tihu.");
+        QMessageBox::critical(this, "Tihu", "Can not load tihu.");
         return;
     }
 }
@@ -221,7 +221,7 @@ bool TihuConsole::LoadTihu(const QString& library)
     m_format.setSampleSize(16);
     m_format.setCodec("audio/pcm");
     m_format.setByteOrder(QAudioFormat::LittleEndian);
-    m_format.setSampleType(QAudioFormat::UnSignedInt);
+    m_format.setSampleType(QAudioFormat::SignedInt);
 
     QAudioDeviceInfo info(m_device);
     if (!info.isFormatSupported(m_format))
@@ -232,6 +232,9 @@ bool TihuConsole::LoadTihu(const QString& library)
 
     m_audioOutput = new QAudioOutput(m_format, this);
     m_output = m_audioOutput->start();
+    if (!m_output) {
+        QMessageBox::critical(this, "Tihu", "Can not initialize audio output");
+    }
 
     ui.splitter->setStretchFactor(0, 1);
     ui.splitter->setStretchFactor(1, 0);
@@ -292,17 +295,19 @@ void TihuConsole::onSpeak()
 
 void TihuConsole::onAutoTagger()
 {
+    AppendMessage("Sorry. Not implemented yet!");
+    /// TODO:
+    ///
     ui.txtMessages->clear();
 
     QString text = ui.txtInput->toPlainText();
     std::string str = text.toStdString();
     procTagger(str.c_str());
-
-    WriteSettings();
 }
 
 void TihuConsole::onNormalize()
 {
+    AppendMessage("Sorry. Not implemented yet!");
 }
 
 void TihuConsole::Speak(const QString& text)
