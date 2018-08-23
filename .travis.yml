@@ -1,0 +1,50 @@
+
+language: cpp
+compiler: gcc
+sudo: require
+dist: trusty
+
+before_install:
+  - sudo add-apt-repository ppa:beineri/opt-qt-5.10.1-trusty -y
+  - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
+  - sudo apt-get update -q
+  # we need upgrade gcc for C++14:
+  # https://docs.travis-ci.com/user/installing-dependencies/#installing-packages-from-a-custom-apt-repository
+  # and change symbolic links 
+  # https://gist.github.com/jlblancoc/99521194aba975286c80f93e47966dc5
+  - sudo apt-get install g++-7 -y
+  - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 60 --slave /usr/bin/g++ g++ /usr/bin/g++-7 
+  - sudo update-alternatives --config gcc
+  - gcc --version
+  - g++ --versio
+
+install:
+  - sudo apt-get install gcc-7-multilib g++-7-multilib -y
+  - sudo apt-get install qt510base qtmultimedia5 -y
+  - source /opt/qt510/bin/qt510-env.sh
+
+
+# Build steps
+script:
+  - cd src/tihu
+  - make
+  - make test
+  - make install
+  - cd ../tihu_console
+  - qmake CONFIG+=release PREFIX=/usr
+  - make -j$(nproc)
+  - make INSTALL_ROOT=appdir -j$(nproc) install ; find appdir/
+  - wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
+  - chmod a+x linuxdeployqt-continuous-x86_64.AppImage
+  - unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH
+  - ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -appimage
+
+deploy:
+  provider: releases
+  api_key:
+    secure: YOUR_API_KEY_ENCRYPTED
+  file:
+    - src/tihu/build/*
+  skip_cleanup: true
+  on:
+    tags: true
