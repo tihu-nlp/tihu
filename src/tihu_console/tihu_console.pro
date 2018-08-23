@@ -10,4 +10,13 @@ SOURCES +=  ./main.cpp \
 FORMS +=    ./tihu_console.ui
 RESOURCES += ./tihu_console.qrc
 
+unix {
+
+    isEmpty(PREFIX) {
+        PREFIX = /usr
+    }
+
+    target.path = $$PREFIX/bin
+}
+
 INSTALLS += target
