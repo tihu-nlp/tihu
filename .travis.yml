@@ -39,7 +39,7 @@ script:
   - tar zxvf g2p-seq2seq-model-6.2-cmudict-nostress.tar.gz
   - cp -r g2p-seq2seq-model-6.2-cmudict-nostress src/build/data/g2p-seq2seq-cmudict
   # remove unnecessary files
-  - rm src/build/mbrolla.dll
+  - rm src/build/mbrola.dll
   - rm src/build/ttsapp.exe
   - rm src/build/.gitignore
   # tihu dll
@@ -56,14 +56,14 @@ script:
   - chmod a+x linuxdeployqt-continuous-x86_64.AppImage
   - unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH
   - ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -appimage
-  
+  - tar -cvzf tihu-linux-x64.tar.gs src/build
 
 deploy:
   provider: releases
   api_key:
-    secure: YOUR_API_KEY_ENCRYPTED
+    secure: $GITHUB_OAUTH_TOKEN
   file:
-    - src/tihu/build/*
+    - tihu-linux-x64.tar.gs
   skip_cleanup: true
-  on:
-    tags: true
+  #on:
+  #  tags: true
