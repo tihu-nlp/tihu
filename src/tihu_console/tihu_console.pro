@@ -20,8 +20,11 @@ unix {
     
     shortcutfiles.files = tihu_console.desktop
     shortcutfiles.path = $$PREFIX/share/applications/
+    pixmap.files = ./tihu.png
+    pixmap.path = $$PREFIX/share/pixmaps/
 
     INSTALLS += shortcutfiles
+    INSTALLS += pixmap
 }
 
 INSTALLS += target
