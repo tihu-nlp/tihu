@@ -20,3 +20,4 @@ unix {
 }
 
 INSTALLS += target
+DISTFILES += dana.desktop
