@@ -9,3 +9,5 @@ SOURCES +=  ./main.cpp \
             ./tihu_console.cpp
 FORMS +=    ./tihu_console.ui
 RESOURCES += ./tihu_console.qrc
+
+INSTALLS += target
