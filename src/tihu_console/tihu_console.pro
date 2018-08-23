@@ -15,9 +15,13 @@ unix {
     isEmpty(PREFIX) {
         PREFIX = /usr
     }
+ 
+    target.path = $$PREFIX/bin  
+    
+    shortcutfiles.files = tihu_console.desktop
+    shortcutfiles.path = $$PREFIX/share/applications/
 
-    target.path = $$PREFIX/bin
+    INSTALLS += shortcutfiles
 }
 
 INSTALLS += target
-DISTFILES += dana.desktop
