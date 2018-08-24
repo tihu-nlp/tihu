@@ -65,5 +65,5 @@ deploy:
   file:
     - tihu-linux-x64.tar.gs
   skip_cleanup: true
-  #on:
-  #  tags: true
+  on:
+    tags: true
