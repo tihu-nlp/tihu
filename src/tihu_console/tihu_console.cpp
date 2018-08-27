@@ -65,6 +65,7 @@ TihuConsole::TihuConsole(QWidget *parent, Qt::WindowFlags flags)
     procLoadVoice = 0;
     m_audioOutput = 0;
     m_output = 0;
+    m_rawAudio = 0;
 
     ui.setupUi(this);
 
@@ -113,11 +114,10 @@ TihuConsole::TihuConsole(QWidget *parent, Qt::WindowFlags flags)
     connect(actionGroup, SIGNAL(triggered(QAction*)), this, SLOT(onVoiceChange(QAction*)));
 
     ReadSettings();
-
-    QSettings settings("Tihu", "Tihu");
-    QString path = settings.value("library_path").toString();
-
     onUnload();
+
+    QSettings settings("Tihu", "TihuConsole");
+    QString path = settings.value("library_path").toString();
 
     if(!path.isEmpty())
         LoadTihu(path);
@@ -199,9 +199,9 @@ bool TihuConsole::LoadTihu(const QString& library)
         return false;
     }
 
-    QSettings settings("Tihu", "Tihu");
+    QSettings settings("Tihu", "TihuConsole");
     settings.setValue("library_path", library);
-    TIHU_VOICE voice = (TIHU_VOICE)settings.value("devault_voice").toInt();
+    TIHU_VOICE voice = (TIHU_VOICE)settings.value("default_voice").toInt();
 
     procLoadVoice(voice);
     procSetCallback(callback, this);
@@ -235,6 +235,8 @@ bool TihuConsole::LoadTihu(const QString& library)
     if (!m_output) {
         QMessageBox::critical(this, "Tihu", "Can not initialize audio output");
     }
+    m_rawAudio = new QFile("./audio.raw");
+    m_rawAudio->open(QFile::WriteOnly);
 
     ui.splitter->setStretchFactor(0, 1);
     ui.splitter->setStretchFactor(1, 0);
@@ -261,6 +263,11 @@ void TihuConsole::onUnload()
         m_audioOutput = 0;
     }
 
+    if (m_rawAudio) {
+        m_rawAudio->close();
+        m_rawAudio= 0;
+    }
+
     ui.btnLoad->setEnabled(true);
     ui.btnUnload->setEnabled(false);
     ui.btnNormalize->setEnabled(false);
@@ -282,6 +289,10 @@ void TihuConsole::onStop()
 
 void TihuConsole::onSpeak()
 {
+    if (m_rawAudio) {
+        m_rawAudio ->seek(0);
+    }
+
     ui.btnSpeak->setEnabled(false);
     ui.btnStop->setEnabled(true);
     ui.txtMessages->clear();
@@ -322,7 +333,7 @@ void TihuConsole::Speak(const QString& text)
 
 void TihuConsole::ReadSettings()
 {
-    QSettings settings("Tihu", "Tihu");
+    QSettings settings("Tihu", "TihuConsole");
 
     settings.beginGroup("TihuConsole");
     QString text = settings.value("text").toString();
@@ -337,7 +348,7 @@ void TihuConsole::ReadSettings()
 
 void TihuConsole::WriteSettings()
 {
-    QSettings settings("Tihu", "Tihu");
+    QSettings settings("Tihu", "TihuConsole");
 
     QString text = ui.txtInput->toPlainText();
     text.truncate(1024*4);
@@ -353,7 +364,7 @@ void TihuConsole::onOpenFile()
 {
     const QString DEFAULT_DIR_KEY("default_dir_text_file");
 
-    QSettings settings("Tihu", "Tihu");
+    QSettings settings("Tihu", "TihuConsole");
 
     QString path = QFileDialog::getOpenFileName(this, tr("Open Text File"),
         settings.value(DEFAULT_DIR_KEY).toString(), "*.txt");
@@ -394,6 +405,10 @@ void TihuConsole::WriteAudioBuffer(char* buffer, int length)
         return;
     }
 
+    if (m_rawAudio) {
+        m_rawAudio->write(buffer, length);
+    }
+
     qint64 data_remaining = length; // assign correct value here
 
     while (data_remaining) {
@@ -425,6 +440,8 @@ void TihuConsole::onVoiceChange(QAction* action)
     procLoadVoice(voice);
     procSetCallback(callback, this);
 
-    QSettings settings("Dana", "Tihu");
+    QSettings settings("Tihu", "TihuConsole");
     settings.setValue("default_voice", voice);
+
+    WriteSettings();
 }

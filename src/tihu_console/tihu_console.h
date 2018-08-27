@@ -85,6 +85,7 @@ private:
     QAudioFormat m_format;
     QAudioOutput *m_audioOutput;
     QIODevice *m_output; // not owned
+    QFile* m_rawAudio;
 
     QActionGroup *actionGroup;
 };
