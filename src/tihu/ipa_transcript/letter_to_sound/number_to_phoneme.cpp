@@ -24,9 +24,9 @@
 
 
 #define MAX_YEKAN_DIGITS_PRONUNC        ARRAY_LENGTH(YekanDigits)
-#define MAX_DAHGAN_DIGITS_PRONUNC        ARRAY_LENGTH(DahganDigits)
-#define MAX_SADGAN_DIGITS_PRONUNC        ARRAY_LENGTH(SadganDigits)
-#define MAX_SEG_SUFFIX_PRONUNC            ARRAY_LENGTH(SegSuffix)
+#define MAX_DAHGAN_DIGITS_PRONUNC       ARRAY_LENGTH(DahganDigits)
+#define MAX_SADGAN_DIGITS_PRONUNC       ARRAY_LENGTH(SadganDigits)
+#define MAX_SEG_SUFFIX_PRONUNC          ARRAY_LENGTH(SegSuffix)
 
 // This array holds the suffix pronunciations of each segments
 const char SegSuffix[][16] = {

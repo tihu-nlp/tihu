@@ -1,7 +1,5 @@
 hazm/*
 tihu*
-libsamplerate*
-libsndfile*
 log/*
 data/espeak/*
 data/postagger.model

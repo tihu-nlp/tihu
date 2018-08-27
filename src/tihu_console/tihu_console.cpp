@@ -32,7 +32,7 @@
 #define APP_NAME "tihu-with-hazm"
 
 
-TIHU_CALLBACK_RETURN callback(TIHU_CALLBACK_MESSAGE Message, int lParam, int wParam, void* pData)
+TIHU_CALLBACK_RETURN callback(TIHU_CALLBACK_MESSAGE Message, long lParam, long wParam, void* pData)
 {
     TihuConsole* consol = static_cast<TihuConsole*>(pData);
 
@@ -67,6 +67,7 @@ TihuConsole::TihuConsole(QWidget *parent, Qt::WindowFlags flags)
     procLoadVoice = 0;
     m_audioOutput = 0;
     m_output = 0;
+    m_rawAudio = 0;
 
     ui.setupUi(this);
 
@@ -115,11 +116,10 @@ TihuConsole::TihuConsole(QWidget *parent, Qt::WindowFlags flags)
     connect(actionGroup, SIGNAL(triggered(QAction*)), this, SLOT(onVoiceChange(QAction*)));
 
     ReadSettings();
+    onUnload();
 
     QSettings settings("Tihu", APP_NAME);
     QString path = settings.value("library_path").toString();
-
-    onUnload();
 
     if(!path.isEmpty())
         LoadTihu(path);
@@ -146,7 +146,7 @@ void TihuConsole::onLoad()
 
     if(!LoadTihu(path))
     {
-        QMessageBox::information(this, "Tihu", "Can not load tihu.");
+        QMessageBox::critical(this, "Tihu", "Can not load tihu.");
         return;
     }
 }
@@ -203,7 +203,7 @@ bool TihuConsole::LoadTihu(const QString& library)
 
     QSettings settings("Tihu", APP_NAME);
     settings.setValue("library_path", library);
-    TIHU_VOICE voice = (TIHU_VOICE)settings.value("devault_voice").toInt();
+    TIHU_VOICE voice = (TIHU_VOICE)settings.value("default_voice").toInt();
 
     procLoadVoice(voice);
     procSetCallback(callback, this);
@@ -223,7 +223,7 @@ bool TihuConsole::LoadTihu(const QString& library)
     m_format.setSampleSize(16);
     m_format.setCodec("audio/pcm");
     m_format.setByteOrder(QAudioFormat::LittleEndian);
-    m_format.setSampleType(QAudioFormat::UnSignedInt);
+    m_format.setSampleType(QAudioFormat::SignedInt);
 
     QAudioDeviceInfo info(m_device);
     if (!info.isFormatSupported(m_format))
@@ -234,6 +234,11 @@ bool TihuConsole::LoadTihu(const QString& library)
 
     m_audioOutput = new QAudioOutput(m_format, this);
     m_output = m_audioOutput->start();
+    if (!m_output) {
+        QMessageBox::critical(this, "Tihu", "Can not initialize audio output");
+    }
+    m_rawAudio = new QFile("./audio.raw");
+    m_rawAudio->open(QFile::WriteOnly);
 
     ui.splitter->setStretchFactor(0, 1);
     ui.splitter->setStretchFactor(1, 0);
@@ -260,6 +265,11 @@ void TihuConsole::onUnload()
         m_audioOutput = 0;
     }
 
+    if (m_rawAudio) {
+        m_rawAudio->close();
+        m_rawAudio= 0;
+    }
+
     ui.btnLoad->setEnabled(true);
     ui.btnUnload->setEnabled(false);
     ui.btnNormalize->setEnabled(false);
@@ -281,6 +291,10 @@ void TihuConsole::onStop()
 
 void TihuConsole::onSpeak()
 {
+    if (m_rawAudio) {
+        m_rawAudio ->seek(0);
+    }
+
     ui.btnSpeak->setEnabled(false);
     ui.btnStop->setEnabled(true);
     ui.txtMessages->clear();
@@ -294,17 +308,19 @@ void TihuConsole::onSpeak()
 
 void TihuConsole::onAutoTagger()
 {
+    AppendMessage("Sorry. Not implemented yet!");
+    /// TODO:
+    ///
     ui.txtMessages->clear();
 
     QString text = ui.txtInput->toPlainText();
     std::string str = text.toStdString();
     procTagger(str.c_str());
-
-    WriteSettings();
 }
 
 void TihuConsole::onNormalize()
 {
+    AppendMessage("Sorry. Not implemented yet!");
 }
 
 void TihuConsole::Speak(const QString& text)
@@ -320,7 +336,6 @@ void TihuConsole::Speak(const QString& text)
 void TihuConsole::ReadSettings()
 {
     QSettings settings("Tihu", APP_NAME);
-
     settings.beginGroup("TihuConsole");
     QString text = settings.value("text").toString();
     QByteArray geo_console = settings.value("geo_console").toByteArray();
@@ -391,6 +406,10 @@ void TihuConsole::WriteAudioBuffer(char* buffer, int length)
         return;
     }
 
+    if (m_rawAudio) {
+        m_rawAudio->write(buffer, length);
+    }
+
     qint64 data_remaining = length; // assign correct value here
 
     while (data_remaining) {
@@ -422,6 +441,8 @@ void TihuConsole::onVoiceChange(QAction* action)
     procLoadVoice(voice);
     procSetCallback(callback, this);
 
-    QSettings settings("Dana", APP_NAME);
+    QSettings settings("Tihu", APP_NAME);
     settings.setValue("default_voice", voice);
+
+    WriteSettings();
 }

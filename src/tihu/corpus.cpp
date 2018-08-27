@@ -131,12 +131,12 @@ void CCorpus::DumpToTxt(const std::string &path) const
     char buffer[1024];
 
     for(auto &word : WordList) {
-        
+
         snprintf(buffer, 1024, "%-30s%-12s %s",
             word->GetText().c_str(),
             word->GetLable().c_str(),
             word->GetPronunc().c_str());
-    
+
         writer << std::endl;
     }
 

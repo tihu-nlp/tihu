@@ -2,11 +2,12 @@ LIBNAME = tihu
 TARGET=lib$(LIBNAME).so
 TARGET_TEST=$(LIBNAME)_test
 CC = g++
+
 INC =  `python-config --includes` -I.
-##CXXFLAGS = -c -Wall -std=c++14 $(INC) -O3 -g
+##CXXFLAGS = -c -fPIC -Wall -std=c++14 -I$(INC) -O3 -g
 ## for debugging
-CXXFLAGS = -c -Wall -std=c++14 $(INC) -DDEBUG -g -fPIC  
-LDFLAGS = `python-config --ldflags` -shared -Wl,-soname,$(TARGET) -o $(TARGET) 
+CXXFLAGS = -c -Wall -std=c++14 $(INC) -DDEBUG -g -fPIC
+LDFLAGS = `python-config --ldflags` -shared -Wl,-soname,$(TARGET) -o $(TARGET)
 LIBS =  `python-config --libs`
 RM = rm -f
 

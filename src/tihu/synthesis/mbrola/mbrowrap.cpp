@@ -169,7 +169,7 @@ static int start_mbrola(const char* voice_path)
         signal(SIGTERM, SIG_IGN);
 
         snprintf(charbuf, sizeof(charbuf), "%g", mbr_volume);
-        execlp("mbrola", "mbrola", "-e", "-v", charbuf,
+        execlp("./mbrola", "./mbrola", "-e", "-v", charbuf,
                voice_path, "-", "-.wav", (char*)NULL);
         /* if execution reaches this point then the exec() failed */
         snprintf(mbr_errorbuf, sizeof(mbr_errorbuf),

@@ -201,7 +201,7 @@ bool CTihuDict::CanBeDetached(std::u16string str)
     case 0x0648: //و
         return true;
     }
-    
+
     if (str == u"\u0645\u06CC" ||   /// می
         str == u"\u0646\u0645\u06CC") {   /// نمی
         return true;

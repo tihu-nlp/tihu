@@ -41,9 +41,9 @@ bool CEnglishToPhoneme::LoadModel(const std::string &model)
 std::string CEnglishToPhoneme::Convert(const std::string &word)
 {
     std::string pronunciation;
-    
+
     /// TODO:::
-    /*pronunciation = */g2p.Convert(word);
-    
+    //pronunciation = g2p.Convert(word);
+
     return pronunciation;
 }

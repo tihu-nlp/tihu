@@ -10,13 +10,21 @@ SOURCES +=  ./main.cpp \
 FORMS +=    ./tihu_console.ui
 RESOURCES += ./tihu_console.qrc
 
-### to copy target file to build folder
-CONFIG(debug, debug|release) {
-    TARGET_PATH = $$OUT_PWD/debug
-}
-CONFIG(release, debug|release) {
-    TARGET_PATH = $$OUT_PWD/release
+unix {
+
+    isEmpty(PREFIX) {
+        PREFIX = /usr
+    }
+ 
+    target.path = $$PREFIX/bin  
+    
+    shortcutfiles.files = tihu_console.desktop
+    shortcutfiles.path = $$PREFIX/share/applications/
+    pixmap.files = ./tihu.png
+    pixmap.path = $$PREFIX/share/pixmaps/
+
+    INSTALLS += shortcutfiles
+    INSTALLS += pixmap
 }
 
-win32: QMAKE_POST_LINK += copy /y "$$shell_path($$TARGET_PATH/tihu_console.exe)" "$$shell_path($$PWD/../build/)"
-unix: QMAKE_POST_LINK += cp "$$shell_path($$TARGET_PATH/tihu_console)" "$$shell_path($$PWD/../build/)"
+INSTALLS += target
