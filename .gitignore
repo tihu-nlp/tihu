@@ -9,12 +9,10 @@ ipch/
 *.bsc
 *.user*
 *.o
-temp/
-tools
 moc_*
 qrc_*
 ui_*
 .vscode
 build-*
 espeak-data
-g2p*
+

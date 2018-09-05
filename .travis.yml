@@ -22,6 +22,7 @@ install:
   - sudo apt-get install gcc-7-multilib g++-7-multilib -y
   - sudo apt-get install qt510base qt510multimedia -y
   - source /opt/qt510/bin/qt510-env.sh
+  - pip install --upgrade pip
 
 
 # Build steps
@@ -30,21 +31,20 @@ script:
   # espeak data
   - curl -sLO http://sourceforge.net/projects/espeak/files/espeak/espeak-1.48/espeak-1.48.04-source.zip
   - unzip espeak-1.48.04-source.zip
-  - cp -r espeak-1.48.04-source/espeak-data src/build/data/
+  - cp -r espeak-1.48.04-source/espeak-data ./build/data/
   # g2p-seq2seq-tihudict
-  - curl -sLO https://github.com/tihu-nlp/g2p-seq2seq-tihudict/raw/master/g2p-seq2seq-tihudict.tar.gz
+  - curl -sLO curl -sLO https://github.com/tihu-nlp/g2p-seq2seq-tihudict/raw/master/g2p-seq2seq-tihudict.tar.gz
   - tar zxvf g2p-seq2seq-tihudict.tar.gz
-  - cp -r g2p-seq2seq-tihudict src/build/data/g2p-seq2seq-tihudict
+  - cp -r g2p-seq2seq-tihudict ./build/data/g2p-seq2seq-tihudict
   # g2p-seq2seq-model-6.2-cmudict
   - curl -sLO https://sourceforge.net/projects/cmusphinx/files/G2P%20Models/g2p-seq2seq-model-6.2-cmudict-nostress.tar.gz
   - tar zxvf g2p-seq2seq-model-6.2-cmudict-nostress.tar.gz
-  - cp -r g2p-seq2seq-model-6.2-cmudict-nostress src/build/data/g2p-seq2seq-cmudict
+  - cp -r g2p-seq2seq-model-6.2-cmudict-nostress ./build/data/g2p-seq2seq-cmudict
   # remove unnecessary files
-  - rm src/build/mbrola.dll
-  - rm src/build/ttsapp.exe
-  - rm src/build/.gitignore
+  - rm ./build/mbrola.dll
+  - rm ./build/.gitignore
   # tihu dll
-  - cd src/tihu
+  - cd ./tihu
   - make
   - make test
   - make install
