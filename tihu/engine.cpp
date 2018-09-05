@@ -32,6 +32,13 @@
 #include <locale>
 
 
+#ifdef WIN32
+#include <Windows.h>
+#else
+#include "tihu.h"
+#include <dlfcn.h>
+#endif
+
 
 #define LOG_ENABLED
 
@@ -68,6 +75,13 @@ CEngine::~CEngine()
 
 int CEngine::LoadModules()
 {
+    /// change current directory
+    std::string dir = GetCurrentModulePath();
+    int res = chdir(dir.c_str());
+    if (res != 0) {
+        std::cout << "Can not change current directory to " << dir << std::endl;
+    }
+
     Hazm = new CHazm();
     TihuDict = new CTihuDict();
     LetterToSound = new CLetterToSound();
@@ -235,7 +249,7 @@ void CEngine::LogText(const std::string& filename) const
 {
     const std::locale utf8_locale = std::locale(std::locale(), new std::codecvt_utf8<wchar_t>());
 
-    std::ofstream writer(filename);
+    std::ofstream writer(filename, std::ofstream::out | std::ofstream::app);
 
     if(!writer.is_open()) {
         return;
@@ -253,4 +267,41 @@ void CEngine::LogText(const std::string& filename) const
 void CEngine::LogCorpus(const std::string& filename) const
 {
     Corpus->Dump(filename);
+}
+
+std::string CEngine::GetCurrentModulePath() const
+{
+    std::string path;
+
+#ifdef WIN32
+    char buffer[_MAX_PATH];
+    buffer[0] = 0;
+
+    HMODULE module = NULL;
+    if(!GetModuleHandleExA(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS |
+                           GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
+                           "tihu.dll",
+                           &module)) {
+        int ret = GetLastError();
+        fprintf(stderr, "GetModuleHandle returned %d\n", ret);
+        return path;
+    }
+
+    if(!GetModuleFileNameA(module, buffer, _MAX_PATH)) {
+        return path;
+    }
+
+    path = buffer;
+#else
+    Dl_info dl_info;
+    if(!dladdr((void*)tihu_Init, &dl_info)) {
+        return path;
+    }
+
+    path = dl_info.dli_fname;
+#endif
+
+    size_t found=path.find_last_of("/\\");
+
+    return path.substr(0,found+1);
 }

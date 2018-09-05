@@ -15,4 +15,6 @@ ui_*
 .vscode
 build-*
 espeak-data
-
+libtihu.so
+tihu_play/tihu_play
+build/data/g2p*

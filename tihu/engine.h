@@ -58,6 +58,8 @@ private:
     void LogText(const std::string& filename) const;
     void LogCorpus(const std::string& filename) const;
 
+    std::string GetCurrentModulePath() const;
+
 
 private:
     IParser* Hazm;
