@@ -48,9 +48,6 @@ make install
 
 Note: Windows users can compile Tihu by their own risks.
 
-## Live demo
-<<TBD>>
-
 
 ## About the Name
 
