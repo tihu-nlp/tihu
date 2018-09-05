@@ -47,7 +47,7 @@ void IParser::SetSettings(CSettings* settings)
     Settings = settings;
 }
 
-void IParser::ReportMessage(const char* message, ...)
+void IParser::ReportMessage(const char* message, ...) const
 {
     char temp[1024];
 

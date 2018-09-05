@@ -146,7 +146,7 @@ int u16cmp(const char16_t* str1, const char16_t* str2, size_t n)
             n--;
             continue;
         }
-        
+
         return (int)c1 - (int)c2;
     }
 

@@ -10,10 +10,10 @@ before_install:
   - sudo apt-get update -q
   # we need upgrade gcc for C++14:
   # https://docs.travis-ci.com/user/installing-dependencies/#installing-packages-from-a-custom-apt-repository
-  # and change symbolic links 
+  # and change symbolic links
   # https://gist.github.com/jlblancoc/99521194aba975286c80f93e47966dc5
   - sudo apt-get install g++-7 -y
-  - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 60 --slave /usr/bin/g++ g++ /usr/bin/g++-7 
+  - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 60 --slave /usr/bin/g++ g++ /usr/bin/g++-7
   - sudo update-alternatives --config gcc
   - gcc --version
   - g++ --versio

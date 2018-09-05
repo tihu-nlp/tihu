@@ -13,7 +13,7 @@ HEADERS  += mainwindow.h \
 
 RESOURCES += \
             tihu_tester.qrc
-            
+
 unix|win32: LIBS += -L$$PWD/../build/ -ltihu
 INCLUDEPATH += $$PWD/../tihu
 

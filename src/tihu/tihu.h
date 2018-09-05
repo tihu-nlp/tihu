@@ -40,6 +40,7 @@ enum TIHU_ERROR {
     TIHU_ERROR_LOAD_VOICE              ,
     TIHU_ERROR_LOAD_USER_DIC           ,
     TIHU_ERROR_LOAD_SETTING            ,
+    TIHU_ERROR_NO_PYTHON               ,
 };
 
 enum TIHU_PARAM {

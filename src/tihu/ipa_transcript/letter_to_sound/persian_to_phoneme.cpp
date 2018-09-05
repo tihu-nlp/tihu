@@ -19,7 +19,6 @@
 *
 *******************************************************************************/
 #include "persian_to_phoneme.h"
-#include "path_manager.h"
 
 #include <algorithm>
 
@@ -47,9 +46,7 @@ bool CPersianToPhoneme::LoadModel(const std::string &model)
 
 void CPersianToPhoneme::LoadWordFrequency()
 {
-    std::string log_file = CPathManager::GetInstance()->GetLogFolder();
-    log_file += "unknown_word_freqeuncy.txt";
-    
+    std::string log_file = "./log/unknown_word_freqeuncy.txt";
     FILE* file = fopen(log_file.c_str(), "r");
 
     if(!file) {
@@ -72,9 +69,7 @@ void CPersianToPhoneme::LoadWordFrequency()
 
 void CPersianToPhoneme::SaveWordFrequency()
 {
-    std::string log_file = CPathManager::GetInstance()->GetLogFolder();
-    log_file += "unknown_word_freqeuncy.txt";
-
+    std::string log_file = "./log/unknown_word_freqeuncy.txt";
     FILE* file = fopen(log_file.c_str(), "w");
 
     if(!file) {
@@ -96,7 +91,7 @@ void CPersianToPhoneme::SaveWordFrequency()
     } sort_by_frequency;
 
     std::sort(sorted.begin(), sorted.end(), sort_by_frequency);
-    
+
     char buf[1024];
     for(auto const &i : sorted) {
         std::string word = i.first;
@@ -116,8 +111,8 @@ std::string CPersianToPhoneme::Convert(const std::string &word)
 #endif
 
     std::string pronunciation;
-    
+
     pronunciation = g2p.Convert(word);
-    
+
     return pronunciation;
 }

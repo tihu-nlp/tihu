@@ -25,7 +25,6 @@
 #include "synthesis/espeak/espeak_syn.h"
 #include "hazm/hazm.h"
 #include "text_tagger.h"
-#include "path_manager.h"
 #include "engine.h"
 #include "tihu.h"
 
@@ -69,80 +68,61 @@ CEngine::~CEngine()
 
 int CEngine::LoadModules()
 {
-    /// if module re-loaded, it's better to re-initialize it.
-    CPathManager::GetInstance()->Initialize();
-
     Hazm = new CHazm();
     TihuDict = new CTihuDict();
     LetterToSound = new CLetterToSound();
     TextTagger = new CTextTagger();
 
-    std::string affixes_path = CPathManager::GetInstance()->GetDataFolder();
-    std::string dictionary_path = CPathManager::GetInstance()->GetDataFolder();
-    std::string g2p_persian_model = CPathManager::GetInstance()->GetDataFolder();
-    std::string g2p_english_model = CPathManager::GetInstance()->GetDataFolder();
-    std::string punctuations_path = CPathManager::GetInstance()->GetDataFolder();
-    std::string hazm_model_path = CPathManager::GetInstance()->GetDataFolder();
-
-    affixes_path += "lexicon.aff";
-    dictionary_path += "lexicon.dic";
-    g2p_english_model += "g2p-seq2seq-cmudict";
-    g2p_persian_model += "g2p-seq2seq-tihudict";
-    punctuations_path += "punctuations.txt";
-    hazm_model_path += "postagger.model";
-
-    if (!static_cast<CHazm*>(Hazm)->Load(hazm_model_path)) {
+    if (!static_cast<CHazm*>(Hazm)->Load("Hazm")) {
         return TIHU_ERROR_LOAD_DATA;
     }
 
-    if(!static_cast<CTihuDict*>(TihuDict)->Load(affixes_path,
-        dictionary_path, "")) {
+    if(!static_cast<CTihuDict*>(TihuDict)->Load("Dict")) {
         return TIHU_ERROR_LOAD_DATA;
     }
 
-    if(!static_cast<CLetterToSound*>(LetterToSound)->Load(g2p_persian_model,
-        g2p_english_model, punctuations_path)) {
+    if(!static_cast<CLetterToSound*>(LetterToSound)->Load("LTS")) {
         return TIHU_ERROR_LOAD_DATA;
     }
 
     return TIHU_ERROR_NONE;
 }
 
-int CEngine::LoadSynthesizer(TIHU_VOICE vocie)
+int CEngine::LoadSynthesizer(TIHU_VOICE voice)
 {
     if(Synthesizer) {
         delete Synthesizer;
     }
 
-    std::string data_path = CPathManager::GetInstance()->GetDataFolder();
+    std::string voice_name;
 
-    switch(vocie) {
+    switch(voice) {
     case TIHU_VOICE_MBROLA_MALE: {
         Synthesizer = new CMbrolaSyn();
-        data_path += "mbrola/ir1";
+        voice_name = "mbrola/ir1";
     }
     break;
 
     case TIHU_VOICE_MBROLA_FEMALE: {
         Synthesizer = new CMbrolaSyn();
-        data_path += "mbrola/ir2";
+        voice_name = "mbrola/ir2";
     }
     break;
 
     case TIHU_VOICE_ESPEAK_MALE: {
         Synthesizer = new CeSpeakSyn();
-        data_path += "";
+        voice_name = "eSpeak/male";
     }
     break;
 
     case TIHU_VOICE_ESPEAK_FEMALE: {
         Synthesizer = new CeSpeakSyn();
-        data_path += "";
+        voice_name = "eSpeak/female";
     }
     break;
     }
 
-    if(!Synthesizer->InitializeVoice(data_path)) {
+    if(!Synthesizer->Load(voice_name)) {
         return TIHU_ERROR_LOAD_VOICE;
     }
 
@@ -175,20 +155,20 @@ void CEngine::Speak(const std::string &text)
     Synthesizer->ParsText(Corpus);
 
 #ifdef LOG_ENABLED
-    LogText("text.txt");
-    LogCorpus("text.lbl");
-    LogCorpus("text.xml");
+    LogText("./log/text.txt");
+    LogCorpus("./log/text.lbl");
+    LogCorpus("./log/text.xml");
 #endif
 }
 
 void CEngine::Diacritize(const std::string &text)
 {
-    
+
 }
 
 void CEngine::AutoTag(const std::string &text)
 {
-    
+
 }
 
 bool CEngine::SetParam(TIHU_PARAM param, int value)
@@ -253,11 +233,9 @@ void CEngine::Process() const
 
 void CEngine::LogText(const std::string& filename) const
 {
-    std::string path = CPathManager::GetInstance()->GetLogFile(filename);
-
     const std::locale utf8_locale = std::locale(std::locale(), new std::codecvt_utf8<wchar_t>());
 
-    std::ofstream writer(path);
+    std::ofstream writer(filename);
 
     if(!writer.is_open()) {
         return;
@@ -273,13 +251,6 @@ void CEngine::LogText(const std::string& filename) const
 }
 
 void CEngine::LogCorpus(const std::string& filename) const
-{
-    std::string path = CPathManager::GetInstance()->GetLogFile(filename);
-
-    Corpus->Dump(path);
-}
-
-void CEngine::Dump(const std::string &filename)
 {
     Corpus->Dump(filename);
 }

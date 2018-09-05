@@ -19,7 +19,6 @@
 *
 *******************************************************************************/
 #include "mbrola_lib.h"
-#include "path_manager.h"
 
 #include "helper.h"
 
@@ -109,11 +108,7 @@ bool CMbrolaLib::Initialize(const std::string &data_path)
     Finalize();
 
 #ifdef WIN32
-    char mbrola[1024];
-    sprintf(mbrola, "%smbrola.dll", 
-        CPathManager::GetInstance()->GetBuildFolder().c_str());
-    
-    if(load_MBR(mbrola) == FALSE) {    // load mbrola.dll
+    if(load_MBR("mbrola.dll") == FALSE) {    // load mbrola.dll
         fprintf(stderr, "Can't load mbrola.dll\n");
         return false;
     }

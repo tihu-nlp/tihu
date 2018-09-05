@@ -19,7 +19,6 @@
 *
 *******************************************************************************/
 #include "espeak_lib.h"
-#include "path_manager.h"
 #include "helper.h"
 
 #include <cstring>
@@ -67,11 +66,7 @@ bool CeSpeakLib::Initialize(const char* data_path)
 {
     Finalize();
 #ifdef WIN32
-    char espeak[1024];
-    sprintf(espeak, "%sespeak.dll",
-        CPathManager::GetInstance()->GetBuildFolder().c_str());
-
-    Module = LoadLibraryA(espeak);
+    Module = LoadLibraryA("espeak.dll");
 
     if(!Module) {
         return false;
@@ -99,11 +94,8 @@ bool CeSpeakLib::Initialize(const char* data_path)
     procTerminate           = (ESPEAK_PROC_TERMINATE) GetProcAddress(Module, "espeak_Terminate");
     procInfo                = (ESPEAK_PROC_INFO) GetProcAddress(Module, "espeak_Info");
 #else
-    char espeak[1024];
-    sprintf(espeak, "%slibespeak.so",
-        CPathManager::GetInstance()->GetBuildFolder().c_str());
 
-    Module = dlopen(espeak, RTLD_LAZY);
+    Module = dlopen("libespeak.so", RTLD_LAZY);
 
     if(!Module) {
         fputs(dlerror(), stderr);

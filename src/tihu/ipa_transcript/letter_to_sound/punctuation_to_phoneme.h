@@ -34,13 +34,13 @@ public:
     CPunctuationToPhoneme();
     ~CPunctuationToPhoneme();
 
-    bool Load(const std::string &filename);
+    bool Load(std::string filename);
     std::string Convert(const std::string &text);
 
 private:
 
 private:
-    std::map<std::string, 
+    std::map<std::string,
         CPunctuationPtr> Punctuations;
 };
 

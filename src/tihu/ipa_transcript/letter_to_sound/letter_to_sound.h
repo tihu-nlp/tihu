@@ -37,10 +37,8 @@ public:
     CLetterToSound();
     ~CLetterToSound();
 
-    bool Load(const std::string &persian_model,
-              const std::string &english_model,
-              const std::string &punctuations_path);
-        
+    bool Load(std::string name) override;
+
     void ParsText(CCorpus* corpus) override;
 
 private:

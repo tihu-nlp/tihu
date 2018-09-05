@@ -36,7 +36,6 @@ CFileManager::CFileManager()
 
 int CFileManager::OpenFile(const std::string &filename, const std::string &key)
 {
-
     fin.open(filename, std::ios_base::in);
     if(!fin.is_open()) {
         // check hzipped file

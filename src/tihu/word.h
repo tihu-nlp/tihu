@@ -33,16 +33,16 @@ public:
     ~CWord();
 
     void            SetText(const std::string &text);
-    void            SetPronunc(const std::string &pronunc);
-    void            SetLable(const std::string &lable);
+    void            SetPron(const std::string &pron);
+    void            SetPOSTag(const std::string &pos_tag);
     void            SetFrequency(size_t frequency);
     void            SetLength(size_t length);
     void            SetOffset(size_t offset);
     void            SetIsEndOfSentence(bool is_end_of_sentence);
 
     std::string     GetText() const;
-    std::string     GetPronunc() const;
-    std::string     GetLable() const;
+    std::string     GetPron() const;
+    std::string     GetPOSTag() const;
     size_t          GetFrequency() const;
     size_t          GetLength() const;
     size_t          GetOffset() const;
@@ -75,9 +75,9 @@ public:
     void            AddEvent(TIHU_EVENT_TYPE event_type, TIHU_EVENT_VALUE &event_value);
 
 protected:
-    std::string      Text;            // Normal word text
-    std::string      Pronunc;        // Pronunciation
-    std::string      Lable;         // lable
+    std::string      Text;          // Normal word text
+    std::string      Pron;          // Pronunciation
+    std::string      POSTag;        // Part-Of-Speech tag
     size_t           Frequency;     // Frequency
     size_t           Length;        // Length of the current word inside of input text
     size_t           Offset;        // offset of the current word inside of input text

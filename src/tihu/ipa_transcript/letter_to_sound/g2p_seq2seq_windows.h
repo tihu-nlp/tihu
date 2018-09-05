@@ -31,10 +31,10 @@ class Cg2pSeq2Seq
 public:
     Cg2pSeq2Seq();
     ~Cg2pSeq2Seq();
-    
+
     bool LoadModel(const std::string &model);
     std::string Convert(const std::string &word);
-    
+
 private:
 
 };

@@ -19,93 +19,155 @@
 *
 *******************************************************************************/
 #include "hazm.h"
-#include "path_manager.h"
 
 #include <Python.h>
 
 
 CHazm::CHazm()
-{    
-    TokenizerObj = nullptr;
+{
+    TaggerObj = nullptr;
+    StemmerObj = nullptr;
+    LemmatizerObj = nullptr;
     NormalizerObj = nullptr;
-    POSTaggerObj = nullptr;
-
-    Py_Initialize();
 }
 
 CHazm::~CHazm()
 {
-    if(TokenizerObj)  Py_DECREF(TokenizerObj);
-    if(NormalizerObj) Py_DECREF(NormalizerObj);
-    if(POSTaggerObj)  Py_DECREF(POSTaggerObj);
-    
-    Py_Finalize();
+    if(TaggerObj)     Py_DECREF(TaggerObj);
+    if(StemmerObj)    Py_DECREF(StemmerObj);
+    if(LemmatizerObj) Py_DECREF(LemmatizerObj);
 }
 
-bool CHazm::Load(const std::string &hazm_model)
+bool CHazm::Load(std::string name)
 {
-    //std::string hazm_folder = CPathManager::GetInstance()->GetHazmFolder();
-    std::string hazm_folder = "/home/mostafa/Projects/tihu-nlp/hazm/hazm/";
-    
-    PyRun_SimpleString("import sys");
-    PyRun_SimpleString("sys.path.append(\"/home/mostafa/Projects/tihu-nlp/hazm/hazm/\")");
-    
-    PyObject* tokenizer_name  = PyUnicode_FromString("WordTokenizer");
-    PyObject* normalizer_name = PyUnicode_FromString("Normalizer");
-    PyObject* postagger_name  = PyUnicode_FromString("POSTagger");
+    Name = name;
 
-    PyObject* tokenizer_module  = PyImport_Import(tokenizer_name);
-    PyObject* normalizer_module = PyImport_Import(normalizer_name);
-    PyObject* postagger_module  = PyImport_Import(postagger_name);
-
-    Py_DECREF(tokenizer_name);
-    Py_DECREF(normalizer_name);
-    Py_DECREF(postagger_name);
-
-    if (tokenizer_module  == NULL ||
-        normalizer_module == NULL ||
-        postagger_module == NULL) {
-        PyErr_Print();
-
-        return false;
-    }
-    return true;
-
-    PyObject* tokenizer_dict  = PyModule_GetDict(tokenizer_module);
-    PyObject* normalizer_dict = PyModule_GetDict(normalizer_name);
-    PyObject* postagger_dict  = PyModule_GetDict(postagger_name);
-
-    // Build the name of a callable class 
-    PyObject* tokenizer_class  = PyDict_GetItemString(tokenizer_dict,  "WordTokenizer.py");
-    PyObject* normalizer_class = PyDict_GetItemString(normalizer_dict, "Normalizer.py");
-    PyObject* postagger_class  = PyDict_GetItemString(postagger_dict,  "POSTagger.py");
-
-    // Create an instance of the class
-    if (!PyCallable_Check(tokenizer_class) ||
-        !PyCallable_Check(normalizer_class) ||
-        !PyCallable_Check(postagger_class))    {
+    PyObject* hazm_name = PyUnicode_FromString("hazm");
+    HazmObj = PyImport_Import(hazm_name);
+    Py_DECREF(hazm_name);
+    if (HazmObj == NULL) {
         PyErr_Print();
         return false;
     }
 
-    //char args[1024];
-    //sprintf(args, "model='%s'", hazm_model.c_str());
-    //PyObject* postagger_args = PyUnicode_DecodeFSDefault(args);
-    //
-    //PyObject *TokenizerObj  = PyObject_CallObject(tokenizer_class, NULL);
-    //PyObject *NormalizerObj = PyObject_CallObject(normalizer_class, NULL);
-    //PyObject *POSTaggerObj  = PyObject_CallObject(postagger_class, postagger_args);
-    //
-    //if (TokenizerObj  == NULL ||
-    //    NormalizerObj == NULL ||
-    //    POSTaggerObj  == NULL) {
-    //    PyErr_Print();
-    //    return false;
-    //}
+    PyObject* normalizer_class = PyObject_GetAttrString(HazmObj, "Normalizer");
+    if (normalizer_class == NULL) {
+        PyErr_Print();
+        return false;
+    }
+
+    PyObject* normalizer_args = Py_BuildValue("()");
+    if (normalizer_args == NULL) {
+        PyErr_Print();
+        return false;
+    }
+
+    NormalizerObj = PyEval_CallObject(normalizer_class, normalizer_args);
+    Py_DECREF(normalizer_class);
+    Py_DECREF(normalizer_args);
+    if (NormalizerObj == NULL) {
+        PyErr_Print();
+        return false;
+    }
+
+
+    PyObject* tagger_class = PyObject_GetAttrString(HazmObj, "POSTagger");
+    if (tagger_class == NULL) {
+        PyErr_Print();
+        return false;
+    }
+
+    PyObject* tagger_args = Py_BuildValue("{s:s}", "model", "./data/hazm/postagger.model");
+    if (tagger_args == NULL) {
+        PyErr_Print();
+        return false;
+    }
+
+    TaggerObj = PyEval_CallObjectWithKeywords(tagger_class, nullptr, tagger_args);
+    Py_DECREF(tagger_class);
+    Py_DECREF(tagger_args);
+    if (TaggerObj == NULL) {
+        PyErr_Print();
+        return false;
+    }
+
+    TokenzierFunc = PyObject_GetAttrString(HazmObj, "word_tokenize");
+	if (!TokenzierFunc || !PyCallable_Check(TokenzierFunc)) {
+        PyErr_Print();
+        return false;
+    }
+
+    NormalizeFunc = PyObject_GetAttrString(NormalizerObj, "normalize");
+	if (!NormalizeFunc || !PyCallable_Check(NormalizeFunc)) {
+        PyErr_Print();
+        return false;
+    }
+
+    TagFunc = PyObject_GetAttrString(TaggerObj, "tag");
+    if (!TagFunc || !PyCallable_Check(TagFunc)) {
+        PyErr_Print();
+        return false;
+    }
 
     return true;
 }
 
 void CHazm::ParsText(CCorpus* corpus)
 {
+    PyObject* text = PyUnicode_FromString(corpus->GetText().c_str());
+    PyObject *args = PyTuple_New(1);
+    PyTuple_SetItem(args, 0, text);
+    //
+
+
+    PyObject *normalized = PyObject_CallObject(NormalizeFunc, args);
+    if (normalized == nullptr) {
+        Py_DECREF(text);
+        Py_DECREF(args);
+        PyErr_Print();
+        return;
+    }
+
+    PyTuple_SetItem(args, 0, normalized);
+    PyObject *tokens = PyObject_CallObject(TokenzierFunc, args);
+    if (tokens == nullptr) {
+        Py_DECREF(text);
+        Py_DECREF(args);
+        PyErr_Print();
+        return;
+    }
+
+    PyTuple_SetItem(args, 0, tokens);
+    PyObject *tags = PyObject_CallObject(TagFunc, args);
+    if (tags == nullptr) {
+        Py_DECREF(tokens);
+        Py_DECREF(text);
+        Py_DECREF(args);
+        PyErr_Print();
+        return;
+    }
+
+    int count = (int) PyList_Size(tags);
+    PyObject *item, *obj0, *obj1, *wrd, *tag;
+    for (int i = 0 ; i < count ; i++ ) {
+        item = PyList_GetItem(tags, i);
+
+        obj0 = PyTuple_GetItem(item, 0);
+        obj1 = PyTuple_GetItem(item, 1);
+
+        wrd = PyUnicode_AsUTF8String(obj0);
+        tag = PyUnicode_AsUTF8String(obj1);
+
+        CWordPtr word = std::make_unique<CWord>();
+        word->SetText(PyString_AsString(wrd));
+        word->SetPOSTag(PyString_AsString(tag));
+        corpus->AddWord(word);
+
+        Py_DECREF(wrd);
+        Py_DECREF(tag);
+        Py_DECREF(item);
+    }
+
+    Py_DECREF(tags);
+    Py_DECREF(tokens);
 }

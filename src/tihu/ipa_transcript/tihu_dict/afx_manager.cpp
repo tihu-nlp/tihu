@@ -40,7 +40,7 @@ CAfxManager::~CAfxManager()
 {
 }
 
-bool CAfxManager::Load(const std::string &filename)
+bool CAfxManager::Load(std::string filename)
 {
     CFileManager file_manager;
 
@@ -529,9 +529,9 @@ void CAfxManager::ParsEntry(struct hentry* he, CPfxEntry* pfx, CSfxEntry* sfx, C
         pronunce = ConcatPronunciations(pronunce, sfx->Pronunce);
     }
 
-    if(!lable.empty() && !word->GetLable().empty()) {
-        if(lable[0] == word->GetLable()[0]) {
-            word->SetPronunc(pronunce);
+    if(!lable.empty() && !word->GetPOSTag().empty()) {
+        if(lable[0] == word->GetPOSTag()[0]) {
+            word->SetPron(pronunce);
             word->SetFrequency(frequency);
         }
     }

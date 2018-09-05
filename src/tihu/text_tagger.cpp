@@ -42,6 +42,13 @@ CTextTagger::~CTextTagger()
 {
 }
 
+bool CTextTagger::Load(std::string name)
+{
+    Name = name;
+
+    return true;
+}
+
 void CTextTagger::ParsText(CCorpus* corpus)
 {
     std::map<std::string, int> tags;
@@ -51,7 +58,7 @@ void CTextTagger::ParsText(CCorpus* corpus)
         if(!word->IsPersianWord()) {
             continue;
         }
-        
+
         if (word->IsNoun()) {
             if (word->GetText().size() > 2) {
                 tags[word->GetText()] =
