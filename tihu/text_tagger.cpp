@@ -67,17 +67,17 @@ void CTextTagger::ParsText(CCorpus* corpus)
         }
     }
 
-    std::vector<std::pair<std::string, int> > taggs_copy(tags.begin(), tags.end());
-    std::sort(taggs_copy.begin(), taggs_copy.end(), compare<std::string, int>());
+    std::vector<std::pair<std::string, int> > tags_copy(tags.begin(), tags.end());
+    std::sort(tags_copy.begin(), tags_copy.end(), compare<std::string, int>());
 
     std::string tags_line;
     char buf[256];
-    //int c = std::min<int>(20, taggs_copy.size());
-    int c = taggs_copy.size();
+    //int c = std::min<int>(20, tags_copy.size());
+    int c = tags_copy.size();
     for(int i = 0; i < c; ++i) {
         sprintf(buf, "%s(x%d), ",
-                taggs_copy[i].first.c_str(),
-                taggs_copy[i].second);
+                tags_copy[i].first.c_str(),
+                tags_copy[i].second);
 
         tags_line.append(buf);
     }
