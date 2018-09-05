@@ -28,6 +28,16 @@
 #include <dlfcn.h>
 #endif
 
+
+unsigned char WAVE_HEADER_WAV[44] = {
+    0x52, 0x49, 0x46, 0x46, 0x24, 0x76, 0x6B, 0x00,
+    0x57, 0x41, 0x56, 0x45, 0x66, 0x6D, 0x74, 0x20,
+    0x10, 0x00, 0x00, 0x00, 0x01, 0x00, 0x02, 0x00,
+    0x40, 0x1F, 0x00, 0x00, 0x00, 0x7D, 0x00, 0x00,
+    0x04, 0x00, 0x10, 0x00, 0x64, 0x61, 0x74, 0x61,
+    0x00, 0x00, 0x00, 0x00
+};
+
 TIHU_CALLBACK_RETURN cb(TIHU_CALLBACK_MESSAGE message, long l_param, long w_param, void* user_data)
 {
     FILE* fp = (FILE*)user_data;
@@ -79,10 +89,30 @@ int main(int argc, char** argv)
     }
 
     FILE* fp = fopen(argv[3], "wb");
+    fwrite(WAVE_HEADER_WAV, sizeof(WAVE_HEADER_WAV), 1, fp);
+
     tihu_LoadVoice(TIHU_VOICE_MBROLA_MALE);
     tihu_SetCallback(cb, fp);
     tihu_Speak(argv[2]);
     tihu_Close();
+
+    int file_size	= ftell(fp);
+	int chunk_size	= file_size - 44;
+	int wave_size	= file_size - 8;
+    int format = 1;// pcm wave
+
+	if(chunk_size % 4 != 0) {
+		chunk_size -= 2;
+	}
+
+	fseek(fp, 20, SEEK_SET);
+	fwrite(&format, 2, 1, fp);
+
+	fseek(fp, 4, SEEK_SET);
+	fwrite(&wave_size, 4, 1, fp);
+
+	fseek(fp, 40, SEEK_SET);
+	fwrite(&chunk_size, 4, 1, fp);
     fclose(fp);
 
     dlclose(handle);
