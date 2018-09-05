@@ -37,14 +37,19 @@ public:
     CHazm();
     ~CHazm();
 
-    bool Load(const std::string &hazm_model);
-
+    bool Load(std::string name) override;
     void ParsText(CCorpus* corpus) override;
 
 private:
-    PyObject *TokenizerObj; 
+    PyObject *HazmObj;
+    PyObject *TaggerObj;
+    PyObject *StemmerObj;
     PyObject *NormalizerObj;
-    PyObject *POSTaggerObj;    
+    PyObject *LemmatizerObj;
+
+    PyObject *TokenzierFunc;
+    PyObject *NormalizeFunc;
+    PyObject *TagFunc;
 };
 
 #endif

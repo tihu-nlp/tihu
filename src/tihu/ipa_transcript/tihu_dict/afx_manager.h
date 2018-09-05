@@ -38,7 +38,7 @@ public:
     CAfxManager(CHashManager* hash_manager);
     ~CAfxManager();
 
-    bool Load(const std::string  &filename);
+    bool Load(std::string filename);
 
     struct hentry* Lookup(const char* text);
 

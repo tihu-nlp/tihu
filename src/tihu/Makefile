@@ -3,12 +3,12 @@ TARGET=lib$(LIBNAME).so
 TARGET_TEST=$(LIBNAME)_test
 CC = g++
 
-INC =  `python-config --includes` -I.
+INC =  `python2.7-config --includes` -I. -Xlinker -export-dynamic
 ##CXXFLAGS = -c -fPIC -Wall -std=c++14 -I$(INC) -O3 -g
 ## for debugging
 CXXFLAGS = -c -Wall -std=c++14 $(INC) -DDEBUG -g -fPIC
-LDFLAGS = `python-config --ldflags` -shared -Wl,-soname,$(TARGET) -o $(TARGET)
-LIBS =  `python-config --libs`
+LDFLAGS =  `python2.7-config --ldflags` -shared -Wl,-soname,$(TARGET) -o $(TARGET)
+LIBS =
 RM = rm -f
 
 SRCS= \
@@ -39,7 +39,6 @@ SRCS= \
 	tihu.cpp \
     parser.cpp \
     engine.cpp \
-	path_manager.cpp \
 	settings.cpp \
 	synthesizer.cpp \
 	helper.cpp \

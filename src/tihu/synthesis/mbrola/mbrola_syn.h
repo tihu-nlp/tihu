@@ -34,10 +34,7 @@ public:
     CMbrolaSyn();
     ~CMbrolaSyn();
 
-    bool InitializeVoice(const std::string &data_path);
-
-    void FinalizeVoice();
-
+    bool Load(std::string name) override;
     void ParsText(CCorpus* corpus) override;
 
     void Stop() override;

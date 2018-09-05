@@ -38,21 +38,22 @@ CTihuDict::~CTihuDict()
     delete HashManager;
 }
 
-bool CTihuDict::Load(const std::string &aff_file,
-                      const std::string &dic_file, const std::string &dic_key)
+bool CTihuDict::Load(std::string name)
 {
-    if(!AfxManager->Load(aff_file)) {
+    Name = name;
+
+    if(!AfxManager->Load("./data/lexicon.aff")) {
         return false;
     }
 
-    if(!HashManager->LoadTable(dic_file, dic_key)) {
+    if(!HashManager->LoadTable("./data/lexicon.dic", /*dic_key*/"")) {
         return false;
     }
 
     return true;
 }
 
-bool CTihuDict::CheckWord(const std::string &_text)
+bool CTihuDict::CheckWord(const std::string &_text) const
 {
     const char* text = _text.c_str();
     int len = _text.size();
@@ -72,8 +73,9 @@ bool CTihuDict::CheckWord(const std::string &_text)
     return false;
 }
 
-bool CTihuDict::TagWord(CWordPtr &word, const std::string &_text)
+bool CTihuDict::TagWord(CWordPtr &word) const
 {
+    auto _text = word->GetText(); /// create a copy
     const char* text = _text.c_str();
     int len = _text.size();
 
@@ -93,7 +95,7 @@ bool CTihuDict::TagWord(CWordPtr &word, const std::string &_text)
     // try stripping off affixes
     AfxManager->AffixCheck(text, len, FLAG_NULL, word);
 
-    return !word->GetPronunc().empty();
+    return !word->GetPron().empty();
 }
 
 void CTihuDict::ParsText(CCorpus* corpus)
@@ -107,9 +109,11 @@ void CTihuDict::ParsText(CCorpus* corpus)
         if(word->IsPersianWord()) {
 
             ///
-            if (Breakdown(word_list, itr)) {
-                ///
-                continue;
+            if (!TagWord(word)) {
+                if (Breakdown(word_list, itr)) {
+                    ///
+                    continue;
+                }
             }
         }
 
@@ -121,7 +125,7 @@ void CTihuDict::ParsText(CCorpus* corpus)
 /// try to decompose the word
 /// وزیرکارواموراجتماعی --> وزیر + کار + و + امور + اجتماعی
 ///
-bool CTihuDict::Breakdown(CWordList &word_list, CWordList::iterator &word_itr)
+bool CTihuDict::Breakdown(CWordList &word_list, CWordList::iterator &word_itr) const
 {
     std::string text = (*word_itr)->GetText();
     std::u16string text_16 = UTF8ToUTF16(text);
@@ -139,6 +143,12 @@ bool CTihuDict::Breakdown(CWordList &word_list, CWordList::iterator &word_itr)
             temp += *p;
 
             if(CanBeDetached(temp.c_str()) || *(p+1)==0) {
+               // همیشه «و» را یک کلمه جدا در نظر میگیریم
+                if (temp == u"\u0648") {
+                    partial = temp;
+                    break;
+                }
+
                 std::string temp_u8 = UTF16ToUTF8(temp);
                 if(CheckWord(temp_u8)) {
                     partial = temp;
@@ -170,7 +180,11 @@ bool CTihuDict::Breakdown(CWordList &word_list, CWordList::iterator &word_itr)
         word->SetText(UTF16ToUTF8(partial));
         word->SetOffset(offset);
         word->SetLength(partial.length());
-        word->SetLable((*word_itr)->GetLable());
+        if(partial == u"\u0648") {
+            word->SetPOSTag("CONJ");
+        } else {
+            word->SetPOSTag((*word_itr)->GetPOSTag());
+        }
 
         word_list.insert(word_itr, std::move(word));
 
@@ -187,7 +201,7 @@ bool CTihuDict::Breakdown(CWordList &word_list, CWordList::iterator &word_itr)
     return true;
 }
 
-bool CTihuDict::CanBeDetached(std::u16string str)
+bool CTihuDict::CanBeDetached(std::u16string str) const
 {
     char16_t last = str.back();
 

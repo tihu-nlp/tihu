@@ -15,9 +15,9 @@ unix {
     isEmpty(PREFIX) {
         PREFIX = /usr
     }
- 
-    target.path = $$PREFIX/bin  
-    
+
+    target.path = $$PREFIX/bin
+
     shortcutfiles.files = tihu_console.desktop
     shortcutfiles.path = $$PREFIX/share/applications/
     pixmap.files = ./tihu.png

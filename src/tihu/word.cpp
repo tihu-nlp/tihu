@@ -19,7 +19,6 @@
 *
 *******************************************************************************/
 #include "word.h"
-#include "entry.h"
 
 
 #define WORD_FLAG_END_OF_SENTENCE       0x0001
@@ -43,14 +42,14 @@ void CWord::SetText(const std::string &text)
     Text = text;
 }
 
-void CWord::SetPronunc(const std::string &pronunc)
+void CWord::SetPron(const std::string &pron)
 {
-    Pronunc = pronunc;
+    Pron = pron;
 }
 
-void CWord::SetLable(const std::string &lable)
+void CWord::SetPOSTag(const std::string &pos_tag)
 {
-    Lable = lable;
+    POSTag = pos_tag;
 }
 
 void CWord::SetFrequency(size_t frequency)
@@ -73,14 +72,14 @@ std::string CWord::GetText() const
     return Text;
 }
 
-std::string CWord::GetPronunc() const
+std::string CWord::GetPron() const
 {
-    return Pronunc;
+    return Pron;
 }
 
-std::string CWord::GetLable() const
+std::string CWord::GetPOSTag() const
 {
-    return Lable;
+    return POSTag;
 }
 
 size_t CWord::GetFrequency() const
@@ -100,24 +99,23 @@ size_t CWord::GetOffset() const
 
 bool CWord::IsPersianWord() const
 {
-    return false;
+    return true;
 }
 
 bool CWord::IsEnglishWord() const
 {
-    return false;
+    return POSTag == "RES";
 }
 
 bool CWord::IsPunctuation() const
 {
-    return false;
+    return POSTag == "PUNC";
 }
 
 bool CWord::IsNumber() const
 {
     return false;
 }
-
 
 bool CWord::IsVerb() const
 {
@@ -181,7 +179,7 @@ bool CWord::IsInterjection() const
 
 void CWord::SetIsEndOfSentence(bool is_end_of_sentence)
 {
-    
+
 }
 
 CPhonemeList &CWord::GetPhonemeList()
@@ -197,12 +195,12 @@ CEventList &CWord::GetEventList()
 
 void CWord::ParsPronunciation(std::string pronuciation)
 {
-    for(size_t index = 0; index < Pronunc.length(); index++) {
+    for(size_t index = 0; index < Pron.length(); index++) {
         CPhonemePtr phoneme = std::make_unique<CPhoneme>();
 
-        char prv_pho = (index > 0) ? Pronunc[index - 1] : 0;
-        char cur_pho = Pronunc[index];
-        char nxt_pho = Pronunc[index + 1];
+        char prv_pho = (index > 0) ? Pron[index - 1] : 0;
+        char cur_pho = Pron[index];
+        char nxt_pho = Pron[index + 1];
 
         if(cur_pho == '^') {
             continue;

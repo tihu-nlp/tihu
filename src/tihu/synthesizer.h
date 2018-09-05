@@ -32,10 +32,6 @@ public:
     ISynthesizer();
     virtual ~ISynthesizer();
 
-    virtual bool InitializeVoice(const std::string &data_path) = 0;
-
-    virtual void FinalizeVoice() = 0;
-
     virtual int  GetFrequency() const = 0;
     virtual void Stop() = 0;
 

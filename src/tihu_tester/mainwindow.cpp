@@ -37,7 +37,7 @@ MainWindow::MainWindow(QWidget *parent) :
     labelTestFolder = new QLabel(centralWidget);
     editTestFolder = new QLineEdit(centralWidget);
     tableResults = new CResultTable(centralWidget);
-    
+
 
     labelTestFolder->setText("Tests Folder: ");
 
@@ -168,7 +168,7 @@ void MainWindow::LoadTestCases(QString test_path)
 
     int case_no = 0;
     QDirIterator it(test_path, QDirIterator::NoIteratorFlags);
-    
+
     while (it.hasNext())
     {
         QString dir_path = it.next();
@@ -222,7 +222,7 @@ void MainWindow::LoadTestCases(QString test_path)
     QBrush gray_brush(QColor(0xEE, 0xEE, 0xEE));
     QStandardItem *item = 0;
     int row_no = 0;
-    
+
     while(iter.hasNext())
     {
         TestCase test_case = iter.next();
@@ -242,7 +242,7 @@ void MainWindow::LoadTestCases(QString test_path)
 
 void MainWindow::OnFinish()
 {
-    
+
 }
 
 void MainWindow::OnRunTests()
@@ -271,7 +271,7 @@ void MainWindow::OnRunTests()
     QFuture<void> future = QtConcurrent::map(TestCases, [this] (TestCase const& test_case) { RunTest(test_case); });
 
     futureWatcher.setFuture(future);
-    
+
     // Display the dialog and start the event loop.
     dialog.exec();
 }

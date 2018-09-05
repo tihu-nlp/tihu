@@ -36,23 +36,20 @@ CeSpeakSyn::CeSpeakSyn()
 
 CeSpeakSyn::~CeSpeakSyn()
 {
-    FinalizeVoice();
+    eSpeakLib.Finalize();
 }
 
-bool CeSpeakSyn::InitializeVoice(const std::string &data_path)
+bool CeSpeakSyn::Load(std::string name)
 {
-    if(!eSpeakLib.Initialize(data_path.c_str())) {
+    Name = name;
+
+    if(!eSpeakLib.Initialize("./data/espeak")) {
         return false;
     }
 
     eSpeakLib.SetCallback(espeak_callback);
 
     return true;
-}
-
-void CeSpeakSyn::FinalizeVoice()
-{
-    eSpeakLib.Finalize();
 }
 
 void CeSpeakSyn::ParsText(CCorpus* corpus)

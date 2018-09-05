@@ -34,11 +34,9 @@ public:
     CeSpeakSyn();
     virtual ~CeSpeakSyn();
 
-    bool InitializeVoice(const std::string &data_path);
+    bool Load(std::string name) override;
 
-    void FinalizeVoice();
-
-    void ParsText(CCorpus* corpus);
+    void ParsText(CCorpus* corpus) override;
 
     void Stop() override;
 

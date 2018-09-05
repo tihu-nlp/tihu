@@ -20,8 +20,6 @@
 *******************************************************************************/
 #include "corpus.h"
 #include "word.h"
-#include "entry.h"
-#include "path_manager.h"
 
 
 
@@ -109,8 +107,8 @@ void CCorpus::DumpToXml(const std::string &path) const
     for(auto &word : WordList) {
         snprintf(buffer, 1024, "\t<word text=\"%s\" pronunciation=\"%s\" label=\"%s\"/>",
                 word->GetText().c_str(),
-                word->GetPronunc().c_str(),
-                word->GetLable().c_str());
+                word->GetPron().c_str(),
+                word->GetPOSTag().c_str());
 
         writer << buffer << std::endl;
     }
@@ -134,10 +132,10 @@ void CCorpus::DumpToTxt(const std::string &path) const
 
         snprintf(buffer, 1024, "%-30s%-12s %s",
             word->GetText().c_str(),
-            word->GetLable().c_str(),
-            word->GetPronunc().c_str());
+            word->GetPOSTag().c_str(),
+            word->GetPron().c_str());
 
-        writer << std::endl;
+        writer << buffer << std::endl;
     }
 
     writer.flush();

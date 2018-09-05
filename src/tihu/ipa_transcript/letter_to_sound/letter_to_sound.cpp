@@ -28,18 +28,19 @@ CLetterToSound::~CLetterToSound()
 {
 }
 
-bool CLetterToSound::Load(const std::string &persian_model,
-    const std::string &english_model, const std::string &punctuations_path)
+bool CLetterToSound::Load(std::string name)
 {
-    if(!PersianToPhoneme.LoadModel(persian_model)) {
+    if(!PersianToPhoneme.LoadModel("/home/mostafa/Projects/tihu-nlp/tihu/src/build/data/g2p-seq2seq-tihudict")) {
         return false;
     }
 
-    if(!EnglishToPhoneme.LoadModel(english_model)) {
+    /*
+    if(!EnglishToPhoneme.LoadModel("./data/g2p-seq2seq-cmudict")) {
         return false;
     }
+    */
 
-    if (!PunctuationToPhoneme.Load(punctuations_path)) {
+    if (!PunctuationToPhoneme.Load("data/punctuations.txt")) {
         return false;
     }
 
@@ -51,8 +52,8 @@ void CLetterToSound::ParsText(CCorpus* corpus)
     CWordList &word_list = corpus->GetWordList();
     for(auto &word : word_list) {
 
-        if (word->GetPronunc().empty()) {
-            
+        if (word->GetPron().empty()) {
+
             std::string phonemes;
             if (word->IsPersianWord()) {
                 ///
@@ -72,7 +73,7 @@ void CLetterToSound::ParsText(CCorpus* corpus)
                     PunctuationToPhoneme.Convert(word->GetText());
             }
 
-            word->SetPronunc(phonemes);
+            word->SetPron(phonemes);
         }
     }
 }

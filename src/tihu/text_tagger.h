@@ -32,6 +32,7 @@ public:
     CTextTagger();
     ~CTextTagger();
 
+    bool Load(std::string name) override;
     void ParsText(CCorpus* corpus) override;
 };
 

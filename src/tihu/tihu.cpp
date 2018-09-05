@@ -22,7 +22,8 @@
 #include "engine.h"
 
 #include <mutex>
-
+#include <dlfcn.h>
+#include <Python.h>
 
 static CEngine* g_engine = nullptr;
 static int g_refcount = 0;
@@ -44,6 +45,15 @@ TIHU_FN_DECLARE bool tihu_Init()
     MUTEX_LOCK
 
     if(g_refcount == 0) {
+        /// fix crazy error: undefined symbol: PyFloat_Type
+        void* p = dlopen( "libpython2.7.so", RTLD_LAZY | RTLD_GLOBAL );
+        if (p == nullptr) {
+            g_errorcode = TIHU_ERROR_NO_PYTHON;
+            return false;
+        }
+
+        Py_Initialize();
+
         g_engine = new CEngine();
         g_errorcode = g_engine->LoadModules();
 
@@ -83,6 +93,8 @@ TIHU_FN_DECLARE void tihu_Close()
         delete g_engine;
         g_engine = 0;
         g_refcount = 0; /// to make sure it won't be negative
+
+        Py_Finalize();
     }
 }
 

@@ -35,22 +35,19 @@ public:
     CTihuDict();
     ~CTihuDict();
 
-    bool Load(const std::string &aff_file,
-              const std::string &dic_file, const std::string &dic_key);
+    bool Load(std::string name) override;
 
     void ParsText(CCorpus* corpus) override;
 
 protected:
-    
-    bool CheckWord(const std::string &text);
-    bool TagWord(CWordPtr &word, const std::string &text);
-    bool Breakdown(CWordList &word_list, CWordList::iterator &word_itr);
-    bool CanBeDetached(std::u16string str);
+    bool CheckWord(const std::string &text) const;
+    bool TagWord(CWordPtr &word) const;
+    bool Breakdown(CWordList &word_list, CWordList::iterator &word_itr) const;
+    bool CanBeDetached(std::u16string str) const;
 
 private:
     CAfxManager*  AfxManager;
     CHashManager* HashManager;
-
 };
 
 #endif

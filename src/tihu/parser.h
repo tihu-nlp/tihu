@@ -34,15 +34,17 @@ public:
     IParser();
     virtual ~IParser();
 
+    virtual bool Load(std::string name) = 0;
     virtual void ParsText(CCorpus *corpus) = 0;
 
     virtual void SetCallBack(TIHU_CALLBACK callback, void* userdata);
     virtual void SetSettings(CSettings* settings);
 
 protected:
-    void ReportMessage(const char* message, ...);
+    void ReportMessage(const char* message, ...) const;
 
 protected:
+    std::string Name;
     CSettings* Settings;
     TIHU_CALLBACK Callback;
     void* UserData;

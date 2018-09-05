@@ -34,10 +34,14 @@ CMbrolaSyn::CMbrolaSyn()
 
 CMbrolaSyn::~CMbrolaSyn()
 {
+    MbrolaLib.Finalize();
 }
 
-bool CMbrolaSyn::InitializeVoice(const std::string &data_path)
+bool CMbrolaSyn::Load(std::string name)
 {
+    Name = name;
+
+    std::string data_path = "./data/" + name;
     if(!MbrolaLib.Initialize(data_path)) {
         return false;
     }
@@ -45,10 +49,6 @@ bool CMbrolaSyn::InitializeVoice(const std::string &data_path)
     return true;
 }
 
-void CMbrolaSyn::FinalizeVoice()
-{
-    MbrolaLib.Finalize();
-}
 
 int CMbrolaSyn::GetFrequency() const
 {
@@ -78,7 +78,7 @@ void CMbrolaSyn::ParsText(CCorpus* corpus)
 
 
         phoneme_line.clear();
-        
+
         word->ParsPronunciation();
 
         CPhonemeList &phoneme_list = word->GetPhonemeList();
