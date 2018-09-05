@@ -26,6 +26,7 @@ install:
 
 # Build steps
 script:
+  - pip install hazm
   # espeak data
   - curl -sLO http://sourceforge.net/projects/espeak/files/espeak/espeak-1.48/espeak-1.48.04-source.zip
   - unzip espeak-1.48.04-source.zip

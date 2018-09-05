@@ -30,7 +30,7 @@ CLetterToSound::~CLetterToSound()
 
 bool CLetterToSound::Load(std::string name)
 {
-    if(!PersianToPhoneme.LoadModel("/home/mostafa/Projects/tihu-nlp/tihu/src/build/data/g2p-seq2seq-tihudict")) {
+    if(!PersianToPhoneme.LoadModel("./data/g2p-seq2seq-tihudict")) {
         return false;
     }
 
