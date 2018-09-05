@@ -22,6 +22,18 @@ cp -r espeak-1.48.04-source/espeak-data src/build/data/
 rm espeak-1.48.04-source.zip
 rm -rf espeak-1.48.04-source
 
+# g2p-seq2seq-tihudict
+curl -sLO https://github.com/tihu-nlp/tihudict/releases/download/v1.0/g2p-seq2seq-tihudict-model-1.0.tar.gz
+tar zxvf g2p-seq2seq-tihudict-model-1.0.tar.gz
+mkdir ./build/data/g2p-seq2seq-tihudict
+cp -r g2p-seq2seq-tihudict/* ./build/data/g2p-seq2seq-tihudict
+
+# g2p-seq2seq-model-6.2-cmudict
+curl -sLO https://sourceforge.net/projects/cmusphinx/files/G2P%20Models/g2p-seq2seq-model-6.2-cmudict-nostress.tar.gz
+tar zxvf g2p-seq2seq-model-6.2-cmudict-nostress.tar.gz
+mkdir ./build/data/g2p-seq2seq-cmudict
+cp -r g2p-seq2seq-model-6.2-cmudict-nostress/* ./build/data/g2p-seq2seq-cmudict
+
 # compiling code
 cd src/tihu
 make
