@@ -43,7 +43,6 @@ public:
 
     void Speak(const std::string &text);
     void Diacritize(const std::string &text); //TODO:
-    void AutoTag(const std::string &text); //TODO:
 
     void Dump(const std::string &filename);
     void Stop();
@@ -65,7 +64,6 @@ private:
     IParser* Hazm;
     IParser* TihuDict;
     IParser* LetterToSound;
-    IParser* TextTagger;
 
     ISynthesizer* Synthesizer;
 

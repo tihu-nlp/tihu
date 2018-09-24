@@ -118,17 +118,6 @@ TIHU_FN_DECLARE void tihu_Stop()
     g_engine->Stop();
 }
 
-TIHU_FN_DECLARE void tihu_TagText(const char* text)
-{
-    MUTEX_LOCK
-
-    if(!g_engine) {
-        return;
-    }
-
-    g_engine->AutoTag(text);
-}
-
 TIHU_FN_DECLARE int tihu_GetLastError()
 {
     return g_errorcode;

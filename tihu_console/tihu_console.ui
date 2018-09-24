@@ -163,13 +163,6 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="btnAutoTagger">
-          <property name="text">
-           <string>Auto Tagger</string>
-          </property>
-         </widget>
-        </item>
-        <item>
          <spacer name="verticalSpacer_1">
           <property name="orientation">
            <enum>Qt::Vertical</enum>

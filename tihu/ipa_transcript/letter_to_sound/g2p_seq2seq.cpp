@@ -18,8 +18,7 @@
 *    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
 *
 *******************************************************************************/
-#include "g2p_seq2seq_linux.h"
-//#include "path_manager.h"
+#include "g2p_seq2seq.h"
 
 
 #include <unistd.h>
