@@ -6,8 +6,8 @@ OBJS = $(addprefix obj/,$(patsubst %.cpp,%.o,$(SRCS)))
 OBJDIRS = $(dir $(OBJS))
 INC = `python2.7-config --includes` -I. -Xlinker -export-dynamic
 ## for debugging
-CXXFLAGS = -c -Wall -std=c++14 $(INC) -DDEBUG -g -fPIC
-#CXXFLAGS = -c -fPIC -Wall -std=c++14 $(INC) -O3 -g
+#CXXFLAGS = -c -Wall -std=c++14 $(INC) -DDEBUG -g -fPIC
+CXXFLAGS = -c -fPIC -Wall -std=c++14 $(INC) -O3 -g
 LDFLAGS = `python2.7-config --ldflags` -shared -Wl,-soname,$(TARGET) -o $(TARGET)
 LIBS =
 
@@ -27,13 +27,6 @@ clean:
 
 install:
 	cp $(TARGET) ../build/
-
-.PHONY: test
-test: $(TARGET_TEST)
-	./$(TARGET_TEST) ../build/$(TARGET)
-
-$(TARGET_TEST): $(TARGET)
-	$(CC) $(TARGET_TEST).cpp -o $@ -L. -ldl
 
 # to print variables in makefile
 print-%  : ; @echo $* = $($*)
