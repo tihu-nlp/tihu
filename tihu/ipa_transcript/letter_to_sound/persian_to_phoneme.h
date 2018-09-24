@@ -26,12 +26,7 @@
 #include "helper.h"
 
 #include <map>
-
-#ifdef WIN32
-#include "g2p_seq2seq_windows.h"
-#else
-#include "g2p_seq2seq_linux.h"
-#endif
+#include "g2p_seq2seq.h"
 
 class CPersianToPhoneme
 {

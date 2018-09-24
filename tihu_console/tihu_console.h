@@ -55,7 +55,6 @@ private slots:
 	void onLoad();
     void onUnload();
 	void onSpeak();
-    void onAutoTagger();
     void onNormalize();
     void onStop();
     void onOpenFile();
@@ -72,7 +71,6 @@ private:
     TIHU_PROC_INIT procInit;
     TIHU_PROC_CLOSE procClose;
     TIHU_PROC_SPEAK procSpeak;
-    TIHU_PROC_TAGGER procTagger;
     TIHU_PROC_STOP procStop;
     TIHU_PROC_SET_PARAM procSetParam;
     TIHU_PROC_GET_PARAM procGetParam;

@@ -24,7 +24,6 @@
 #include "synthesis/mbrola/mbrola_syn.h"
 #include "synthesis/espeak/espeak_syn.h"
 #include "hazm/hazm.h"
-#include "text_tagger.h"
 #include "engine.h"
 #include "tihu.h"
 
@@ -49,7 +48,6 @@ CEngine::CEngine()
     TihuDict        = nullptr;
     LetterToSound   = nullptr;
     Synthesizer     = nullptr;
-    TextTagger      = nullptr;
     Corpus          = new CCorpus();
 }
 
@@ -67,9 +65,6 @@ CEngine::~CEngine()
     if(Synthesizer) {
         delete Synthesizer;
     }
-    if(TextTagger) {
-        delete TextTagger;
-    }
     delete Corpus;
 }
 
@@ -85,7 +80,6 @@ int CEngine::LoadModules()
     Hazm = new CHazm();
     TihuDict = new CTihuDict();
     LetterToSound = new CLetterToSound();
-    TextTagger = new CTextTagger();
 
     if (!static_cast<CHazm*>(Hazm)->Load("Hazm")) {
         return TIHU_ERROR_LOAD_DATA;
@@ -148,7 +142,6 @@ void CEngine::SetCallback(TIHU_CALLBACK callback, void* userData)
     (TihuDict) ? TihuDict->SetCallBack(callback, userData) : void();
     (LetterToSound) ? LetterToSound->SetCallBack(callback, userData) : void();
     (Synthesizer) ? Synthesizer->SetCallBack(callback, userData) : void();
-    (TextTagger) ? TextTagger->SetCallBack(callback, userData) : void();
 }
 
 void CEngine::Stop()
@@ -176,11 +169,6 @@ void CEngine::Speak(const std::string &text)
 }
 
 void CEngine::Diacritize(const std::string &text)
-{
-
-}
-
-void CEngine::AutoTag(const std::string &text)
 {
 
 }

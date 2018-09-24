@@ -110,7 +110,6 @@ TihuConsole::TihuConsole(QWidget *parent, Qt::WindowFlags flags)
     connect(ui.btnSpeak, SIGNAL(clicked()), this, SLOT(onSpeak()));
     connect(ui.btnStop, SIGNAL(clicked()), this, SLOT(onStop()));
     connect(ui.btnNormalize, SIGNAL(clicked()), this, SLOT(onNormalize()));
-    connect(ui.btnAutoTagger, SIGNAL(clicked()), this, SLOT(onAutoTagger()));
     connect(ui.btnOpenFile, SIGNAL(clicked()), this, SLOT(onOpenFile()));
     connect(this, SIGNAL(AppendMessage(const QString &)), ui.txtMessages, SLOT(appendPlainText(const QString &)));
     connect(actionGroup, SIGNAL(triggered(QAction*)), this, SLOT(onVoiceChange(QAction*)));
@@ -172,7 +171,6 @@ bool TihuConsole::LoadTihu(const QString& library)
     procClose = (TIHU_PROC_CLOSE)lib.resolve("tihu_Close");
     procSpeak = (TIHU_PROC_SPEAK)lib.resolve("tihu_Speak");
     procStop = (TIHU_PROC_STOP)lib.resolve("tihu_Stop");
-    procTagger = (TIHU_PROC_TAGGER)lib.resolve("tihu_TagText");
     procSetParam = (TIHU_PROC_SET_PARAM)lib.resolve("tihu_SetParam");
     procGetParam = (TIHU_PROC_GET_PARAM)lib.resolve("tihu_GetParam");
     procSetCallback = (TIHU_PROC_SET_CALLBACK)lib.resolve("tihu_SetCallback");
@@ -183,7 +181,6 @@ bool TihuConsole::LoadTihu(const QString& library)
         !procClose          ||
         !procSpeak          ||
         !procStop           ||
-        !procTagger         ||
         !procSetParam       ||
         !procGetParam       ||
         !procSetCallback    ||
@@ -212,7 +209,6 @@ bool TihuConsole::LoadTihu(const QString& library)
     ui.btnLoad->setEnabled(false);
     ui.btnUnload->setEnabled(true);
     ui.btnNormalize->setEnabled(true);
-    ui.btnAutoTagger->setEnabled(true);
     ui.btnSpeak->setEnabled(true);
 
     int frequency = -1;
@@ -273,7 +269,6 @@ void TihuConsole::onUnload()
     ui.btnLoad->setEnabled(true);
     ui.btnUnload->setEnabled(false);
     ui.btnNormalize->setEnabled(false);
-    ui.btnAutoTagger->setEnabled(false);
     ui.btnSpeak->setEnabled(false);
     ui.btnStop->setEnabled(false);
 }
@@ -304,18 +299,6 @@ void TihuConsole::onSpeak()
     SpeakFuture = QtConcurrent::run(this, &TihuConsole::Speak, text);
 
     WriteSettings();
-}
-
-void TihuConsole::onAutoTagger()
-{
-    AppendMessage("Sorry. Not implemented yet!");
-    /// TODO:
-    ///
-    ui.txtMessages->clear();
-
-    QString text = ui.txtInput->toPlainText();
-    std::string str = text.toStdString();
-    procTagger(str.c_str());
 }
 
 void TihuConsole::onNormalize()
