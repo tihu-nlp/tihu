@@ -52,7 +52,6 @@ public:
 
 private:
     void SetText(const std::string &text) const;
-    void Process() const;
 
     void LogText(const std::string& filename) const;
     void LogCorpus(const std::string& filename) const;

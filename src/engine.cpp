@@ -227,11 +227,6 @@ void CEngine::SetText(const std::string &text) const
 #endif
 }
 
-void CEngine::Process() const
-{
-
-
-}
 
 void CEngine::LogText(const std::string& filename) const
 {
