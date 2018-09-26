@@ -162,11 +162,20 @@ TIHU_FN_DECLARE const char* tihu_GetVersion()
     return "Version 0.1";
 }
 
-TIHU_FN_DECLARE  void tihu_Dump(const char* filename)
+TIHU_FN_DECLARE void tihu_Dump(const char* filename)
 {
     if (!g_engine) {
         return;
     }
 
     g_engine->Dump(filename);
+}
+
+TIHU_FN_DECLARE void tihu_DebugMode(bool enable)
+{
+    if (!g_engine) {
+        return;
+    }
+
+    g_engine->DebugMode(enable);
 }

@@ -26,7 +26,6 @@
 #include "helper.h"
 #include "settings.h"
 #include "corpus.h"
-#include "tihu.h"
 
 class IParser
 {
@@ -37,7 +36,7 @@ public:
     virtual bool Load(std::string name) = 0;
     virtual void ParsText(CCorpus *corpus) = 0;
 
-    virtual void SetCallBack(TIHU_CALLBACK callback, void* userdata);
+    virtual void SetCallBack(void* callback, void* userdata);
     virtual void SetSettings(CSettings* settings);
 
 protected:
@@ -46,7 +45,7 @@ protected:
 protected:
     std::string Name;
     CSettings* Settings;
-    TIHU_CALLBACK Callback;
+    void* Callback;
     void* UserData;
 };
 

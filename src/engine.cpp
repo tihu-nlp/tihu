@@ -32,10 +32,6 @@
 #include <dlfcn.h>
 
 
-
-#define LOG_ENABLED
-
-
 CEngine::CEngine()
 {
     Hazm            = nullptr;
@@ -133,9 +129,9 @@ int CEngine::LoadSynthesizer(TIHU_VOICE voice)
 
 void CEngine::SetCallback(TIHU_CALLBACK callback, void* userData)
 {
-    (TihuDict) ? TihuDict->SetCallBack(callback, userData) : void();
-    (LetterToSound) ? LetterToSound->SetCallBack(callback, userData) : void();
-    (Synthesizer) ? Synthesizer->SetCallBack(callback, userData) : void();
+    (TihuDict) ? TihuDict->SetCallBack((void*)callback, userData) : void();
+    (LetterToSound) ? LetterToSound->SetCallBack((void*)callback, userData) : void();
+    (Synthesizer) ? Synthesizer->SetCallBack((void*)callback, userData) : void();
 }
 
 void CEngine::Stop()
@@ -154,12 +150,6 @@ void CEngine::Speak(const std::string &text)
     TihuDict->ParsText(Corpus);
     LetterToSound->ParsText(Corpus);
     Synthesizer->ParsText(Corpus);
-
-#ifdef LOG_ENABLED
-    LogText("./log/text.txt");
-    LogCorpus("./log/text.lbl");
-    LogCorpus("./log/text.xml");
-#endif
 }
 
 void CEngine::Diacritize(const std::string &text)
@@ -215,10 +205,6 @@ void CEngine::SetText(const std::string &text) const
 {
     Corpus->Clear();
     Corpus->SetText(text);
-
-#ifdef LOG_ENABLED
-    LogText("text.txt");
-#endif
 }
 
 
