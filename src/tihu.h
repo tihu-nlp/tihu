@@ -18,8 +18,8 @@
 *    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
 *
 *******************************************************************************/
-#ifndef __TIHU__TIHU_H
-#define __TIHU__TIHU_H
+#ifndef TIHU_H
+#define TIHU_H
 
 #pragma once
 

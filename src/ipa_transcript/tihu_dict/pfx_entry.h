@@ -18,8 +18,8 @@
 *    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
 *
 *******************************************************************************/
-#ifndef __TIHU__POS_TAGGER__PFX_ENTRY_H
-#define __TIHU__POS_TAGGER__PFX_ENTRY_H
+#ifndef __TIHU__PFX_ENTRY_H
+#define __TIHU__PFX_ENTRY_H
 
 #include "afx_entry.h"
 #include "word.h"

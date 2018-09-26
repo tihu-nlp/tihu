@@ -18,8 +18,8 @@
 *    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
 *
 *******************************************************************************/
-#ifndef __SIMPLELTS__G2P_SEQ2SEQ_H
-#define __SIMPLELTS__G2P_SEQ2SEQ_H
+#ifndef __TIHU__G2P_SEQ2SEQ_H
+#define __TIHU__G2P_SEQ2SEQ_H
 
 #pragma once
 

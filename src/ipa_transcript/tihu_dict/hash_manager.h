@@ -18,8 +18,8 @@
 *    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
 *
 *******************************************************************************/
-#ifndef __TIHU__POS_TAGGER__HASH_MANAGER_H
-#define __TIHU__POS_TAGGER__HASH_MANAGER_H
+#ifndef __TIHU__HASH_MANAGER_H
+#define __TIHU__HASH_MANAGER_H
 
 #include "helper.h"
 #include "word.h"
