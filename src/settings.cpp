@@ -22,9 +22,26 @@
 
 CSettings::CSettings()
 {
-
+    Pitch = 0;
+    Rate = 0;
+    Volume = 10;
 }
 
 CSettings::~CSettings()
 {
+}
+
+void CSettings::SetPitch(int pitch)
+{
+    Pitch = pitch;
+}
+
+void CSettings::SetRate(int rate)
+{
+    Rate = rate;
+}
+
+void CSettings::SetVolume(int volume)
+{
+    Volume = volume;
 }

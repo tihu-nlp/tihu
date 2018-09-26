@@ -31,7 +31,14 @@ public:
     CSettings();
     ~CSettings();
 
+    void SetPitch(int pitch_adjust);
+    void SetRate(int rate_adjust);
+    void SetVolume(int volume_adjust);
+
 private:
+    int Pitch;
+    int Rate;
+    int Volume;
 };
 
 #endif

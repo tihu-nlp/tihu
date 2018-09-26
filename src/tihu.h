@@ -99,13 +99,13 @@ TIHU_FN_DECLARE bool         tihu_LoadVoice(TIHU_VOICE voice);
 TIHU_FN_DECLARE void         tihu_SetCallback(TIHU_CALLBACK call_back, void* user_data);
 TIHU_FN_DECLARE void         tihu_Speak(const char* text);
 TIHU_FN_DECLARE void         tihu_Stop();
-TIHU_FN_DECLARE void         tihu_TagText(const char* text);
 TIHU_FN_DECLARE bool         tihu_SetParam(TIHU_PARAM param, int value);
 TIHU_FN_DECLARE bool         tihu_GetParam(TIHU_PARAM param, int &value);
 TIHU_FN_DECLARE int          tihu_GetLastError();
 TIHU_FN_DECLARE const char*  tihu_GetErrorString(int error_code);
 TIHU_FN_DECLARE const char*  tihu_GetVersion();
-TIHU_FN_DECLARE void         tihu_Dump(const char* filename);
+TIHU_FN_DECLARE void         tihu_DebugMode(bool enable);
+
 
 #ifdef __cplusplus
 }

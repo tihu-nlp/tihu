@@ -25,6 +25,7 @@
 
 
 #include "helper.h"
+#include "tihu.h"
 
 
 class IParser;
@@ -50,6 +51,8 @@ public:
     bool SetParam(TIHU_PARAM param, int value);
     bool GetParam(TIHU_PARAM param, int &value);
 
+    void DebugMode(bool enable);
+
 private:
     void SetText(const std::string &text) const;
 
@@ -63,7 +66,6 @@ private:
     IParser* Hazm;
     IParser* TihuDict;
     IParser* LetterToSound;
-
     ISynthesizer* Synthesizer;
 
     CCorpus* Corpus;

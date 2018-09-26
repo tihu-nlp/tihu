@@ -36,7 +36,7 @@ IParser::~IParser()
 
 }
 
-void IParser::SetCallBack(TIHU_CALLBACK callback, void* userdata)
+void IParser::SetCallBack(void* callback, void* userdata)
 {
     Callback = callback;
     UserData = userdata;
@@ -59,7 +59,7 @@ void IParser::ReportMessage(const char* message, ...) const
     ////wcscat(temp, L"\r\n");
 
     if(Callback) {
-        static_cast<TIHU_CALLBACK>(Callback)
+        reinterpret_cast<TIHU_CALLBACK>(Callback)
             (TIHU_TEXT_MESSAGE, (long)temp, strlen(temp)-1, UserData);
     }
 }
