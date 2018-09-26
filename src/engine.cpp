@@ -29,14 +29,8 @@
 
 #include <iostream>
 #include <locale>
-
-
-#ifdef WIN32
-#include <Windows.h>
-#else
-#include "tihu.h"
 #include <dlfcn.h>
-#endif
+
 
 
 #define LOG_ENABLED

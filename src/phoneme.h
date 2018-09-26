@@ -18,8 +18,8 @@
 *    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
 *
 *******************************************************************************/
-#ifndef __TIHU__CORPUS__PHONEME_H
-#define __TIHU__CORPUS__PHONEME_H
+#ifndef __TIHU__PHONEME_H
+#define __TIHU__PHONEME_H
 
 #pragma once
 

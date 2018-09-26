@@ -18,8 +18,8 @@
 *    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
 *
 *******************************************************************************/
-#ifndef __TIHU__CORPUS__PITCHRANGE_H
-#define __TIHU__CORPUS__PITCHRANGE_H
+#ifndef __TIHU__PITCHRANGE_H
+#define __TIHU__PITCHRANGE_H
 
 #pragma once
 

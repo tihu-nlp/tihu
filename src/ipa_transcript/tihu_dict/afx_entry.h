@@ -18,8 +18,8 @@
 *    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
 *
 *******************************************************************************/
-#ifndef __TIHU__POS_TAGGER__AFX_ENTRY_H
-#define __TIHU__POS_TAGGER__AFX_ENTRY_H
+#ifndef __TIHU__AFX_ENTRY_H
+#define __TIHU__AFX_ENTRY_H
 
 #include "hentry.h"
 

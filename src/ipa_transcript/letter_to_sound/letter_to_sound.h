@@ -18,8 +18,8 @@
 *    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
 *
 *******************************************************************************/
-#ifndef __TIHU__LETTER_TO_SOUND__LETTER_TO_SOUND_H
-#define __TIHU__LETTER_TO_SOUND__LETTER_TO_SOUND_H
+#ifndef __TIHU__LETTER_TO_SOUND_H
+#define __TIHU__LETTER_TO_SOUND_H
 
 #pragma once
 
