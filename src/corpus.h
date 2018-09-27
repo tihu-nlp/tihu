@@ -29,8 +29,9 @@ class CCorpus
 {
 public:
     CCorpus();
+    CCorpus(const std::string &text);
 
-    void SetText(const std::string text);
+    void SetText(const std::string &text);
     const std::string &GetText() const;
 
     void AddWord(CWordPtr &word);

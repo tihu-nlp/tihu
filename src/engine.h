@@ -31,6 +31,7 @@
 class IParser;
 class ISynthesizer;
 class CCorpus;
+class CSettings;
 
 class CEngine
 {
@@ -44,8 +45,6 @@ public:
 
     void Speak(const std::string &text);
     void Diacritize(const std::string &text); //TODO:
-
-    void Dump(const std::string &filename);
     void Stop();
 
     bool SetParam(TIHU_PARAM param, int value);
@@ -55,9 +54,7 @@ public:
 
 private:
     void SetText(const std::string &text) const;
-
-    void LogText(const std::string& filename) const;
-    void LogCorpus(const std::string& filename) const;
+    void LogText(const std::string &text) const;
 
     std::string GetCurrentModulePath() const;
 
@@ -68,7 +65,7 @@ private:
     IParser* LetterToSound;
     ISynthesizer* Synthesizer;
 
-    CCorpus* Corpus;
+    CSettings* Settings;
 };
 
 #endif

@@ -19,6 +19,7 @@
 *
 *******************************************************************************/
 #include "synthesizer.h"
+#include "tihu.h"
 
 #include <stdarg.h>
 
@@ -35,9 +36,9 @@ ISynthesizer::~ISynthesizer()
 void ISynthesizer::FireEvents(const CWordPtr& word) const
 {
     if (Callback) {
-
         /// word boundary
-        Callback(TIHU_EVENT_WORD_BOUNDRY,
+        reinterpret_cast<TIHU_CALLBACK>(Callback)(
+            TIHU_EVENT_WORD_BOUNDRY,
             word->GetOffset(),
             word->GetLength(),
             UserData);
@@ -47,7 +48,8 @@ void ISynthesizer::FireEvents(const CWordPtr& word) const
 bool ISynthesizer::PlaySamples(short* samples, int length) const
 {
     if (Callback) {
-        if (Callback(TIHU_WAVE_BUFFER,
+        if (reinterpret_cast<TIHU_CALLBACK>(Callback)(
+            TIHU_WAVE_BUFFER,
             reinterpret_cast<uintptr_t>(samples),
             length * 2,
             UserData) == TIHU_DATA_ABORT) {

@@ -87,11 +87,11 @@ int CAfxManager::ParseAffix(char afx_type, CFileManager &file_manager)
     for(int ent = 0; ent < numents; ++ent) {
         file_manager.ReadLine();
 
-        std::string morph_type     = file_manager.NextPiece();
-        std::string morph_flag     = file_manager.NextPiece();
-        std::string morph_append   = file_manager.NextPiece();
-        std::string morph_label    = file_manager.NextPiece();
-        std::string morph_pronunce = file_manager.NextPiece();
+        std::string morph_type      = file_manager.NextPiece();
+        std::string morph_flag      = file_manager.NextPiece();
+        std::string morph_append    = file_manager.NextPiece();
+        std::string morph_label     = file_manager.NextPiece();
+        std::string morph_pronounce = file_manager.NextPiece();
 
         if(morph_label.empty()) {
             TIHU_WARNING(stderr, "error: line %d: wrong affix entry.",
@@ -109,10 +109,10 @@ int CAfxManager::ParseAffix(char afx_type, CFileManager &file_manager)
         ///
         ReplaceSubstring(morph_append, "_", CHR_U8_ZWNJ);
 
-        afx_entry->Flag     = flag;
-        afx_entry->Appnd    = morph_append;
-        afx_entry->Pronunce = morph_pronunce;
-        afx_entry->Label    = morph_label;
+        afx_entry->Flag      = flag;
+        afx_entry->Appnd     = morph_append;
+        afx_entry->Pronounce = morph_pronounce;
+        afx_entry->Label     = morph_label;
 
         entries.push_back(afx_entry);
     }
@@ -501,7 +501,7 @@ void CAfxManager::ParsEntry(struct hentry* he, CPfxEntry* pfx, CSfxEntry* sfx, C
     std::string root = he->text;
     std::string dictation = he->text;
     std::string lable = he->text + he->w_len + 1;
-    std::string pronunce = he->text + he->w_len + he->l_len + 2;
+    std::string pronounce = he->text + he->w_len + he->l_len + 2;
     int frequency = he->freq;
 
     if(pfx) {
@@ -518,7 +518,7 @@ void CAfxManager::ParsEntry(struct hentry* he, CPfxEntry* pfx, CSfxEntry* sfx, C
                 lable = pfx->Label;
             }
         }
-        pronunce = ConcatPronunciations(pfx->Pronunce, pronunce);
+        pronounce = ConcatPronunciations(pfx->Pronounce, pronounce);
     }
 
     if(sfx) {
@@ -526,12 +526,12 @@ void CAfxManager::ParsEntry(struct hentry* he, CPfxEntry* pfx, CSfxEntry* sfx, C
         if(sfx->Label != ".") {
             lable = sfx->Label;
         }
-        pronunce = ConcatPronunciations(pronunce, sfx->Pronunce);
+        pronounce = ConcatPronunciations(pronounce, sfx->Pronounce);
     }
 
     if(!lable.empty() && !word->GetPOSTag().empty()) {
         if(lable[0] == word->GetPOSTag()[0]) {
-            word->SetPron(pronunce);
+            word->SetPron(pronounce);
             word->SetFrequency(frequency);
         }
     }

@@ -29,7 +29,10 @@ class CSettings
 {
 public:
     CSettings();
-    ~CSettings();
+
+    int GetPitch() const;
+    int GetRate() const;
+    int GetVolume() const;
 
     void SetPitch(int pitch_adjust);
     void SetRate(int rate_adjust);

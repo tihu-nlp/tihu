@@ -105,19 +105,9 @@ void CeSpeakSyn::Stop()
     eSpeakLib.Stop();
 }
 
-void CeSpeakSyn::ApplyPitch(int pitch_adjust)
+void CeSpeakSyn::ApplyChanges()
 {
-
-}
-
-void CeSpeakSyn::ApplyRate(int rate_adjust)
-{
-
-}
-
-void CeSpeakSyn::ApplyVolume(int volume_adjust)
-{
-
+    /// TODO
 }
 
 int CeSpeakSyn::GetFrequency() const
