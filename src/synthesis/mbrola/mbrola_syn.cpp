@@ -132,17 +132,13 @@ void CMbrolaSyn::Stop()
     MbrolaLib.Clear();
 }
 
-void CMbrolaSyn::ApplyVolume(int volume)
+void CMbrolaSyn::ApplyChanges()
 {
+    int volume = Settings->GetVolume();
+    int rate = Settings->GetRate();
+    int pitch = Settings->GetPitch();
+
     MbrolaLib.ApplyVolume(volume);
-}
-
-void CMbrolaSyn::ApplyRate(int rate)
-{
     MbrolaLib.ApplyRate(rate);
-}
-
-void CMbrolaSyn::ApplyPitch(int pitch)
-{
     MbrolaLib.ApplyPitch(pitch);
 }

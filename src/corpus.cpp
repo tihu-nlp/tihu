@@ -22,12 +22,16 @@
 #include "word.h"
 
 
+CCorpus::CCorpus(const std::string &text)
+    : Text(text)
+{
+}
 
 CCorpus::CCorpus()
 {
 }
 
-void CCorpus::SetText(const std::string text)
+void CCorpus::SetText(const std::string &text)
 {
     Text = text;
 }

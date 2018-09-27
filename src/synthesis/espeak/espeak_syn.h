@@ -40,11 +40,8 @@ public:
 
     void Stop() override;
 
-    void ApplyPitch(int pitch_adjust) override;
-    void ApplyRate(int rate_adjust) override;
-    void ApplyVolume(int volume_adjust) override;
-
     int  GetFrequency() const override;
+    void ApplyChanges() override;
 
     int ParsEvent(short* samples, int length, espeak_EVENT* espeak_event);
 

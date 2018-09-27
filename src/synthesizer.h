@@ -35,9 +35,7 @@ public:
     virtual int  GetFrequency() const = 0;
     virtual void Stop() = 0;
 
-    virtual void ApplyPitch(int pitch_adjust) = 0;
-    virtual void ApplyRate(int rate_adjust) = 0;
-    virtual void ApplyVolume(int volume_adjust) = 0;
+    virtual void ApplyChanges();
 
 protected:
     void FireEvents(const CWordPtr& word) const;

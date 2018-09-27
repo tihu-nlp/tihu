@@ -98,7 +98,7 @@ std::string CNumberToPhoneme::Convert(const std::string &text)
 {
 #define SEG_APPENDER  "o"
 
-    std::string pronunce, block_pronunce, prefix;
+    std::string pronounce, block_pronounce, prefix;
     std::string number_text(text);
 
     /*if(wtoi(number_text.c_str()) == 0)
@@ -149,29 +149,29 @@ std::string CNumberToPhoneme::Convert(const std::string &text)
         seg_value = std::stoi(seg_text);
 
         // --- BlockNumber
-        block_pronunce = GetBlockPronunce(seg_value, seg_length);
+        block_pronounce = GetBlockPronounce(seg_value, seg_length);
 
-        /// if (pronunce.length() > 0 && block_pronunce.length() > 0)
-        ///    pronunce = ConcatPronunciations(pronunce, SEG_APPENDER);
+        /// if (pronounce.length() > 0 && block_pronounce.length() > 0)
+        ///    pronounce = ConcatPronunciations(pronounce, SEG_APPENDER);
 
-        pronunce += block_pronunce;
+        pronounce += block_pronounce;
         if(seg_no == 0) {
             break;
         }
 
-        if(block_pronunce != "" && seg_no > 0) {
-            pronunce += SegSuffix[(seg_no - 1) % MAX_SEG_SUFFIX_PRONUNC];
+        if(block_pronounce != "" && seg_no > 0) {
+            pronounce += SegSuffix[(seg_no - 1) % MAX_SEG_SUFFIX_PRONUNC];
         }
     }
 
     if(prefix.length() > 0) {
-        pronunce.insert(0, prefix);
+        pronounce.insert(0, prefix);
     }
 
-    return pronunce;
+    return pronounce;
 }
 
-std::string CNumberToPhoneme::GetBlockPronunce(int number, int seg_len)
+std::string CNumberToPhoneme::GetBlockPronounce(int number, int seg_len)
 {
     assert(!(number > 999 || seg_len > 3));
 
@@ -179,7 +179,7 @@ std::string CNumberToPhoneme::GetBlockPronunce(int number, int seg_len)
     int         powered = 0;
     int         division = 0;
     int         index_in_array = 0;
-    std::string pronunce = "";
+    std::string pronounce = "";
     std::string digit_text = "";
 
     if(number == 0) {
@@ -188,7 +188,7 @@ std::string CNumberToPhoneme::GetBlockPronunce(int number, int seg_len)
 
     remainder = number;
     if(number > 0 && number < 20) {
-        return GetDigitPronunce(0, number - 1);
+        return GetDigitPronounce(0, number - 1);
     }
 
     for(int index = seg_len - 1; index >= 0; index--) {
@@ -211,18 +211,18 @@ std::string CNumberToPhoneme::GetBlockPronunce(int number, int seg_len)
             index_in_array = division - 1;
         }
 
-        digit_text = GetDigitPronunce(index, index_in_array);
+        digit_text = GetDigitPronounce(index, index_in_array);
 
-        if(pronunce != "") {
-            pronunce = ConcatPronunciations(pronunce, SEG_APPENDER);
+        if(pronounce != "") {
+            pronounce = ConcatPronunciations(pronounce, SEG_APPENDER);
         }
 
-        pronunce += digit_text;
+        pronounce += digit_text;
     }
-    return pronunce;
+    return pronounce;
 }
 
-const char* CNumberToPhoneme::GetDigitPronunce(int first_index, int sec_index)
+const char* CNumberToPhoneme::GetDigitPronounce(int first_index, int sec_index)
 {
     assert(first_index < 3);
     assert(sec_index < 19);

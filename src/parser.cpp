@@ -59,7 +59,10 @@ void IParser::ReportMessage(const char* message, ...) const
     ////wcscat(temp, L"\r\n");
 
     if(Callback) {
-        reinterpret_cast<TIHU_CALLBACK>(Callback)
-            (TIHU_TEXT_MESSAGE, (long)temp, strlen(temp)-1, UserData);
+        reinterpret_cast<TIHU_CALLBACK>(Callback)(
+            TIHU_TEXT_MESSAGE,
+            (long)temp,
+            strlen(temp)-1,
+            UserData);
     }
 }

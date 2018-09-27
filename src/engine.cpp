@@ -19,8 +19,8 @@
 *
 *******************************************************************************/
 
-#include "ipa_transcript/tihu_dict/tihu_dict.h"
-#include "ipa_transcript/letter_to_sound/letter_to_sound.h"
+#include "phonetics/tihu_dict/tihu_dict.h"
+#include "phonetics/letter_to_sound/letter_to_sound.h"
 #include "synthesis/mbrola/mbrola_syn.h"
 #include "synthesis/espeak/espeak_syn.h"
 #include "hazm/hazm.h"
@@ -34,11 +34,11 @@
 
 CEngine::CEngine()
 {
-    Hazm            = nullptr;
-    TihuDict        = nullptr;
-    LetterToSound   = nullptr;
-    Synthesizer     = nullptr;
-    Corpus          = new CCorpus();
+    Hazm          = nullptr;
+    TihuDict      = nullptr;
+    LetterToSound = nullptr;
+    Synthesizer   = nullptr;
+    Settings      = new CSettings();
 }
 
 CEngine::~CEngine()
@@ -55,7 +55,7 @@ CEngine::~CEngine()
     if(Synthesizer) {
         delete Synthesizer;
     }
-    delete Corpus;
+    delete Settings;
 }
 
 int CEngine::LoadModules()
@@ -71,17 +71,21 @@ int CEngine::LoadModules()
     TihuDict = new CTihuDict();
     LetterToSound = new CLetterToSound();
 
-    if (!static_cast<CHazm*>(Hazm)->Load("Hazm")) {
+    if(!Hazm->Load("Hazm")) {
         return TIHU_ERROR_LOAD_DATA;
     }
 
-    if(!static_cast<CTihuDict*>(TihuDict)->Load("Dict")) {
+    if(!TihuDict->Load("Dict")) {
         return TIHU_ERROR_LOAD_DATA;
     }
 
-    if(!static_cast<CLetterToSound*>(LetterToSound)->Load("LTS")) {
+    if(!LetterToSound->Load("LTS")) {
         return TIHU_ERROR_LOAD_DATA;
     }
+
+    Hazm->SetSettings(Settings);
+    TihuDict->SetSettings(Settings);
+    LetterToSound->SetSettings(Settings);
 
     return TIHU_ERROR_NONE;
 }
@@ -124,6 +128,8 @@ int CEngine::LoadSynthesizer(TIHU_VOICE voice)
         return TIHU_ERROR_LOAD_VOICE;
     }
 
+    Synthesizer->SetSettings(Settings);
+
     return TIHU_ERROR_NONE;
 }
 
@@ -143,13 +149,12 @@ void CEngine::Stop()
 
 void CEngine::Speak(const std::string &text)
 {
-    Corpus->Clear();
-    Corpus->SetText(text);
+    CCorpus corpus(text);
 
-    Hazm->ParsText(Corpus);
-    TihuDict->ParsText(Corpus);
-    LetterToSound->ParsText(Corpus);
-    Synthesizer->ParsText(Corpus);
+    Hazm->ParsText(&corpus);
+    TihuDict->ParsText(&corpus);
+    LetterToSound->ParsText(&corpus);
+    Synthesizer->ParsText(&corpus);
 }
 
 void CEngine::Diacritize(const std::string &text)
@@ -163,13 +168,19 @@ bool CEngine::SetParam(TIHU_PARAM param, int value)
 
     switch(param) {
     case TIHU_PARAM_PITCH:
-        Synthesizer->ApplyPitch(value);
+        Settings->SetPitch(value);
+        Synthesizer->ApplyChanges();
         break;
     case TIHU_PARAM_VOLUME:
-        Synthesizer->ApplyVolume(value);
+        Settings->SetVolume(value);
+        Synthesizer->ApplyChanges();
         break;
     case TIHU_PARAM_RATE:
-        Synthesizer->ApplyRate(value);
+        Settings->SetRate(value);
+        Synthesizer->ApplyChanges();
+        break;
+    case TIHU_PARAM_READ_PUNCS:
+        // TODO
         break;
     case TIHU_PARAM_FREQUENCY:
         applied = false;
@@ -185,34 +196,32 @@ bool CEngine::GetParam(TIHU_PARAM param, int &value)
 
     switch(param) {
     case TIHU_PARAM_PITCH:
-        //value = Synthesizer->GetPitch();
+        value = Settings->GetPitch();
         break;
     case TIHU_PARAM_VOLUME:
-        Synthesizer->ApplyVolume(value);
+        value = Settings->GetVolume();
         break;
     case TIHU_PARAM_RATE:
-        Synthesizer->ApplyRate(value);
+        value = Settings->GetRate();
         break;
     case TIHU_PARAM_FREQUENCY:
         value = Synthesizer->GetFrequency();
         break;
+    case TIHU_PARAM_READ_PUNCS:
+        // TODO
+        break;
+    default:
+        return false;
     }
 
     return true;
 }
 
-void CEngine::SetText(const std::string &text) const
-{
-    Corpus->Clear();
-    Corpus->SetText(text);
-}
-
-
-void CEngine::LogText(const std::string& filename) const
+void CEngine::LogText(const std::string& text) const
 {
     const std::locale utf8_locale = std::locale(std::locale(), new std::codecvt_utf8<wchar_t>());
 
-    std::ofstream writer(filename, std::ofstream::out | std::ofstream::app);
+    std::ofstream writer("text.txt", std::ofstream::out | std::ofstream::app);
 
     if(!writer.is_open()) {
         return;
@@ -222,14 +231,9 @@ void CEngine::LogText(const std::string& filename) const
 
     writer << std::endl;
     writer << std::endl;
-    writer << Corpus->GetText();
+    writer << text;
 
     writer.close();
-}
-
-void CEngine::LogCorpus(const std::string& filename) const
-{
-    Corpus->Dump(filename);
 }
 
 std::string CEngine::GetCurrentModulePath() const

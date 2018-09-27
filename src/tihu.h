@@ -47,7 +47,7 @@ enum TIHU_PARAM {
     TIHU_PARAM_PITCH                 = 0,
     TIHU_PARAM_VOLUME                   ,
     TIHU_PARAM_RATE                     ,
-    /// TIHU_PARAM_READ_PUNCS           ,
+    TIHU_PARAM_READ_PUNCS               ,
     TIHU_PARAM_FREQUENCY                ,
 };
 

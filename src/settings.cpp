@@ -27,10 +27,6 @@ CSettings::CSettings()
     Volume = 10;
 }
 
-CSettings::~CSettings()
-{
-}
-
 void CSettings::SetPitch(int pitch)
 {
     Pitch = pitch;
@@ -44,4 +40,19 @@ void CSettings::SetRate(int rate)
 void CSettings::SetVolume(int volume)
 {
     Volume = volume;
+}
+
+int CSettings::GetPitch() const
+{
+    return Pitch;
+}
+
+int CSettings::GetRate() const
+{
+    return Rate;
+}
+
+int CSettings::GetVolume() const
+{
+    return Volume;
 }

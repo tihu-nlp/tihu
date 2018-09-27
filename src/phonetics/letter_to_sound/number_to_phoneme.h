@@ -34,8 +34,8 @@ public:
     std::string Convert(const std::string &number_text);
 
 private:
-    std::string GetBlockPronunce(int number, int seg_len);
-    const char* GetDigitPronunce(int first_index, int sec_index);
+    std::string GetBlockPronounce(int number, int seg_len);
+    const char* GetDigitPronounce(int first_index, int sec_index);
 };
 
 #endif

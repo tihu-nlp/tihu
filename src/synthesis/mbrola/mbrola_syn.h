@@ -40,13 +40,10 @@ public:
     void Stop() override;
 
     int  GetFrequency() const override;
+    void ApplyChanges() override;
 
 private:
     bool Synthesize(char* line);
-    void ApplyVolume(int volume);
-    void ApplyRate(int rate);
-    void ApplyPitch(int pitch);
-
 
 private:
     CMbrolaLib MbrolaLib;
