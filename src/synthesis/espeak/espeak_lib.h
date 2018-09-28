@@ -18,8 +18,8 @@
 *    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
 *
 *******************************************************************************/
-#ifndef __TIHU__ESPEAK__ESPEAK_LIB_H
-#define __TIHU__ESPEAK__ESPEAK_LIB_H
+#ifndef __TIHU__ESPEAK_LIB_H
+#define __TIHU__ESPEAK_LIB_H
 
 #pragma once
 

@@ -34,8 +34,7 @@ public:
 
     virtual int  GetFrequency() const = 0;
     virtual void Stop() = 0;
-
-    virtual void ApplyChanges();
+    virtual void ApplyChanges() = 0;
 
 protected:
     void FireEvents(const CWordPtr& word) const;

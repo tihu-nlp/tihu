@@ -45,11 +45,8 @@ public:
 
     void Clear();
 
-    void Dump(const std::string &filename) const;
-
-protected:
-    void DumpToXml(const std::string &path) const;
-    void DumpToTxt(const std::string &path) const;
+    std::string ToXml() const;
+    std::string ToTxt() const;
 
 protected:
     std::string     Text;

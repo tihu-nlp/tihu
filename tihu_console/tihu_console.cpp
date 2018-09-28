@@ -39,7 +39,7 @@ TIHU_CALLBACK_RETURN callback(TIHU_CALLBACK_MESSAGE Message, long lParam, long w
     switch(Message)
     {
     case TIHU_WAVE_BUFFER: {
-        consol->WriteAudioBuffer((char*)lParam, wParam);
+        consol->WriteAudioBuffer((char*)lParam, (int)wParam);
     }break;
 
     case TIHU_TEXT_MESSAGE: {
@@ -109,7 +109,6 @@ TihuConsole::TihuConsole(QWidget *parent, Qt::WindowFlags flags)
     connect(ui.btnUnload, SIGNAL(clicked()), this, SLOT(onUnload()));
     connect(ui.btnSpeak, SIGNAL(clicked()), this, SLOT(onSpeak()));
     connect(ui.btnStop, SIGNAL(clicked()), this, SLOT(onStop()));
-    connect(ui.btnNormalize, SIGNAL(clicked()), this, SLOT(onNormalize()));
     connect(ui.btnOpenFile, SIGNAL(clicked()), this, SLOT(onOpenFile()));
     connect(this, SIGNAL(AppendMessage(const QString &)), ui.txtMessages, SLOT(appendPlainText(const QString &)));
     connect(actionGroup, SIGNAL(triggered(QAction*)), this, SLOT(onVoiceChange(QAction*)));
@@ -208,7 +207,6 @@ bool TihuConsole::LoadTihu(const QString& library)
     ///------------------------------------
     ui.btnLoad->setEnabled(false);
     ui.btnUnload->setEnabled(true);
-    ui.btnNormalize->setEnabled(true);
     ui.btnSpeak->setEnabled(true);
 
     int frequency = -1;
@@ -268,7 +266,6 @@ void TihuConsole::onUnload()
 
     ui.btnLoad->setEnabled(true);
     ui.btnUnload->setEnabled(false);
-    ui.btnNormalize->setEnabled(false);
     ui.btnSpeak->setEnabled(false);
     ui.btnStop->setEnabled(false);
 }
@@ -406,8 +403,6 @@ void TihuConsole::ReportMessage(char* message, int length)
 {
     QString qmessage = QString::fromUtf8(message, length);
 
-    qmessage.replace('\n', ' ');
-
     emit AppendMessage(qmessage);
 }
 
@@ -416,7 +411,6 @@ void TihuConsole::onFinishSpeaking()
     ui.btnSpeak->setEnabled(true);
     ui.btnStop->setEnabled(false);
 }
-
 
 void TihuConsole::onVoiceChange(QAction* action)
 {

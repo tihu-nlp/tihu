@@ -49,11 +49,12 @@ void IParser::SetSettings(CSettings* settings)
 
 void IParser::ReportMessage(const char* message, ...) const
 {
-    char temp[1024];
+    /// TODO: if has o argument, pass all string to the call back. no need sprintf(...)
+    char temp[1024*4];
 
     va_list arglist;
     va_start(arglist, message);
-    vsnprintf(temp, 1024, message, arglist);
+    vsnprintf(temp, 1024*4, message, arglist);
     va_end(arglist);
 
     ////wcscat(temp, L"\r\n");

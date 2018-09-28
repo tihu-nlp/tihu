@@ -64,6 +64,9 @@ public:
     bool            IsNumeral() const;
     bool            IsInterjection() const;
 
+    void            SetLTSPhonetics(bool lts);
+    bool            LTSPhonetics() const;
+
 
     CPhonemeList    &GetPhonemeList();
     CEventList      &GetEventList();

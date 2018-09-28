@@ -28,7 +28,7 @@
 
 #include "ui_tihu_console.h"
 
-#include "../tihu/tihu.h"
+#include "../src/tihu.h"
 
 
 class TihuConsole : public QMainWindow
@@ -36,7 +36,7 @@ class TihuConsole : public QMainWindow
 	Q_OBJECT
 
 public:
-    TihuConsole(QWidget *parent = 0, Qt::WindowFlags flags = 0);
+    TihuConsole(QWidget *parent = nullptr, Qt::WindowFlags flags = nullptr);
 	~TihuConsole();
 
     void WriteAudioBuffer(char* buffer, int length);

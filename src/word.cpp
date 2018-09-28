@@ -24,6 +24,7 @@
 #define WORD_FLAG_END_OF_SENTENCE       0x0001
 #define WORD_FLAG_END_OF_PARAGRAPH      0x0002
 #define WORD_FLAG_HAS_DIACRITIC         0x0004
+#define WORD_FLAG_LTS_PHONETICS         0x0008
 
 CWord::CWord()
     : Frequency(0)
@@ -95,6 +96,17 @@ size_t CWord::GetLength() const
 size_t CWord::GetOffset() const
 {
     return Offset;
+}
+
+/// TODO: find better name for this function
+void CWord::SetLTSPhonetics(bool lts)
+{
+    SET_FLAG(Flags, WORD_FLAG_LTS_PHONETICS);
+}
+
+bool CWord::LTSPhonetics() const
+{
+    return IS_FLAG_SET(Flags, WORD_FLAG_LTS_PHONETICS);
 }
 
 bool CWord::IsPersianWord() const

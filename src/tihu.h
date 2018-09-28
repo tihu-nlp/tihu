@@ -87,6 +87,7 @@ typedef bool (*TIHU_PROC_GET_PARAM)(TIHU_PARAM, int &);
 typedef int (*TIHU_PROC_GET_LAST_ERROR)();
 typedef const char* (*TIHU_PROC_GET_ERROR_STRING)(int);
 typedef const char* (*TIHU_PROC_GET_VERSION)();
+typedef void (*TIHU_PROC_DEBUG_MODE)(bool);
 
 #ifdef __cplusplus
 extern "C" {

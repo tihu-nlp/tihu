@@ -14,7 +14,7 @@ LDFLAGS = `python2.7-config --ldflags` -shared -Wl,-soname,$(TARGET)
 all: $(TARGET)
 
 $(TARGET): $(OBJS)
-	$(CC) $(LDFLAGS) -o ./build/$(TARGET)
+	$(CC) $(LDFLAGS) $(OBJS) -o ./build/$(TARGET)
 
 $(OBJSDIR)%.o: %.cpp
 	@mkdir -p $(@D)
@@ -22,6 +22,9 @@ $(OBJSDIR)%.o: %.cpp
 
 clean:
 	rm -rf $(OBJSDIR)
+
+play:
+	$(CC) tihu_play/main.cpp -o ./build/tihu_play -L. -ldl
 
 # to print variables in makefile
 print-%  : ; @echo $* = $($*)

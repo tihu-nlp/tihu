@@ -59,6 +59,8 @@ void CLetterToSound::ParsText(CCorpus* corpus)
                 ///
                 phonemes =
                     PersianToPhoneme.Convert(word->GetText());
+
+                word->SetLTSPhonetics(true);
             } else if (word->IsEnglishWord()) {
                 //
                 phonemes =

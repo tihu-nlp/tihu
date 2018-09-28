@@ -21,7 +21,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "../tihu/tihu.h"
+#include "../src/tihu.h"
 
 #ifdef WIN32
 #else
