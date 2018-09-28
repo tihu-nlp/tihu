@@ -39,7 +39,6 @@ public:
     virtual void SetCallBack(void* callback, void* userdata);
     virtual void SetSettings(CSettings* settings);
 
-protected:
     void ReportMessage(const char* message, ...) const;
 
 protected:

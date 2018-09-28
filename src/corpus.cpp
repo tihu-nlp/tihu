@@ -21,6 +21,7 @@
 #include "corpus.h"
 #include "word.h"
 
+#include <sstream>
 
 CCorpus::CCorpus(const std::string &text)
     : Text(text)
@@ -80,34 +81,14 @@ const CWordPtr &CCorpus::GetFirstWord() const
     return WordList.front();
 }
 
-void CCorpus::Dump(const std::string &filename) const
+ std::string CCorpus::ToXml() const
 {
-    std::string extention;
-    size_t pos = filename.rfind('.');
-    if(pos != std::string::npos) {
-        extention = filename.substr(pos + 1);
-    }
-
-    if(extention == "xml") {
-        DumpToXml(filename);
-    } else {
-        DumpToTxt(filename);
-    }
-}
-
-void CCorpus::DumpToXml(const std::string &path) const
-{
-    std::ofstream writer(path);
-
-    if(!writer.is_open()) {
-        return;
-    }
+    std::ostringstream writer;
 
     writer << "<?xml version=\"1.0\" encoding=\"utf-8\" ?>" << std::endl;
     writer << "<corpus>" << std::endl;
 
     char buffer[1024];
-
     for(auto &word : WordList) {
         snprintf(buffer, 1024, "\t<word text=\"%s\" pronunciation=\"%s\" label=\"%s\"/>",
                 word->GetText().c_str(),
@@ -119,29 +100,27 @@ void CCorpus::DumpToXml(const std::string &path) const
 
     writer << "</corpus>";
     writer.flush();
-    writer.close();
+
+    return writer.str();
 }
 
-void CCorpus::DumpToTxt(const std::string &path) const
+ std::string CCorpus::ToTxt() const
 {
-    std::ofstream writer(path);
-
-    if(!writer.is_open()) {
-        return;
-    }
+    std::ostringstream writer;
 
     char buffer[1024];
-
     for(auto &word : WordList) {
 
-        snprintf(buffer, 1024, "%-30s%-12s %s",
+        snprintf(buffer, 1024, "%-30s%-12s %c%s",
             word->GetText().c_str(),
             word->GetPOSTag().c_str(),
+            word->LTSPhonetics() ? '*':' ',
             word->GetPron().c_str());
 
         writer << buffer << std::endl;
     }
 
     writer.flush();
-    writer.close();
+
+    return writer.str();
 }

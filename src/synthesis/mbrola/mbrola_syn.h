@@ -18,8 +18,8 @@
 *    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
 *
 *******************************************************************************/
-#ifndef __TIHU__MBROLA__MBROLA_SYN_H
-#define __TIHU__MBROLA__MBROLA_SYN_H
+#ifndef __TIHU__MBROLA_SYN_H
+#define __TIHU__MBROLA_SYN_H
 
 #pragma once
 
@@ -32,7 +32,7 @@ class CMbrolaSyn
 {
 public:
     CMbrolaSyn();
-    ~CMbrolaSyn();
+    virtual ~CMbrolaSyn();
 
     bool Load(std::string name) override;
     void ParsText(CCorpus* corpus) override;

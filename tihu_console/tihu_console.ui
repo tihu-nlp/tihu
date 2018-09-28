@@ -156,13 +156,6 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="btnNormalize">
-          <property name="text">
-           <string>Normalize</string>
-          </property>
-         </widget>
-        </item>
-        <item>
          <spacer name="verticalSpacer_1">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
@@ -189,7 +182,6 @@
   <tabstop>btnLoad</tabstop>
   <tabstop>btnUnload</tabstop>
   <tabstop>btnOpenFile</tabstop>
-  <tabstop>btnNormalize</tabstop>
  </tabstops>
  <resources/>
  <connections/>

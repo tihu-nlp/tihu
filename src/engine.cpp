@@ -155,6 +155,8 @@ void CEngine::Speak(const std::string &text)
     TihuDict->ParsText(&corpus);
     LetterToSound->ParsText(&corpus);
     Synthesizer->ParsText(&corpus);
+
+    Synthesizer->ReportMessage(corpus.ToTxt().c_str());
 }
 
 void CEngine::Diacritize(const std::string &text)
