@@ -33,19 +33,25 @@ public:
     ~CWord();
 
     void            SetText(const std::string &text);
+    void            SetType(TIHU_TOKEN_TYPE type);
     void            SetPron(const std::string &pron);
     void            SetPOSTag(const std::string &pos_tag);
     void            SetFrequency(size_t frequency);
     void            SetLength(size_t length);
     void            SetOffset(size_t offset);
+    void            SetIsEndOfParagraph(bool is_end_of_paragraph);
     void            SetIsEndOfSentence(bool is_end_of_sentence);
+    void            SetHasDiacritic(bool has_diacritic);
 
     std::string     GetText() const;
+    TIHU_TOKEN_TYPE GetType() const;
     std::string     GetPron() const;
     std::string     GetPOSTag() const;
     size_t          GetFrequency() const;
     size_t          GetLength() const;
     size_t          GetOffset() const;
+    bool            IsEndOfParagraph() const;
+    bool            IsEndOfSentence() const;
     bool            IsPersianWord() const;
     bool            IsEnglishWord() const;
     bool            IsPunctuation() const;
@@ -79,6 +85,7 @@ public:
 
 protected:
     std::string      Text;          // Normal word text
+    TIHU_TOKEN_TYPE  Type;          // Type of the the word(word)
     std::string      Pron;          // Pronunciation
     std::string      POSTag;        // Part-Of-Speech tag
     size_t           Frequency;     // Frequency

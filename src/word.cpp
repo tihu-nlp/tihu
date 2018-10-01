@@ -27,7 +27,8 @@
 #define WORD_FLAG_LTS_PHONETICS         0x0008
 
 CWord::CWord()
-    : Frequency(0)
+    : Type(TIHU_TOKEN_TYPE::UNKNOWN)
+    , Frequency(0)
     , Length(0)
     , Offset(0)
     , Flags(0)
@@ -41,6 +42,11 @@ CWord::~CWord()
 void CWord::SetText(const std::string &text)
 {
     Text = text;
+}
+
+void CWord::SetType(TIHU_TOKEN_TYPE type)
+{
+    Type = type;
 }
 
 void CWord::SetPron(const std::string &pron)
@@ -71,6 +77,11 @@ void CWord::SetOffset(size_t offset)
 std::string CWord::GetText() const
 {
     return Text;
+}
+
+TIHU_TOKEN_TYPE CWord::GetType() const
+{
+    return Type;
 }
 
 std::string CWord::GetPron() const

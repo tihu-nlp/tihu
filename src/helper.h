@@ -107,6 +107,18 @@ static inline void TIHU_WARNING(FILE*, const char*, ...) {}
 #define ASSERT(x) assert(x)
 #endif
 
+
+
+enum class TIHU_TOKEN_TYPE {
+    LINE_BREAK          = 'n',
+    ENGLISH             = '@',
+    PERSIAN             = '!',
+    NUMBER              = '#',
+    PUNCTUATION         = '$',
+    DELIMITER           = '-',
+    UNKNOWN             = '?',
+};
+
 typedef std::string TIHU_EVENT_VALUE ;
 
 enum class TIHU_EVENT_TYPE {
