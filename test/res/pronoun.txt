@@ -1,9 +1,4 @@
-#Test Name: Objective Pronouns
-
-
-
-
-
+#Objective Pronouns
 
 تنباکویش کجاست؟
 کتابت را بیاور.

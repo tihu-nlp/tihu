@@ -59,6 +59,7 @@ TihuConsole::TihuConsole(QWidget *parent, Qt::WindowFlags flags)
 {
     procInit = 0;
     procClose = 0;
+    procTag = 0;
     procSpeak = 0;
     procStop = 0;
     procSetParam = 0;
@@ -107,6 +108,7 @@ TihuConsole::TihuConsole(QWidget *parent, Qt::WindowFlags flags)
 
     connect(ui.btnLoad, SIGNAL(clicked()), this, SLOT(onLoad()));
     connect(ui.btnUnload, SIGNAL(clicked()), this, SLOT(onUnload()));
+    connect(ui.btnTag, SIGNAL(clicked()), this, SLOT(onTag()));
     connect(ui.btnSpeak, SIGNAL(clicked()), this, SLOT(onSpeak()));
     connect(ui.btnStop, SIGNAL(clicked()), this, SLOT(onStop()));
     connect(ui.btnOpenFile, SIGNAL(clicked()), this, SLOT(onOpenFile()));
@@ -168,6 +170,7 @@ bool TihuConsole::LoadTihu(const QString& library)
 
     procInit = (TIHU_PROC_INIT)lib.resolve("tihu_Init");
     procClose = (TIHU_PROC_CLOSE)lib.resolve("tihu_Close");
+    procTag = (TIHU_PROC_SPEAK)lib.resolve("tihu_Tag");
     procSpeak = (TIHU_PROC_SPEAK)lib.resolve("tihu_Speak");
     procStop = (TIHU_PROC_STOP)lib.resolve("tihu_Stop");
     procSetParam = (TIHU_PROC_SET_PARAM)lib.resolve("tihu_SetParam");
@@ -178,6 +181,7 @@ bool TihuConsole::LoadTihu(const QString& library)
 
     if( !procInit           ||
         !procClose          ||
+        !procTag            ||
         !procSpeak          ||
         !procStop           ||
         !procSetParam       ||
@@ -301,6 +305,17 @@ void TihuConsole::onSpeak()
 void TihuConsole::onNormalize()
 {
     AppendMessage("Sorry. Not implemented yet!");
+}
+
+void TihuConsole::onTag()
+{
+    ui.txtMessages->clear();
+
+    QString text = ui.txtInput->toPlainText();
+    std::string str = text.toStdString();
+    procTag(str.c_str());
+
+    WriteSettings();
 }
 
 void TihuConsole::Speak(const QString& text)

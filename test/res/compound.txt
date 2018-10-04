@@ -1,9 +1,4 @@
-#Test Name: Compound Words
-
-
-
-
-
+# Compound Words
 
 بسم الله الرحمن الرحیم
 سفر در زمان
