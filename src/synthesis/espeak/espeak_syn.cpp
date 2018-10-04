@@ -19,7 +19,7 @@
 *
 *******************************************************************************/
 #include "espeak_syn.h"
-#include "tihu.h"
+#include "../../tihu.h"
 
 
 int espeak_callback(short* samples, int length, espeak_EVENT* espeak_event)

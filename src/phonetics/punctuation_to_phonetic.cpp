@@ -18,8 +18,8 @@
 *    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
 *
 *******************************************************************************/
-#include "punctuation_to_phoneme.h"
-#include "file_manager.h"
+#include "punctuation_to_phonetic.h"
+#include "../file_manager.h"
 
 
 #include <algorithm>

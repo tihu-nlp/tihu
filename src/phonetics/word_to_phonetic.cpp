@@ -18,7 +18,7 @@
 *    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
 *
 *******************************************************************************/
-#include "letter_to_sound.h"
+#include "word_to_phonetic.h"
 
 CLetterToSound::CLetterToSound()
 {

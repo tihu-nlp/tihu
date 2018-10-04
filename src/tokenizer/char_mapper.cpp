@@ -19,8 +19,7 @@
 *
 *******************************************************************************/
 #include "char_mapper.h"
-
-#include "helper.h"
+#include "../helper.h"
 
 CCharMapper::CCharMapper()
 {

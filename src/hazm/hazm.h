@@ -23,7 +23,7 @@
 
 #pragma once
 
-#include "parser.h"
+#include "../parser.h"
 
 #ifndef PyObject_HEAD
 struct _object;
@@ -43,10 +43,7 @@ public:
 private:
     PyObject *HazmObj;
     PyObject *TaggerObj;
-    PyObject *StemmerObj;
     PyObject *NormalizerObj;
-    PyObject *LemmatizerObj;
-
     PyObject *TokenzierFunc;
     PyObject *NormalizeFunc;
     PyObject *TagFunc;

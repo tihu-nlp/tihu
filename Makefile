@@ -4,7 +4,7 @@ CC = g++
 OBJSDIR = obj/
 SRCS = $(wildcard src/*.cpp) $(wildcard src/*/*.cpp) $(wildcard src/*/*/*.cpp)
 OBJS = $(addprefix $(OBJSDIR),$(patsubst %.cpp,%.o,$(SRCS)))
-INC = `python2.7-config --includes` -I./src -Xlinker -export-dynamic
+INC = `python2.7-config --includes` -Xlinker -export-dynamic
 ## for debugging
 CXXFLAGS = -c -Wall -std=c++14 $(INC) -DDEBUG -g -fPIC
 #CXXFLAGS = -c -fPIC -Wall -std=c++14 $(INC) -O3 -g
@@ -24,10 +24,14 @@ clean:
 	rm -rf $(OBJSDIR)
 
 play:
-	$(CC) tihu_play/main.cpp -o ./build/tihu_play -L. -ldl
+	$(CC) tools/tihu_play/main.cpp -o ./build/tihu_play -L. -ldl
+
+test:
+	$(CC) -std=c++17 test/main.cpp -o  ./build/tihu_test -L. -ldl -lstdc++fs
+	./build/tihu_test ./build/libtihu.so ../test/res
 
 # to print variables in makefile
 print-%  : ; @echo $* = $($*)
 
 
-.PHONY: all clean
+.PHONY: all clean test

@@ -19,7 +19,7 @@
 *
 *******************************************************************************/
 #include "mbrola_syn.h"
-#include "tihu.h"
+#include "../../tihu.h"
 
 
 #define CHANGE_RATE_RANGE(rate)     (rate) //  Do not change rate range
@@ -109,7 +109,7 @@ bool CMbrolaSyn::Synthesize(char* line)
         char bufa[255];
         MbrolaLib.GetLastErrorStr(bufa, 255);
 
-        ReportMessage("Synthesizer Error: %s", bufa);
+        MessageF("Synthesizer Error: %s", bufa);
     }
 
     MbrolaLib.Flush();

@@ -25,7 +25,7 @@
 
 #include "mbrola_lib.h"
 
-#include "synthesizer.h"
+#include "../../synthesizer.h"
 
 class CMbrolaSyn
     : public ISynthesizer

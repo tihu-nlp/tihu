@@ -18,24 +18,30 @@
 *    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
 *
 *******************************************************************************/
-#ifndef __TIHU__NUMBER_TO_PHONEME_H
-#define __TIHU__NUMBER_TO_PHONEME_H
+#ifndef __TIHU__G2P_SEQ2SEQ_H
+#define __TIHU__G2P_SEQ2SEQ_H
 
 #pragma once
 
-#include "helper.h"
+#include "../helper.h"
 
-class CNumberToPhoneme
+#include <unistd.h>
+#include <stdio.h>
+#include <sys/wait.h>
+
+class Cg2pSeq2Seq
 {
 public:
-    CNumberToPhoneme();
-    ~CNumberToPhoneme();
+    Cg2pSeq2Seq();
+    ~Cg2pSeq2Seq();
 
-    std::string Convert(const std::string &number_text);
+    bool LoadModel(const std::string& model);
+    std::string Convert(const std::string &word);
 
 private:
-    std::string GetBlockPronounce(int number, int seg_len);
-    const char* GetDigitPronounce(int first_index, int sec_index);
+    int p_stdin[2];     /* pipe to feed the exec'ed program input */
+    int p_stdout[2];    /* pipe to get the exec'ed program output */
+    pid_t pid;
 };
 
 #endif

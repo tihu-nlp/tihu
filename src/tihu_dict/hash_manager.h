@@ -18,33 +18,35 @@
 *    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
 *
 *******************************************************************************/
-#ifndef __TIHU__TOKENIZER_H
-#define __TIHU__TOKENIZER_H
+#ifndef __TIHU__HASH_MANAGER_H
+#define __TIHU__HASH_MANAGER_H
 
-#pragma once
+#include "../helper.h"
+#include "../corpus/word.h"
 
+struct hentry;
 
-#include "parser.h"
-#include "char_mapper.h"
-
-
-
-class CTokenizer
-    : public IParser
+class CHashManager
 {
 public:
-    CTokenizer();
-    virtual ~CTokenizer();
+    CHashManager();
 
-    bool Load();
-    void ParsText(CCorpus* corpus) override;
-
-private:
-    int ParsEvents(const CWordPtr &word, const char16_t* events);
+    bool LoadTable(const std::string  &filename, const std::string  &key);
+    struct hentry* Lookup(const char* text) const;
 
 private:
-    CCharMapper CharMapper;
-    int Offset;
+
+    int Hash(const char* word) const;
+
+    int DecodeFlags(unsigned short** result, const std::string &flags) const;
+
+    int AddWord(const std::string &word, const std::string &label,
+                const std::string &pron, unsigned short* flags,
+                short flags_len, int freq);
+
+private:
+    struct hentry** TablePtr;
+    int TableSize;
 };
 
 #endif

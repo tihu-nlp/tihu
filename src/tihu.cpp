@@ -109,6 +109,17 @@ TIHU_FN_DECLARE void tihu_Speak(const char* text)
     g_engine->Speak(text);
 }
 
+TIHU_FN_DECLARE void tihu_Tag(const char* text)
+{
+    MUTEX_LOCK
+
+    if(!g_engine) {
+        return;
+    }
+
+    g_engine->Tag(text);
+}
+
 TIHU_FN_DECLARE void tihu_Stop()
 {
     if (!g_engine) {

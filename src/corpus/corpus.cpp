@@ -111,7 +111,7 @@ const CWordPtr &CCorpus::GetFirstWord() const
     char buffer[1024];
     for(auto &word : WordList) {
 
-        snprintf(buffer, 1024, "%-30s%-12s %c%s",
+        snprintf(buffer, 1024, "%s\t%s\t%c%s",
             word->GetText().c_str(),
             word->GetPOSTag().c_str(),
             word->LTSPhonetics() ? '*':' ',

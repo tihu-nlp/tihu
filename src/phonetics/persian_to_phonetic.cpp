@@ -18,7 +18,7 @@
 *    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
 *
 *******************************************************************************/
-#include "persian_to_phoneme.h"
+#include "persian_to_phonetic.h"
 
 #include <algorithm>
 

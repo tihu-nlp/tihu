@@ -18,36 +18,27 @@
 *    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
 *
 *******************************************************************************/
-#ifndef __TIHU__TIHU_DICT_H
-#define __TIHU__TIHU_DICT_H
+#ifndef __TIHU__ENGLISH_TO_PHONEME_H
+#define __TIHU__ENGLISH_TO_PHONEME_H
 
 #pragma once
 
-#include "parser.h"
+#include "../helper.h"
 
-class CAfxManager;
-class CHashManager;
+#include <map>
+#include "g2p_seq2seq.h"
 
-class CTihuDict
-    : public IParser
+class CEnglishToPhoneme
 {
 public:
-    CTihuDict();
-    ~CTihuDict();
+    CEnglishToPhoneme();
+    ~CEnglishToPhoneme();
 
-    bool Load(std::string name) override;
-
-    void ParsText(CCorpus* corpus) override;
-
-protected:
-    bool CheckWord(const std::string &text) const;
-    bool TagWord(CWordPtr &word) const;
-    bool Breakdown(CWordList &word_list, CWordList::iterator &word_itr) const;
-    bool CanBeDetached(std::u16string str) const;
+    bool LoadModel(const std::string &model);
+    std::string Convert(const std::string &word);
 
 private:
-    CAfxManager*  AfxManager;
-    CHashManager* HashManager;
+    Cg2pSeq2Seq g2p;
 };
 
 #endif

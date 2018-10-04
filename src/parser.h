@@ -25,7 +25,7 @@
 
 #include "helper.h"
 #include "settings.h"
-#include "corpus.h"
+#include "corpus/corpus.h"
 
 class IParser
 {
@@ -39,7 +39,8 @@ public:
     virtual void SetCallBack(void* callback, void* userdata);
     virtual void SetSettings(CSettings* settings);
 
-    void ReportMessage(const char* message, ...) const;
+    void Message (const char* message) const;
+    void MessageF(const char* message, ...) const;
 
 protected:
     std::string Name;

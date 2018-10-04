@@ -18,31 +18,36 @@
 *    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
 *
 *******************************************************************************/
-#include "english_to_phoneme.h"
+#ifndef __TIHU__TIHU_DICT_H
+#define __TIHU__TIHU_DICT_H
 
-#include <algorithm>
+#pragma once
 
+#include "../parser.h"
 
-CEnglishToPhoneme::CEnglishToPhoneme()
+class CAfxManager;
+class CHashManager;
+
+class CTihuDict
+    : public IParser
 {
-}
+public:
+    CTihuDict();
+    ~CTihuDict();
 
-CEnglishToPhoneme::~CEnglishToPhoneme()
-{
-}
+    bool Load(std::string name) override;
 
-bool CEnglishToPhoneme::LoadModel(const std::string &model)
-{
-    return true;
-    return g2p.LoadModel(model);
-}
+    void ParsText(CCorpus* corpus) override;
 
-std::string CEnglishToPhoneme::Convert(const std::string &word)
-{
-    std::string pronunciation;
+protected:
+    bool CheckWord(const std::string &text) const;
+    bool TagWord(CWordPtr &word) const;
+    bool Breakdown(CWordList &word_list, CWordList::iterator &word_itr) const;
+    bool CanBeDetached(std::u16string str) const;
 
-    /// TODO:::
-    //pronunciation = g2p.Convert(word);
+private:
+    CAfxManager*  AfxManager;
+    CHashManager* HashManager;
+};
 
-    return pronunciation;
-}
+#endif

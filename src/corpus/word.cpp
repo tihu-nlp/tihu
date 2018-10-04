@@ -51,7 +51,11 @@ void CWord::SetType(TIHU_TOKEN_TYPE type)
 
 void CWord::SetPron(const std::string &pron)
 {
-    Pron = pron;
+    if (HasKasreEzafe()) {
+        Pron = ConcatPronunciations(pron, "e");
+    } else {
+        Pron = pron;
+    }
 }
 
 void CWord::SetPOSTag(const std::string &pos_tag)
@@ -244,4 +248,9 @@ void CWord::AddEvent(TIHU_EVENT_TYPE event_type, TIHU_EVENT_VALUE &event_value)
 {
     EventList.push_back(
         std::make_unique<CEvent>(event_type, event_value));
+}
+
+bool CWord::HasKasreEzafe() const
+{
+    return POSTag.back() == 'e';
 }

@@ -18,23 +18,36 @@
 *    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
 *
 *******************************************************************************/
-#ifndef __TIHU__PITCH_RANGE_H
-#define __TIHU__PITCH_RANGE_H
+#ifndef __TIHU__TOKENIZER__CHAR_MAP_H
+#define __TIHU__TOKENIZER__CHAR_MAP_H
 
 #pragma once
 
-#include "helper.h"
+#include "../helper.h"
 
-
-class CPitchRange
+class CCharMap
 {
 public:
-    CPitchRange(int f_value = 0, int l_value = 0);
+    CCharMap();
+    CCharMap(const CCharMap &char_map);
+    CCharMap(std::string normed, uint16_t code, TIHU_TOKEN_TYPE type);
 
+    void Fill(std::string normed, uint16_t code, TIHU_TOKEN_TYPE type);
+    CCharMap &operator = (const CCharMap &right);
+
+    std::string     GetNormed() const;
+    TIHU_TOKEN_TYPE GetType() const;
+    uint16_t        GetCode() const;
+
+    bool            IsDiacritic() const;
+    bool            IsLineBreak() const;
+    ///bool         IsNullTerminated() const;
 
 private:
-    int     FValue; /// First value (apply this pitch at 1% of duration)
-    int     LValue; /// Last value (apply this pitch at 100% of duration)
+    std::string     Normed; // Standard Form of the letter
+    uint16_t        Code;
+    TIHU_TOKEN_TYPE   Type;   // Type of the letter
+
 };
 
 #endif

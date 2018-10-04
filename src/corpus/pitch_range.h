@@ -18,32 +18,23 @@
 *    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
 *
 *******************************************************************************/
-#ifndef __TIHU__PERSIAN_TO_PHONEME_H
-#define __TIHU__PERSIAN_TO_PHONEME_H
+#ifndef __TIHU__PITCH_RANGE_H
+#define __TIHU__PITCH_RANGE_H
 
 #pragma once
 
-#include "helper.h"
+#include "../helper.h"
 
-#include <map>
-#include "g2p_seq2seq.h"
 
-class CPersianToPhoneme
+class CPitchRange
 {
 public:
-    CPersianToPhoneme();
-    ~CPersianToPhoneme();
+    CPitchRange(int f_value = 0, int l_value = 0);
 
-    bool LoadModel(const std::string &model);
-    std::string Convert(const std::string &word);
 
 private:
-    void LoadWordFrequency();
-    void SaveWordFrequency();
-
-private:
-    std::map<std::string, int> WordFrequency;
-    Cg2pSeq2Seq g2p;
+    int     FValue; /// First value (apply this pitch at 1% of duration)
+    int     LValue; /// Last value (apply this pitch at 100% of duration)
 };
 
 #endif

@@ -22,7 +22,7 @@
 #define __TIHU__PFX_ENTRY_H
 
 #include "afx_entry.h"
-#include "word.h"
+#include "../corpus/word.h"
 
 class CPfxEntry
     : public CAfxEntry
