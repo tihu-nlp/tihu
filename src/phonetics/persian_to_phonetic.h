@@ -35,7 +35,7 @@ public:
     ~CPersianToPhoneme();
 
     bool LoadModel(const std::string &model);
-    std::string Convert(const std::string &word);
+    std::string Convert(std::string word);
 
 private:
     void LoadWordFrequency();

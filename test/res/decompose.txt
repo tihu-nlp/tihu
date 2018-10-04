@@ -1,9 +1,4 @@
-#Test Name: Decomposing Words
-
-
-
-
-
+# Decomposing Words
 
 
 حرفه ای و حرفهای

@@ -52,6 +52,9 @@
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
+           <property name="layoutDirection">
+            <enum>Qt::RightToLeft</enum>
+           </property>
           </widget>
           <widget class="QPlainTextEdit" name="txtMessages">
            <property name="sizePolicy">
@@ -104,6 +107,13 @@
          <widget class="QPushButton" name="btnOpenFile">
           <property name="text">
            <string>Open File</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnTag">
+          <property name="text">
+           <string>Tag</string>
           </property>
          </widget>
         </item>

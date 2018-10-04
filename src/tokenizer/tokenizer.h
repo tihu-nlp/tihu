@@ -34,7 +34,6 @@ class CTokenizer
 {
 public:
     CTokenizer();
-    virtual ~CTokenizer();
 
     bool Load();
     void ParsText(CCorpus* corpus) override;

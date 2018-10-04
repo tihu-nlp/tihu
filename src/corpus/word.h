@@ -32,6 +32,7 @@ public:
     CWord();
     ~CWord();
 
+    void            SetNormed(const std::string &normed);
     void            SetText(const std::string &text);
     void            SetType(TIHU_TOKEN_TYPE type);
     void            SetPron(const std::string &pron);
@@ -43,6 +44,7 @@ public:
     void            SetIsEndOfSentence(bool is_end_of_sentence);
     void            SetHasDiacritic(bool has_diacritic);
 
+    std::string     GetNormed() const;
     std::string     GetText() const;
     TIHU_TOKEN_TYPE GetType() const;
     std::string     GetPron() const;
@@ -71,6 +73,7 @@ public:
     bool            IsInterjection() const;
 
     bool            HasKasreEzafe() const;
+    void            AddKasreEzafe();
 
     void            SetLTSPhonetics(bool lts);
     bool            LTSPhonetics() const;
@@ -86,7 +89,8 @@ public:
     void            AddEvent(TIHU_EVENT_TYPE event_type, TIHU_EVENT_VALUE &event_value);
 
 protected:
-    std::string      Text;          // Normal word text
+    std::string      Normed;        // Normalized text
+    std::string      Text;          // Original text
     TIHU_TOKEN_TYPE  Type;          // Type of the the word(word)
     std::string      Pron;          // Pronunciation
     std::string      POSTag;        // Part-Of-Speech tag
