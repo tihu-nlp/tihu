@@ -19,9 +19,9 @@
 *
 *******************************************************************************/
 #include "hash_manager.h"
-#include "file_manager.h"
 #include "hentry.h"
-#include "word.h"
+#include "../file_manager.h"
+#include "../corpus/word.h"
 
 #include <algorithm>
 

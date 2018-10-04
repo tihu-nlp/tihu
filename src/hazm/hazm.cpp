@@ -25,17 +25,22 @@
 
 CHazm::CHazm()
 {
+    HazmObj = nullptr;
     TaggerObj = nullptr;
-    StemmerObj = nullptr;
-    LemmatizerObj = nullptr;
     NormalizerObj = nullptr;
+    TokenzierFunc = nullptr;
+    NormalizeFunc = nullptr;
+    TagFunc = nullptr;
 }
 
 CHazm::~CHazm()
 {
-    if(TaggerObj)     Py_DECREF(TaggerObj);
-    if(StemmerObj)    Py_DECREF(StemmerObj);
-    if(LemmatizerObj) Py_DECREF(LemmatizerObj);
+    if(HazmObj)         Py_DecRef(HazmObj);
+    if(TaggerObj)       Py_DecRef(TaggerObj);
+    if(NormalizerObj)   Py_DecRef(NormalizerObj);
+    if(TokenzierFunc)   Py_DecRef(TokenzierFunc);
+    if(NormalizeFunc)   Py_DecRef(NormalizeFunc);
+    if(TagFunc)         Py_DecRef(TagFunc);
 }
 
 bool CHazm::Load(std::string name)

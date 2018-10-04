@@ -43,6 +43,7 @@ public:
     int  LoadSynthesizer(TIHU_VOICE voice);
     void SetCallback(TIHU_CALLBACK callback, void* userData);
 
+    void Tag(const std::string &text);
     void Speak(const std::string &text);
     void Diacritize(const std::string &text); //TODO:
     void Stop();
@@ -53,7 +54,6 @@ public:
     void DebugMode(bool enable);
 
 private:
-    void SetText(const std::string &text) const;
     void LogText(const std::string &text) const;
 
     std::string GetCurrentModulePath() const;

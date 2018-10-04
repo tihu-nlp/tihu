@@ -19,8 +19,8 @@
 *
 *******************************************************************************/
 
-#include "phonetics/tihu_dict/tihu_dict.h"
-#include "phonetics/letter_to_sound/letter_to_sound.h"
+#include "tihu_dict/tihu_dict.h"
+#include "phonetics/word_to_phonetic.h"
 #include "synthesis/mbrola/mbrola_syn.h"
 #include "synthesis/espeak/espeak_syn.h"
 #include "hazm/hazm.h"
@@ -147,6 +147,19 @@ void CEngine::Stop()
     }
 }
 
+void CEngine::Tag(const std::string &text)
+{
+    CCorpus corpus(text);
+
+    Hazm->ParsText(&corpus);
+    TihuDict->ParsText(&corpus);
+    LetterToSound->ParsText(&corpus);
+    // TODO: Kasre Ezafe
+
+    LetterToSound->Message(corpus.ToTxt().c_str());
+}
+
+
 void CEngine::Speak(const std::string &text)
 {
     CCorpus corpus(text);
@@ -156,11 +169,13 @@ void CEngine::Speak(const std::string &text)
     LetterToSound->ParsText(&corpus);
     Synthesizer->ParsText(&corpus);
 
-    Synthesizer->ReportMessage(corpus.ToTxt().c_str());
+    /// TODO : better design for reporting messages
+    Synthesizer->Message(corpus.ToTxt().c_str());
 }
 
 void CEngine::Diacritize(const std::string &text)
 {
+    /// TODO::::
 
 }
 

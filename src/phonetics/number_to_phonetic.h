@@ -18,26 +18,24 @@
 *    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
 *
 *******************************************************************************/
-#ifndef __TIHU__PUNCTUATION_H
-#define __TIHU__PUNCTUATION_H
+#ifndef __TIHU__NUMBER_TO_PHONEME_H
+#define __TIHU__NUMBER_TO_PHONEME_H
 
-#include "helper.h"
+#pragma once
 
+#include "../helper.h"
 
-class CPunctuation
+class CNumberToPhoneme
 {
 public:
-    enum class READ_STATUS
-    {
-        ALWAYS_READ = 0,
-        NEVER_READ  = 1
-    };
+    CNumberToPhoneme();
+    ~CNumberToPhoneme();
 
-    std::string Text;
-    std::string Pronunciation;
-    READ_STATUS ReadStatus;
+    std::string Convert(const std::string &number_text);
+
+private:
+    std::string GetBlockPronounce(int number, int seg_len);
+    const char* GetDigitPronounce(int first_index, int sec_index);
 };
-
-typedef std::unique_ptr<CPunctuation> CPunctuationPtr;
 
 #endif

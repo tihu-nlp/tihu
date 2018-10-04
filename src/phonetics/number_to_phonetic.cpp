@@ -18,7 +18,7 @@
 *    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
 *
 *******************************************************************************/
-#include "number_to_phoneme.h"
+#include "number_to_phonetic.h"
 
 #include <math.h>
 

@@ -47,13 +47,25 @@ void IParser::SetSettings(CSettings* settings)
     Settings = settings;
 }
 
-void IParser::ReportMessage(const char* message, ...) const
+void IParser::Message(const char* message) const
 {
-    /// TODO: if has o argument, pass all string to the call back. no need sprintf(...)
+    if(Callback) {
+        reinterpret_cast<TIHU_CALLBACK>(Callback)(
+            TIHU_TEXT_MESSAGE,
+            (long)message,
+            strlen(message)-1,
+            UserData);
+    }
+}
+
+
+void IParser::MessageF(const char* message, ...) const
+{
     char temp[1024*4];
 
     va_list arglist;
     va_start(arglist, message);
+    if (arglist)
     vsnprintf(temp, 1024*4, message, arglist);
     va_end(arglist);
 

@@ -20,7 +20,7 @@
 *******************************************************************************/
 #include "mbrola_lib.h"
 
-#include "helper.h"
+#include "../../helper.h"
 
 
 #define DEFAULT_MBR_VOLUME          3.0F

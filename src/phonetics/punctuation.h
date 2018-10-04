@@ -18,28 +18,26 @@
 *    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
 *
 *******************************************************************************/
-#ifndef __TIHU__EVENT_H
-#define __TIHU__EVENT_H
+#ifndef __TIHU__PUNCTUATION_H
+#define __TIHU__PUNCTUATION_H
 
-#pragma once
+#include "../helper.h"
 
-#include "helper.h"
 
-class CEvent
+class CPunctuation
 {
 public:
-    CEvent();
-    CEvent(TIHU_EVENT_TYPE type, TIHU_EVENT_VALUE value);
+    enum class READ_STATUS
+    {
+        ALWAYS_READ = 0,
+        NEVER_READ  = 1
+    };
 
-    TIHU_EVENT_TYPE   GetType() const;
-    TIHU_EVENT_VALUE  GetValue() const;
-
-public:
-    TIHU_EVENT_TYPE  Type;
-    TIHU_EVENT_VALUE Value;
+    std::string Text;
+    std::string Pronunciation;
+    READ_STATUS ReadStatus;
 };
 
-typedef std::unique_ptr<CEvent> CEventPtr;
-typedef std::list<CEventPtr> CEventList;
+typedef std::unique_ptr<CPunctuation> CPunctuationPtr;
 
 #endif

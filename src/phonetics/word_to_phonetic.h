@@ -18,27 +18,34 @@
 *    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
 *
 *******************************************************************************/
-#ifndef __TIHU__ENGLISH_TO_PHONEME_H
-#define __TIHU__ENGLISH_TO_PHONEME_H
+#ifndef __TIHU__LETTER_TO_SOUND_H
+#define __TIHU__LETTER_TO_SOUND_H
 
 #pragma once
 
-#include "helper.h"
+#include "../parser.h"
+#include "number_to_phonetic.h"
+#include "persian_to_phonetic.h"
+#include "english_to_phonetic.h"
+#include "punctuation_to_phonetic.h"
 
-#include <map>
-#include "g2p_seq2seq.h"
 
-class CEnglishToPhoneme
+class CLetterToSound
+    : public IParser
 {
 public:
-    CEnglishToPhoneme();
-    ~CEnglishToPhoneme();
+    CLetterToSound();
+    ~CLetterToSound();
 
-    bool LoadModel(const std::string &model);
-    std::string Convert(const std::string &word);
+    bool Load(std::string name) override;
+
+    void ParsText(CCorpus* corpus) override;
 
 private:
-    Cg2pSeq2Seq g2p;
+    CPersianToPhoneme PersianToPhoneme;
+    CEnglishToPhoneme EnglishToPhoneme;
+    CNumberToPhoneme NumberToPhoneme;
+    CPunctuationToPhoneme PunctuationToPhoneme;
 };
 
 #endif

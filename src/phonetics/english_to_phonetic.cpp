@@ -18,30 +18,31 @@
 *    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
 *
 *******************************************************************************/
-#ifndef __TIHU__G2P_SEQ2SEQ_H
-#define __TIHU__G2P_SEQ2SEQ_H
+#include "english_to_phonetic.h"
 
-#pragma once
+#include <algorithm>
 
-#include "helper.h"
 
-#include <unistd.h>
-#include <stdio.h>
-#include <sys/wait.h>
-
-class Cg2pSeq2Seq
+CEnglishToPhoneme::CEnglishToPhoneme()
 {
-public:
-    Cg2pSeq2Seq();
-    ~Cg2pSeq2Seq();
+}
 
-    bool LoadModel(const std::string& model);
-    std::string Convert(const std::string &word);
+CEnglishToPhoneme::~CEnglishToPhoneme()
+{
+}
 
-private:
-    int p_stdin[2];     /* pipe to feed the exec'ed program input */
-    int p_stdout[2];    /* pipe to get the exec'ed program output */
-    pid_t pid;
-};
+bool CEnglishToPhoneme::LoadModel(const std::string &model)
+{
+    return true;
+    return g2p.LoadModel(model);
+}
 
-#endif
+std::string CEnglishToPhoneme::Convert(const std::string &word)
+{
+    std::string pronunciation;
+
+    /// TODO:::
+    //pronunciation = g2p.Convert(word);
+
+    return pronunciation;
+}

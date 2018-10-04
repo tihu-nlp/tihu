@@ -25,9 +25,9 @@
 
 #include "pfx_entry.h"
 #include "sfx_entry.h"
-#include "file_manager.h"
 #include "hentry.h"
-#include "word.h"
+#include "../file_manager.h"
+#include "../corpus/word.h"
 
 #define SETSIZE 256
 

@@ -70,6 +70,8 @@ public:
     bool            IsNumeral() const;
     bool            IsInterjection() const;
 
+    bool            HasKasreEzafe() const;
+
     void            SetLTSPhonetics(bool lts);
     bool            LTSPhonetics() const;
 

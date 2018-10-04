@@ -23,7 +23,7 @@
 
 #pragma once
 
-#include "synthesizer.h"
+#include "../../synthesizer.h"
 
 
 

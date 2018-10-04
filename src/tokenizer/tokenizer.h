@@ -18,34 +18,33 @@
 *    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
 *
 *******************************************************************************/
-#ifndef __TIHU__LETTER_TO_SOUND_H
-#define __TIHU__LETTER_TO_SOUND_H
+#ifndef __TIHU__TOKENIZER_H
+#define __TIHU__TOKENIZER_H
 
 #pragma once
 
-#include "parser.h"
-#include "number_to_phoneme.h"
-#include "persian_to_phoneme.h"
-#include "english_to_phoneme.h"
-#include "punctuation_to_phoneme.h"
+
+#include "../parser.h"
+#include "char_mapper.h"
 
 
-class CLetterToSound
+
+class CTokenizer
     : public IParser
 {
 public:
-    CLetterToSound();
-    ~CLetterToSound();
+    CTokenizer();
+    virtual ~CTokenizer();
 
-    bool Load(std::string name) override;
-
+    bool Load();
     void ParsText(CCorpus* corpus) override;
 
 private:
-    CPersianToPhoneme PersianToPhoneme;
-    CEnglishToPhoneme EnglishToPhoneme;
-    CNumberToPhoneme NumberToPhoneme;
-    CPunctuationToPhoneme PunctuationToPhoneme;
+    int ParsEvents(const CWordPtr &word, const char16_t* events);
+
+private:
+    CCharMapper CharMapper;
+    int Offset;
 };
 
 #endif

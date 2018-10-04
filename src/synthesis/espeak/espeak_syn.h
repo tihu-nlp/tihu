@@ -24,7 +24,7 @@
 #pragma once
 
 #include "espeak_lib.h"
-#include "synthesizer.h"
+#include "../../synthesizer.h"
 
 
 class CeSpeakSyn

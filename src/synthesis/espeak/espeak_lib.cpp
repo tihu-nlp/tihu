@@ -19,7 +19,7 @@
 *
 *******************************************************************************/
 #include "espeak_lib.h"
-#include "helper.h"
+#include "../../helper.h"
 
 #include <cstring>
 

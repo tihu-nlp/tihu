@@ -18,36 +18,28 @@
 *    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
 *
 *******************************************************************************/
-#ifndef __TIHU__TOKENIZER__CHAR_MAP_H
-#define __TIHU__TOKENIZER__CHAR_MAP_H
+#ifndef __TIHU__EVENT_H
+#define __TIHU__EVENT_H
 
 #pragma once
 
-#include "helper.h"
+#include "../helper.h"
 
-class CCharMap
+class CEvent
 {
 public:
-    CCharMap();
-    CCharMap(const CCharMap &char_map);
-    CCharMap(std::string normed, uint16_t code, TIHU_TOKEN_TYPE type);
+    CEvent();
+    CEvent(TIHU_EVENT_TYPE type, TIHU_EVENT_VALUE value);
 
-    void Fill(std::string normed, uint16_t code, TIHU_TOKEN_TYPE type);
-    CCharMap &operator = (const CCharMap &right);
+    TIHU_EVENT_TYPE   GetType() const;
+    TIHU_EVENT_VALUE  GetValue() const;
 
-    std::string     GetNormed() const;
-    TIHU_TOKEN_TYPE GetType() const;
-    uint16_t        GetCode() const;
-
-    bool            IsDiacritic() const;
-    bool            IsLineBreak() const;
-    ///bool         IsNullTerminated() const;
-
-private:
-    std::string     Normed; // Standard Form of the letter
-    uint16_t        Code;
-    TIHU_TOKEN_TYPE   Type;   // Type of the letter
-
+public:
+    TIHU_EVENT_TYPE  Type;
+    TIHU_EVENT_VALUE Value;
 };
+
+typedef std::unique_ptr<CEvent> CEventPtr;
+typedef std::list<CEventPtr> CEventList;
 
 #endif

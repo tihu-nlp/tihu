@@ -18,35 +18,32 @@
 *    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
 *
 *******************************************************************************/
-#ifndef __TIHU__HASH_MANAGER_H
-#define __TIHU__HASH_MANAGER_H
+#ifndef __TIHU__PERSIAN_TO_PHONEME_H
+#define __TIHU__PERSIAN_TO_PHONEME_H
 
-#include "helper.h"
-#include "word.h"
+#pragma once
 
-struct hentry;
+#include "../helper.h"
 
-class CHashManager
+#include <map>
+#include "g2p_seq2seq.h"
+
+class CPersianToPhoneme
 {
 public:
-    CHashManager();
+    CPersianToPhoneme();
+    ~CPersianToPhoneme();
 
-    bool LoadTable(const std::string  &filename, const std::string  &key);
-    struct hentry* Lookup(const char* text) const;
-
-private:
-
-    int Hash(const char* word) const;
-
-    int DecodeFlags(unsigned short** result, const std::string &flags) const;
-
-    int AddWord(const std::string &word, const std::string &label,
-                const std::string &pron, unsigned short* flags,
-                short flags_len, int freq);
+    bool LoadModel(const std::string &model);
+    std::string Convert(const std::string &word);
 
 private:
-    struct hentry** TablePtr;
-    int TableSize;
+    void LoadWordFrequency();
+    void SaveWordFrequency();
+
+private:
+    std::map<std::string, int> WordFrequency;
+    Cg2pSeq2Seq g2p;
 };
 
 #endif
