@@ -77,7 +77,7 @@ typedef TIHU_CALLBACK_RETURN(*TIHU_CALLBACK)(TIHU_CALLBACK_MESSAGE message, long
 
 typedef bool (*TIHU_PROC_INIT)();
 typedef void (*TIHU_PROC_CLOSE)();
-typedef void (*TIHU_PROC_SET_CALLBACK)(TIHU_CALLBACK, void*);
+typedef void (*TIHU_PROC_CALLBACK)(TIHU_CALLBACK, void*);
 typedef void (*TIHU_PROC_LOAD_VOICE)(TIHU_VOICE);
 typedef void (*TIHU_PROC_TAG)(const char*);
 typedef void (*TIHU_PROC_SPEAK)(const char*);
@@ -95,9 +95,9 @@ extern "C" {
 
 TIHU_FN_DECLARE bool         tihu_Init();
 TIHU_FN_DECLARE void         tihu_Close();
-TIHU_FN_DECLARE bool         tihu_LoadUserDic(const char* userdic_path);
+TIHU_FN_DECLARE bool         tihu_LoadUserDic(const char* user_dic);
 TIHU_FN_DECLARE bool         tihu_LoadVoice(TIHU_VOICE voice);
-TIHU_FN_DECLARE void         tihu_SetCallback(TIHU_CALLBACK call_back, void* user_data);
+TIHU_FN_DECLARE void         tihu_Callback(TIHU_CALLBACK callback, void* user_data);
 TIHU_FN_DECLARE void         tihu_Speak(const char* text);
 TIHU_FN_DECLARE void         tihu_Tag(const char* text);
 TIHU_FN_DECLARE void         tihu_Stop();

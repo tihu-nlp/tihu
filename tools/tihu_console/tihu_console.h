@@ -76,7 +76,7 @@ private:
     TIHU_PROC_STOP procStop;
     TIHU_PROC_SET_PARAM procSetParam;
     TIHU_PROC_GET_PARAM procGetParam;
-    TIHU_PROC_SET_CALLBACK procSetCallback;
+    TIHU_PROC_CALLBACK procCallback;
     TIHU_PROC_LOAD_VOICE procLoadVoice;
 
     QFuture<void> SpeakFuture;
