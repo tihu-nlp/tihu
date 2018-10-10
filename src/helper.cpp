@@ -26,7 +26,7 @@
 #define USING_UTF8_LIB
 
 #ifdef USING_UTF8_LIB
-#include "../third_party/utf8/source/utf8.h"
+#include "./utf8/source/utf8.h"
 #endif
 
 

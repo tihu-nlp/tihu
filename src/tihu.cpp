@@ -157,7 +157,7 @@ TIHU_FN_DECLARE bool tihu_GetParam(TIHU_PARAM param, int &value)
     return g_engine->GetParam(param, value);
 }
 
-TIHU_FN_DECLARE void tihu_SetCallback(TIHU_CALLBACK call_back, void* user_data)
+TIHU_FN_DECLARE void tihu_Callback(TIHU_CALLBACK call_back, void* user_data)
 {
     MUTEX_LOCK
 

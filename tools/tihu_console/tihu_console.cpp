@@ -64,7 +64,7 @@ TihuConsole::TihuConsole(QWidget *parent, Qt::WindowFlags flags)
     procStop = 0;
     procSetParam = 0;
     procGetParam = 0;
-    procSetCallback = 0;
+    procCallback = 0;
     procLoadVoice = 0;
     m_audioOutput = 0;
     m_output = 0;
@@ -175,7 +175,7 @@ bool TihuConsole::LoadTihu(const QString& library)
     procStop = (TIHU_PROC_STOP)lib.resolve("tihu_Stop");
     procSetParam = (TIHU_PROC_SET_PARAM)lib.resolve("tihu_SetParam");
     procGetParam = (TIHU_PROC_GET_PARAM)lib.resolve("tihu_GetParam");
-    procSetCallback = (TIHU_PROC_SET_CALLBACK)lib.resolve("tihu_SetCallback");
+    procCallback = (TIHU_PROC_CALLBACK)lib.resolve("tihu_Callback");
     procLoadVoice = (TIHU_PROC_LOAD_VOICE)lib.resolve("tihu_LoadVoice");
 
 
@@ -186,7 +186,7 @@ bool TihuConsole::LoadTihu(const QString& library)
         !procStop           ||
         !procSetParam       ||
         !procGetParam       ||
-        !procSetCallback    ||
+        !procCallback    ||
         !procLoadVoice      ) {
         lib.unload();
         return false;
@@ -206,7 +206,7 @@ bool TihuConsole::LoadTihu(const QString& library)
     TIHU_VOICE voice = (TIHU_VOICE)settings.value("default_voice").toInt();
 
     procLoadVoice(voice);
-    procSetCallback(callback, this);
+    procCallback(callback, this);
 
     ///------------------------------------
     ui.btnLoad->setEnabled(false);
@@ -431,7 +431,7 @@ void TihuConsole::onVoiceChange(QAction* action)
 {
     TIHU_VOICE voice = (TIHU_VOICE)action->data().toInt();
     procLoadVoice(voice);
-    procSetCallback(callback, this);
+    procCallback(callback, this);
 
     QSettings settings("Tihu", APP_NAME);
     settings.setValue("default_voice", voice);
