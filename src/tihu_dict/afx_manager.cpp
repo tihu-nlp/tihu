@@ -87,13 +87,13 @@ int CAfxManager::ParseAffix(char afx_type, CFileManager &file_manager)
     for(int ent = 0; ent < numents; ++ent) {
         file_manager.ReadLine();
 
-        std::string morph_type      = file_manager.NextPiece();
-        std::string morph_flag      = file_manager.NextPiece();
-        std::string morph_append    = file_manager.NextPiece();
-        std::string morph_label     = file_manager.NextPiece();
-        std::string morph_pronounce = file_manager.NextPiece();
+        std::string morph_type     = file_manager.NextPiece();
+        std::string morph_flag     = file_manager.NextPiece();
+        std::string morph_append   = file_manager.NextPiece();
+        std::string morph_pos      = file_manager.NextPiece();
+        std::string morph_pron     = file_manager.NextPiece();
 
-        if(morph_label.empty()) {
+        if(morph_pron.empty()) {
             TIHU_WARNING(stderr, "error: line %d: wrong affix entry.",
                          file_manager.GetLineNum());
             break;
@@ -109,10 +109,10 @@ int CAfxManager::ParseAffix(char afx_type, CFileManager &file_manager)
         ///
         ReplaceSubstring(morph_append, "_", CHR_U8_ZWNJ);
 
-        afx_entry->Flag      = flag;
-        afx_entry->Appnd     = morph_append;
-        afx_entry->Pronounce = morph_pronounce;
-        afx_entry->Label     = morph_label;
+        afx_entry->Flag     = flag;
+        afx_entry->Appnd    = morph_append;
+        afx_entry->Pron     = morph_pron;
+        afx_entry->POS      = morph_pos;
 
         entries.push_back(afx_entry);
     }
@@ -498,41 +498,45 @@ bool CAfxManager::IsPrefix(const char* prefix)
 
 void CAfxManager::ParsEntry(struct hentry* he, CPfxEntry* pfx, CSfxEntry* sfx, CWordPtr &word)
 {
-    std::string root = he->text;
-    std::string dictation = he->text;
-    std::string lable = he->text + he->w_len + 1;
-    std::string pronounce = he->text + he->w_len + he->l_len + 2;
+    std::string text = he->text;
+    std::string pos  = he->text + he->w_len + 1;
+    std::string pron = he->text + he->w_len + he->l_len + 2;
+    std::string stem = he->text + he->w_len + he->l_len +  + he->p_len + 3;
     int frequency = he->freq;
 
     if(pfx) {
-        dictation = pfx->Appnd + dictation;
-        if(pfx->Label != ".") {
-            if (pfx->Label[0] == '*') {
-                std::string attr = pfx->Label.substr(1);
+        text = pfx->Appnd + text;
+        if(pfx->POS != ".") {
+            if (pfx->POS[0] == '*') {
+                std::string attr = pfx->POS.substr(1);
 
-                if (lable.find(attr) == std::string::npos) {
-                    lable.append("_");
-                    lable.append(attr);
+                if (pos.find(attr) == std::string::npos) {
+                    pos.append("_");
+                    pos.append(attr);
                 }
             } else {
-                lable = pfx->Label;
+                pos = pfx->POS;
             }
         }
-        pronounce = ConcatPronunciations(pfx->Pronounce, pronounce);
+        pron = ConcatPronunciations(pfx->Pron, pron);
     }
 
     if(sfx) {
-        dictation = dictation + sfx->Appnd;
-        if(sfx->Label != ".") {
-            lable = sfx->Label;
+        text = text + sfx->Appnd;
+        if(sfx->POS != ".") {
+            pos = sfx->POS;
         }
-        pronounce = ConcatPronunciations(pronounce, sfx->Pronounce);
+        pron = ConcatPronunciations(pron, sfx->Pron);
     }
 
-    if(!lable.empty() && !word->GetPOSTag().empty()) {
-        if(lable[0] == word->GetPOSTag()[0]) {
-            word->SetPron(pronounce);
-            word->SetFrequency(frequency);
-        }
-    }
+    CEntryPtr entry = std::make_unique<CEntry>();
+
+    entry->SetStem(stem);
+    entry->SetPOS(pos);
+    entry->SetPron(pron);
+
+    word->AddEntry(entry);
+    word->SetFrequency(frequency);
+    word->SetFrequency(frequency);
 }
+

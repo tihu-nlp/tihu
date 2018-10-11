@@ -165,7 +165,7 @@ void CHazm::ParsText(CCorpus* corpus)
 
         CWordPtr word = std::make_unique<CWord>();
         word->SetText(PyString_AsString(wrd));
-        word->SetPOSTag(PyString_AsString(tag));
+        //word->SetPOSTag(PyString_AsString(tag));
         corpus->AddWord(word);
 
         Py_DECREF(wrd);

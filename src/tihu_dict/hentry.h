@@ -43,11 +43,12 @@
 
 /// hashed entry
 struct hentry {
-    unsigned char w_len;
-    unsigned char l_len;
-    short alen;            // length of affix flag vector
-    FLAG* astr;  // affix flag vector
-    struct hentry* next;   // next word with same hash code
+    unsigned char w_len; // word length
+    unsigned char l_len; // pos length
+    unsigned char p_len; // pron length
+    short alen; // length of affix flag vector
+    FLAG* astr; // affix flag vector
+    struct hentry* next; // next word with same hash code
     struct hentry* next_homonym;
     int freq;
     char text[1];  // variable-length word (8-bit or UTF-8 encoding)
