@@ -39,8 +39,8 @@ public:
 public:
     int          Flag;
     std::string  Appnd;
-    std::string  Pronounce;
-    std::string  Label;
+    std::string  Pron;
+    std::string  POS;
 
     CAfxManager* AfxManager;
 };

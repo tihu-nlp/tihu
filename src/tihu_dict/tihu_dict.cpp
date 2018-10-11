@@ -73,9 +73,8 @@ bool CTihuDict::CheckWord(const std::string &_text) const
     return false;
 }
 
-bool CTihuDict::TagWord(CWordPtr &word) const
+bool CTihuDict::TagWord(CWordPtr &word, const std::string &_text) const
 {
-    auto _text = word->GetText(); /// create a copy
     const char* text = _text.c_str();
     int len = _text.size();
 
@@ -95,7 +94,7 @@ bool CTihuDict::TagWord(CWordPtr &word) const
     // try stripping off affixes
     AfxManager->AffixCheck(text, len, FLAG_NULL, word);
 
-    return !word->GetPron().empty();
+    return !word->IsEmpty();
 }
 
 void CTihuDict::ParsText(CCorpus* corpus)
@@ -109,7 +108,7 @@ void CTihuDict::ParsText(CCorpus* corpus)
         if(word->IsPersianWord()) {
 
             ///
-            if (!TagWord(word)) {
+            if (!TagCompound(word_list, itr)) {
                 if (Breakdown(word_list, itr)) {
                     ///
                     continue;
@@ -120,6 +119,111 @@ void CTihuDict::ParsText(CCorpus* corpus)
         ++itr;
     }
 }
+
+bool CTihuDict::TagCompound(CWordList &word_list, CWordList::iterator &word_itr)
+{
+    int compound_count = MAX_COMPOUND;
+
+    while(compound_count > 0) {
+        std::vector<std::string> compound =
+            MakeCompound(word_list, word_itr, compound_count);
+
+		if (compound.empty()) {
+			return false;
+		}
+
+        std::string text = GetCompoundText(compound);
+
+        if(TagWord(*word_itr, text)) {
+            if(compound.size() > 1) {
+                /// --- update word -----
+                (*word_itr)->SetText(text);
+                (*word_itr)->SetLength(text.length());
+
+                ++word_itr;
+                for(size_t index = 0; index < compound.size()-1; ++index) {
+					word_itr = word_list.erase(word_itr);
+                }
+                --word_itr;
+            }
+
+            return true;
+        }
+
+        compound_count = compound.size()-1;
+    }
+
+    return false;
+}
+
+std::string CTihuDict::GetCompoundText(const std::vector<std::string> &compound)
+{
+    std::string text;
+    auto iter = compound.cbegin();
+
+    text = *iter;
+
+    for(++iter; iter != compound.cend(); ++iter) {
+        if(!EndsWithDetached(text))
+            text.append(CHR_U8_ZWNJ);
+
+        text.append(*iter);
+    }
+
+    return text;
+}
+
+std::vector<std::string> CTihuDict::MakeCompound(const CWordList &word_list, CWordList::const_iterator word_itr, int compound_count)
+{
+    std::vector<std::string> compound;
+    compound.reserve(compound_count);
+
+    int index = 0;
+    for(auto itr = word_itr; itr != word_list.end() &&
+        index < compound_count; ++itr, ++index) {
+        const CWordPtr &word = (*itr);
+
+        if(!word->IsPersianWord()) {
+            break;
+        }
+
+        compound.push_back(word->GetText());
+
+        ///TODO:::::::::::::::
+        //// if (word->IsEndOfParagraph())
+        //// {
+        ////     ++index;
+        ////     break;
+        //// }
+
+        ///if (word->IsEndOfSentence())
+        ///    break;
+    }
+
+    /// Check last word
+    if(!CanBeCompoundWord(compound)) {
+        compound = MakeCompound(word_list, word_itr, index-1);
+    }
+
+    return compound;
+}
+
+
+bool CTihuDict::CanBeCompoundWord(const std::vector<std::string> &compound) const
+{
+    if(compound.size() == 1) {
+        return true;
+    }
+
+    std::string last = compound.back();
+	/// می و نمی نمی‌توانند در انتهای یک ترکیب ظاهر شوند
+	if(last == "می" || last == "نمی")
+		return false;
+
+    /// the last word shouldn't be a prefix
+    return !AfxManager->IsPrefix(last.c_str());
+}
+
 
 ///
 /// try to decompose the word
@@ -180,11 +284,6 @@ bool CTihuDict::Breakdown(CWordList &word_list, CWordList::iterator &word_itr) c
         word->SetText(UTF16ToUTF8(partial));
         word->SetOffset(offset);
         word->SetLength(partial.length());
-        if(partial == u"\u0648") {
-            word->SetPOSTag("CONJ");
-        } else {
-            word->SetPOSTag((*word_itr)->GetPOSTag());
-        }
 
         word_list.insert(word_itr, std::move(word));
 

@@ -1,193 +1,203 @@
 /*******************************************************************************
- * This file is part of Tihu.
- *
- * Tihu is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Tihu is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Tihu.  If not, see <http://www.gnu.org/licenses/>.
- *
- * Contributor(s):
- *    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
- *
- *******************************************************************************/
+* This file is part of Tihu.
+*
+* Tihu is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* Tihu is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with Tihu.  If not, see <http://www.gnu.org/licenses/>.
+*
+* Contributor(s):
+*    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
+*
+*******************************************************************************/
 #include "word.h"
+#include "entry.h"
 
-#define WORD_FLAG_END_OF_SENTENCE 0x0001
-#define WORD_FLAG_END_OF_PARAGRAPH 0x0002
-#define WORD_FLAG_HAS_DIACRITIC 0x0004
-#define WORD_FLAG_LTS_PHONETICS 0x0008
+
+#define WORD_FLAG_END_OF_SENTENCE       0x0001
+#define WORD_FLAG_END_OF_PARAGRAPH      0x0002
+#define WORD_FLAG_HAS_DIACRITIC         0x0004
+#define WORD_FLAG_AUTO_PHONETICS        0x0008
 
 CWord::CWord()
-    : Type(TIHU_TOKEN_TYPE::UNKNOWN), Frequency(0), Length(0), Offset(0),
-      Flags(0) {}
-
-CWord::~CWord() {}
-
-void CWord::SetNormed(const std::string &normed) {
-    Normed = normed; //
+    : Type(TIHU_TOKEN_TYPE::UNKNOWN)
+    , Length(0)
+    , Offset(0)
+    , Frequency(0)
+    , Flags(0)
+{
 }
 
-void CWord::SetText(const std::string &text) {
-    Text = text; //
+CWord::CWord(CWord &word)
+    : Text(word.Text)
+    , Type(word.Type)
+    , Length(word.Length)
+    , Offset(word.Offset)
+    , Frequency(word.Frequency)
+    , Flags(word.Flags)
+{
 }
 
-void CWord::SetType(TIHU_TOKEN_TYPE type) {
-    Type = type; //
+CWord::~CWord()
+{
 }
 
-void CWord::SetPron(const std::string &pron) {
-    Pron = pron; //
+void CWord::SetText(const std::string &text)
+{
+    Text = text;
 }
 
-void CWord::SetPOSTag(const std::string &pos_tag) {
-    POSTag = pos_tag; //
+void CWord::SetType(TIHU_TOKEN_TYPE type)
+{
+    Type = type;
 }
 
-void CWord::SetFrequency(size_t frequency) {
-
-    Frequency = frequency; //
+void CWord::SetLength(size_t length)
+{
+    Length = length;
 }
 
-void CWord::SetLength(size_t length) {
-    Length = length; //
+void CWord::SetOffset(size_t offset)
+{
+    Offset = offset;
 }
 
-void CWord::SetOffset(size_t offset) {
-    Offset = offset; //
+std::string CWord::GetText() const
+{
+    return Text;
 }
 
-std::string CWord::GetNormed() const {
-    return Normed; //
+TIHU_TOKEN_TYPE CWord::GetType() const
+{
+    return Type;
 }
 
-std::string CWord::GetText() const {
-    return Text; //
+size_t CWord::GetLength() const
+{
+    return Length;
 }
 
-TIHU_TOKEN_TYPE CWord::GetType() const {
-    return Type; //
+size_t CWord::GetOffset() const
+{
+    return Offset;
 }
 
-std::string CWord::GetPron() const {
-    return Pron; //
+bool CWord::IsPersianWord() const
+{
+    return (Type == TIHU_TOKEN_TYPE::PERSIAN);
 }
 
-std::string CWord::GetPOSTag() const {
-    return POSTag; //
+bool CWord::IsEnglishWord() const
+{
+    return (Type == TIHU_TOKEN_TYPE::ENGLISH);
 }
 
-size_t CWord::GetFrequency() const {
-    return Frequency; //
+bool CWord::IsPunctuation() const
+{
+    return (Type == TIHU_TOKEN_TYPE::PUNCTUATION);
 }
 
-size_t CWord::GetLength() const {
-    return Length; //
+bool CWord::IsNumber() const
+{
+    return (Type == TIHU_TOKEN_TYPE::NUMBER);
 }
 
-size_t CWord::GetOffset() const {
-    return Offset; //
+void CWord::SetIsEndOfParagraph(bool is_end_of_paragraph)
+{
+    if(is_end_of_paragraph) {
+        SET_FLAG(Flags, WORD_FLAG_END_OF_PARAGRAPH);
+    } else {
+        UNSET_FLAG(Flags, WORD_FLAG_END_OF_PARAGRAPH);
+    }
 }
 
-/// TODO: find better name for this function
-void CWord::SetLTSPhonetics(bool lts) {
-    SET_FLAG(Flags, WORD_FLAG_LTS_PHONETICS);
+void CWord::SetIsEndOfSentence(bool is_end_of_sentence)
+{
+    if(is_end_of_sentence) {
+        SET_FLAG(Flags, WORD_FLAG_END_OF_SENTENCE);;
+    } else {
+        UNSET_FLAG(Flags, WORD_FLAG_END_OF_SENTENCE);
+    }
 }
 
-bool CWord::LTSPhonetics() const {
-    return IS_FLAG_SET(Flags, WORD_FLAG_LTS_PHONETICS);
+void CWord::SetHasDiacritic(bool has_diacritic)
+{
+    if(has_diacritic) {
+        SET_FLAG(Flags, WORD_FLAG_HAS_DIACRITIC);
+    } else {
+        UNSET_FLAG(Flags, WORD_FLAG_HAS_DIACRITIC);
+    }
 }
 
-bool CWord::IsPersianWord() const {
-    return true; //
+bool CWord::IsEndOfParagraph() const
+{
+    return IS_FLAG_SET(Flags, WORD_FLAG_END_OF_PARAGRAPH);
 }
 
-bool CWord::IsEnglishWord() const {
-    return POSTag == "RES"; //
+bool CWord::IsEndOfSentence() const
+{
+    return IS_FLAG_SET(Flags, WORD_FLAG_END_OF_SENTENCE);
 }
 
-bool CWord::IsPunctuation() const {
-    return POSTag == "PUNC"; //
+bool CWord::HasDiacritic() const
+{
+    return IS_FLAG_SET(Flags, WORD_FLAG_HAS_DIACRITIC);
 }
 
-bool CWord::IsNumber() const {
-    return false; //
+CPhonemeList &CWord::GetPhonemeList()
+{
+    return PhonemeList;
 }
 
-bool CWord::IsVerb() const {
-    return false; //
+CEventList &CWord::GetEventList()
+{
+    return EventList;
 }
 
-bool CWord::IsNoun() const {
-    return false; //
+CEntryList &CWord::GetEntryList()
+{
+    return EntryList;
 }
 
-bool CWord::IsNounCommon() const {
-    return false; //
+const CEntryPtr &CWord::GetBestEntry() const
+{
+    auto entry = EntryList.begin();
+
+    if(entry == EntryList.end()) {
+        assert(0);
+        TIHU_WARNING(stderr, "no entry for word %s.\n", Text.c_str());
+    } else {
+        return *entry;
+    }
+
+    return null_entry;
 }
 
-bool CWord::IsNounProper() const {
-    return false; //
-}
+void CWord::ParsPron(std::string pron)
+{
+    if(pron.empty()) {
+        const CEntryPtr &entry = GetBestEntry();
+        if(entry) {
+           pron = entry->GetPron();
+        }
+    }
 
-bool CWord::IsPronoun() const {
-    return false; //
-}
-
-bool CWord::IsAdjective() const {
-    return false; //
-}
-
-bool CWord::IsDeterminer() const {
-    return false; //
-}
-
-bool CWord::IsAdverb() const {
-    return false; //
-}
-
-bool CWord::IsAdposition() const {
-    return false; //
-}
-
-bool CWord::IsConjunction() const {
-    return false; //
-}
-
-bool CWord::IsNumeral() const {
-    return false; //
-}
-
-bool CWord::IsInterjection() const {
-    return false; //
-}
-
-void CWord::SetIsEndOfSentence(bool is_end_of_sentence) {}
-
-CPhonemeList &CWord::GetPhonemeList() {
-    return PhonemeList; //
-}
-
-CEventList &CWord::GetEventList() {
-    return EventList; //
-}
-
-void CWord::ParsPronunciation(std::string pronuciation) {
-    for (size_t index = 0; index < Pron.length(); index++) {
+    for(size_t index = 0; index < pron.length(); index++) {
         CPhonemePtr phoneme = std::make_unique<CPhoneme>();
 
-        char prv_pho = (index > 0) ? Pron[index - 1] : 0;
-        char cur_pho = Pron[index];
-        char nxt_pho = Pron[index + 1];
+        char prv_pho = (index > 0) ? pron[index - 1] : 0;
+        char cur_pho = pron[index];
+        char nxt_pho = pron[index + 1];
 
-        if (cur_pho == '^') {
+        if(cur_pho == '^') {
             continue;
         }
 
@@ -197,19 +207,31 @@ void CWord::ParsPronunciation(std::string pronuciation) {
     }
 }
 
-void CWord::AddEvent(CEventPtr &event) {
+void CWord::AddEvent(CEventPtr &event)
+{
     EventList.push_back(std::move(event));
 }
 
-void CWord::AddEvent(TIHU_EVENT_TYPE event_type,
-                     TIHU_EVENT_VALUE &event_value) {
-    EventList.push_back(std::make_unique<CEvent>(event_type, event_value));
+void CWord::AddEntry(CEntryPtr &entry)
+{
+    EntryList.push_back(std::move(entry));
 }
 
-bool CWord::HasKasreEzafe() const {
-    return POSTag.back() == 'e'; //
+void CWord::AddEvent(TIHU_EVENT_TYPE event_type, TIHU_EVENT_VALUE &event_value)
+{
+    EventList.push_back(
+        std::make_unique<CEvent>(event_type, event_value));
 }
 
-void CWord::AddKasreEzafe() {
-    Pron = ConcatPronunciations(Pron, "e"); //
+bool CWord::IsEmpty() const
+{
+    return EntryList.empty();
+}
+
+void CWord::SetIsAutoPhonetics(bool lts) {
+    SET_FLAG(Flags, WORD_FLAG_AUTO_PHONETICS);
+}
+
+bool CWord::IsAutoPhonetics() const {
+    return IS_FLAG_SET(Flags, WORD_FLAG_AUTO_PHONETICS);
 }

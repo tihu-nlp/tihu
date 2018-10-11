@@ -78,7 +78,7 @@ void CeSpeakSyn::ParsText(CCorpus* corpus)
             phonetic.append(word->GetText());
         }
         else {
-            word->ParsPronunciation();
+            word->ParsPron();
 
             phonetic.append("[[");
 

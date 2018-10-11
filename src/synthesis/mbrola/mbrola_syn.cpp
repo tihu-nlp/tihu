@@ -79,7 +79,7 @@ void CMbrolaSyn::ParsText(CCorpus* corpus)
 
         phoneme_line.clear();
 
-        word->ParsPronunciation();
+        word->ParsPron();
 
         CPhonemeList &phoneme_list = word->GetPhonemeList();
         for(auto itp = phoneme_list.begin(); itp != phoneme_list.end(); ++itp) {

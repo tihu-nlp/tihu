@@ -90,12 +90,29 @@ const CWordPtr &CCorpus::GetFirstWord() const
 
     char buffer[1024];
     for(auto &word : WordList) {
-        snprintf(buffer, 1024, "\t<word text=\"%s\" pronunciation=\"%s\" label=\"%s\"/>",
-                word->GetText().c_str(),
-                word->GetPron().c_str(),
-                word->GetPOSTag().c_str());
+        snprintf(buffer, 1024, "\t<word offset=\"%zd\" length=\"%zd\" frequency=\"%zd\" text=\"%s\"%s%s%s>",
+                 word->GetOffset(),
+                 word->GetLength(),
+                 word->GetFrequency(),
+                 word->GetText().c_str(),
+                 word->IsAutoPhonetics() ? " g2p=\"true\"" : "",
+                 word->IsEndOfParagraph() ? " eop=\"true\"" : "",
+                 word->IsEndOfSentence() ? " eos=\"true\"" : "");
 
         writer << buffer << std::endl;
+
+        for(auto &entry : word->GetEntryList()) {
+
+            snprintf(buffer, 1024, "\t\t<entry pron=\"%s\" pos=\"%s\" stem=\"%s\" lemma=\"%s\" />",
+                     entry->GetPron().c_str(),
+                     entry->GetPOS().c_str(),
+                     entry->GetStem().c_str(),
+                     entry->GetLemma().c_str());
+
+            writer << buffer << std::endl;
+        }
+
+        writer << "\t</word>" << std::endl;
     }
 
     writer << "</corpus>";
@@ -113,9 +130,9 @@ const CWordPtr &CCorpus::GetFirstWord() const
 
         snprintf(buffer, 1024, "%s\t%s\t%c%s",
             word->GetText().c_str(),
-            word->GetPOSTag().c_str(),
-            word->LTSPhonetics() ? '*':' ',
-            word->GetPron().c_str());
+            word->GetBestEntry()->GetPOS().c_str(),
+            word->IsAutoPhonetics() ? '*':' ',
+            word->GetBestEntry()->GetPron().c_str());
 
         writer << buffer << std::endl;
     }

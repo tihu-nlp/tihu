@@ -45,19 +45,20 @@ bool CLetterToSound::Load(std::string name) {
 void CLetterToSound::ParsText(CCorpus *corpus) {
     CWordList &word_list = corpus->GetWordList();
     for (auto &word : word_list) {
+        auto &entry = word->GetBestEntry();
 
-        if (word->GetPron().empty()) {
+        if (entry->GetPron().empty()) {
 
             std::string pron;
             if (word->IsPersianWord()) {
                 ///
                 pron = PersianToPhoneme.Convert(word->GetText());
 
-                word->SetLTSPhonetics(true);
+                word->SetIsAutoPhonetics(true);
 
                 /// Add Kasre-Ezafe
-                if (word->HasKasreEzafe()) {
-                    word->AddKasreEzafe();
+                if (entry->HasKasreEzafe()) {
+                    entry->AddKasreEzafe();
                 }
             } else if (word->IsEnglishWord()) {
                 //
@@ -70,7 +71,7 @@ void CLetterToSound::ParsText(CCorpus *corpus) {
                 pron = PunctuationToPhoneme.Convert(word->GetText());
             }
 
-            word->SetPron(pron);
+            entry->SetPron(pron);
         }
     }
 }
