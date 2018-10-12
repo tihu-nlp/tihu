@@ -1,46 +1,43 @@
 /*******************************************************************************
-* This file is part of Tihu.
-*
-* Tihu is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* Tihu is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with Tihu.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Contributor(s):
-*    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
-*
-*******************************************************************************/
+ * This file is part of Tihu.
+ *
+ * Tihu is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Tihu is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Tihu.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Contributor(s):
+ *    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
+ *
+ *******************************************************************************/
 #include "phoneme.h"
 
-
 enum class ConsonantType {
-    CONSONANT_TYPE_NOT_SET     ,
-    CONSONANT_TYPE_VOWEL       ,
-    CONSONANT_TYPE_STOP        ,
-    CONSONANT_TYPE_FRICATIVE   ,
-    CONSONANT_TYPE_AFFRICATIVE ,
-    CONSONANT_TYPE_NASAL       ,
-    CONSONANT_TYPE_LIQUID      ,
-    CONSONANT_TYPE_APPROXIMANT ,
+    CONSONANT_TYPE_NOT_SET,
+    CONSONANT_TYPE_VOWEL,
+    CONSONANT_TYPE_STOP,
+    CONSONANT_TYPE_FRICATIVE,
+    CONSONANT_TYPE_AFFRICATIVE,
+    CONSONANT_TYPE_NASAL,
+    CONSONANT_TYPE_LIQUID,
+    CONSONANT_TYPE_APPROXIMANT,
 };
 
-
 typedef struct {
-    char           phoneme;
-    char           MbrName[4];
-    char           IPAName[4];
-    int            Duration;
-    ConsonantType  Consonant;
+    char phoneme;
+    char MbrName[4];
+    char IPAName[4];
+    int Duration;
+    ConsonantType Consonant;
 } PHONEME;
-
 
 /// This table was set by Mostafa.
 /// My main resource was WikiPedia:
@@ -82,12 +79,7 @@ const static PHONEME PhonemeTable[] = {
     { 'a', "a" , "a" ,  90, ConsonantType::CONSONANT_TYPE_VOWEL         },
 };
 
-#define  PHONEME_TABLE_SIZE  ARRAY_LENGTH(PhonemeTable)
-
-
-
-
-
+#define PHONEME_TABLE_SIZE ARRAY_LENGTH(PhonemeTable)
 
 /*
 int main()
@@ -105,7 +97,6 @@ int main()
 }
 */
 
-
 const static int PhonemeTableHelper[256] = {
     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,
@@ -117,47 +108,34 @@ const static int PhonemeTableHelper[256] = {
     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
 };
 
-
-
-#define  PHO_DEFAULT_PITCH      200
+#define PHO_DEFAULT_PITCH 200
 
 CPhoneme::CPhoneme()
-    : PhonemeIndex(0)
-    , PitchRange(0,0)
-    , Duration(0)
-    , PrevVoweled(false)
-{
+    : PhonemeIndex(0), PitchRange(0, 0), Duration(0), PrevVoweled(false) {}
 
+std::string CPhoneme::GetMbrName() {
+    return PhonemeTable[PhonemeIndex].MbrName; //
 }
 
-std::string CPhoneme::GetMbrName()
-{
-    return PhonemeTable[PhonemeIndex].MbrName;
+std::string CPhoneme::GetIPAName() {
+    return PhonemeTable[PhonemeIndex].IPAName; //
 }
-
-std::string CPhoneme::GetIPAName()
-{
-    return PhonemeTable[PhonemeIndex].IPAName;
-}
-
 
 /*void CPhoneme::operator =(Phoneme &pho)
 {
 }*/
 
-void CPhoneme::SetPhonetic(char prev_phoneme, char phoneme, char next_phoneme)
-{
-    if(phoneme == 'g' &&
-       (next_phoneme == 'A' || next_phoneme == 'o' || next_phoneme == 'u')) {
+void CPhoneme::SetPhonetic(char prev_phoneme, char phoneme, char next_phoneme) {
+    if (phoneme == 'g' &&
+        (next_phoneme == 'A' || next_phoneme == 'o' || next_phoneme == 'u')) {
         phoneme = 'G';
-    } else if(phoneme == 'k' &&
-              !(next_phoneme == 'A' || next_phoneme == 'o' || next_phoneme == 'u')) {
+    } else if (phoneme == 'k' && !(next_phoneme == 'A' || next_phoneme == 'o' ||
+                                   next_phoneme == 'u')) {
         phoneme = 'c';
     }
 
-    if(IsVowelPhoneme(phoneme)) {
-        if(prev_phoneme == 0 ||
-           IsVowelPhoneme(prev_phoneme)) {
+    if (IsVowelPhoneme(phoneme)) {
+        if (prev_phoneme == 0 || IsVowelPhoneme(prev_phoneme)) {
             PrevVoweled = true;
         }
     }
@@ -167,8 +145,7 @@ void CPhoneme::SetPhonetic(char prev_phoneme, char phoneme, char next_phoneme)
     assert(PhonemeIndex != 0);
 }
 
-std::string CPhoneme::GetMbrolString()
-{
+std::string CPhoneme::GetMbrolString() {
     std::string mbrola;
     //--------------------------------------------------------------
     // Format of MBrola phonemes is:
@@ -177,7 +154,8 @@ std::string CPhoneme::GetMbrolString()
     // 1 First-Pitch-Value 100 Last-Pitch-Value
     // for example "a: 120 1 135 100 110"
     //--------------------------------------------------------------
-    //SetPitch(1, m_PitchRange.FValue, 100, m_PitchRange.LValue, -1 /*terminator arg*/);
+    // SetPitch(1, m_PitchRange.FValue, 100, m_PitchRange.LValue, -1
+    // /*terminator arg*/);
 
     static char temp[1024];
 #ifdef WIN32
@@ -185,16 +163,15 @@ std::string CPhoneme::GetMbrolString()
 #else
     snprintf
 #endif
-    (temp, 1024, "%s%s %d \n",
-     (PrevVoweled) ? "? 50 \n" : "",
-     PhonemeTable[PhonemeIndex].MbrName,
-     PhonemeTable[PhonemeIndex].Duration);
+        (temp, 1024, "%s%s %d \n", (PrevVoweled) ? "? 50 \n" : "",
+         PhonemeTable[PhonemeIndex].MbrName,
+         PhonemeTable[PhonemeIndex].Duration);
 
-    //sprintf_s(pszBuffer, length, "%s %d 1 %d 100 %d \n",
+    // sprintf_s(pszBuffer, length, "%s %d 1 %d 100 %d \n",
     //  mbrPhonemes[m_nPhoIndex].cName/*name*/,
     /////////// m_nDuration * fSpeedRatio/*duration*/,
     //  m_PitchRange.FValue,
-//      m_PitchRange.LValue);
+    //      m_PitchRange.LValue);
 
     mbrola.assign(temp);
 

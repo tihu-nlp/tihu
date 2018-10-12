@@ -1,30 +1,28 @@
 /*******************************************************************************
-* This file is part of Tihu.
-*
-* Tihu is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* Tihu is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with Tihu.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Contributor(s):
-*    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
-*
-*******************************************************************************/
+ * This file is part of Tihu.
+ *
+ * Tihu is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Tihu is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Tihu.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Contributor(s):
+ *    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
+ *
+ *******************************************************************************/
 #include "hazm.h"
 
 #include <Python.h>
 
-
-CHazm::CHazm()
-{
+CHazm::CHazm() {
     HazmObj = nullptr;
     TaggerObj = nullptr;
     NormalizerObj = nullptr;
@@ -33,21 +31,23 @@ CHazm::CHazm()
     TagFunc = nullptr;
 }
 
-CHazm::~CHazm()
-{
-    if(HazmObj)         Py_DecRef(HazmObj);
-    if(TaggerObj)       Py_DecRef(TaggerObj);
-    if(NormalizerObj)   Py_DecRef(NormalizerObj);
-    if(TokenzierFunc)   Py_DecRef(TokenzierFunc);
-    if(NormalizeFunc)   Py_DecRef(NormalizeFunc);
-    if(TagFunc)         Py_DecRef(TagFunc);
+CHazm::~CHazm() {
+    if (HazmObj)
+        Py_DecRef(HazmObj);
+    if (TaggerObj)
+        Py_DecRef(TaggerObj);
+    if (NormalizerObj)
+        Py_DecRef(NormalizerObj);
+    if (TokenzierFunc)
+        Py_DecRef(TokenzierFunc);
+    if (NormalizeFunc)
+        Py_DecRef(NormalizeFunc);
+    if (TagFunc)
+        Py_DecRef(TagFunc);
 }
 
-bool CHazm::Load(std::string name)
-{
-    Name = name;
-
-    PyObject* hazm_name = PyUnicode_FromString("hazm");
+bool CHazm::Load(std::string param) {
+    PyObject *hazm_name = PyUnicode_FromString("hazm");
     HazmObj = PyImport_Import(hazm_name);
     Py_DECREF(hazm_name);
     if (HazmObj == NULL) {
@@ -55,13 +55,13 @@ bool CHazm::Load(std::string name)
         return false;
     }
 
-    PyObject* normalizer_class = PyObject_GetAttrString(HazmObj, "Normalizer");
+    PyObject *normalizer_class = PyObject_GetAttrString(HazmObj, "Normalizer");
     if (normalizer_class == NULL) {
         PyErr_Print();
         return false;
     }
 
-    PyObject* normalizer_args = Py_BuildValue("()");
+    PyObject *normalizer_args = Py_BuildValue("()");
     if (normalizer_args == NULL) {
         PyErr_Print();
         return false;
@@ -75,20 +75,21 @@ bool CHazm::Load(std::string name)
         return false;
     }
 
-
-    PyObject* tagger_class = PyObject_GetAttrString(HazmObj, "POSTagger");
+    PyObject *tagger_class = PyObject_GetAttrString(HazmObj, "POSTagger");
     if (tagger_class == NULL) {
         PyErr_Print();
         return false;
     }
 
-    PyObject* tagger_args = Py_BuildValue("{s:s}", "model", "./data/hazm/postagger.model");
+    PyObject *tagger_args =
+        Py_BuildValue("{s:s}", "model", "./data/hazm/postagger.model");
     if (tagger_args == NULL) {
         PyErr_Print();
         return false;
     }
 
-    TaggerObj = PyEval_CallObjectWithKeywords(tagger_class, nullptr, tagger_args);
+    TaggerObj =
+        PyEval_CallObjectWithKeywords(tagger_class, nullptr, tagger_args);
     Py_DECREF(tagger_class);
     Py_DECREF(tagger_args);
     if (TaggerObj == NULL) {
@@ -97,13 +98,13 @@ bool CHazm::Load(std::string name)
     }
 
     TokenzierFunc = PyObject_GetAttrString(HazmObj, "word_tokenize");
-	if (!TokenzierFunc || !PyCallable_Check(TokenzierFunc)) {
+    if (!TokenzierFunc || !PyCallable_Check(TokenzierFunc)) {
         PyErr_Print();
         return false;
     }
 
     NormalizeFunc = PyObject_GetAttrString(NormalizerObj, "normalize");
-	if (!NormalizeFunc || !PyCallable_Check(NormalizeFunc)) {
+    if (!NormalizeFunc || !PyCallable_Check(NormalizeFunc)) {
         PyErr_Print();
         return false;
     }
@@ -117,13 +118,11 @@ bool CHazm::Load(std::string name)
     return true;
 }
 
-void CHazm::ParsText(CCorpus* corpus)
-{
-    PyObject* text = PyUnicode_FromString(corpus->GetText().c_str());
+void CHazm::ParsText(CCorpus *corpus) {
+    PyObject *text = PyUnicode_FromString(corpus->GetText().c_str());
     PyObject *args = PyTuple_New(1);
     PyTuple_SetItem(args, 0, text);
     //
-
 
     PyObject *normalized = PyObject_CallObject(NormalizeFunc, args);
     if (normalized == nullptr) {
@@ -152,9 +151,9 @@ void CHazm::ParsText(CCorpus* corpus)
         return;
     }
 
-    int count = (int) PyList_Size(tags);
+    int count = (int)PyList_Size(tags);
     PyObject *item, *obj0, *obj1, *wrd, *tag;
-    for (int i = 0 ; i < count ; i++ ) {
+    for (int i = 0; i < count; i++) {
         item = PyList_GetItem(tags, i);
 
         obj0 = PyTuple_GetItem(item, 0);
@@ -165,7 +164,7 @@ void CHazm::ParsText(CCorpus* corpus)
 
         CWordPtr word = std::make_unique<CWord>();
         word->SetText(PyString_AsString(wrd));
-        //word->SetPOSTag(PyString_AsString(tag));
+        // word->SetPOSTag(PyString_AsString(tag));
         corpus->AddWord(word);
 
         Py_DECREF(wrd);

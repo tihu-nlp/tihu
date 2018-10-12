@@ -1,23 +1,23 @@
 /*******************************************************************************
-* This file is part of Tihu.
-*
-* Tihu is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* Tihu is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with Tihu.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Contributor(s):
-*    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
-*
-*******************************************************************************/
+ * This file is part of Tihu.
+ *
+ * Tihu is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Tihu is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Tihu.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Contributor(s):
+ *    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
+ *
+ *******************************************************************************/
 #ifndef __TIHU__HAZM_H
 #define __TIHU__HAZM_H
 
@@ -30,17 +30,15 @@ struct _object;
 typedef _object PyObject;
 #endif
 
-class CHazm
-    : public IParser
-{
-public:
+class CHazm : public IParser {
+  public:
     CHazm();
     ~CHazm();
 
-    bool Load(std::string name) override;
-    void ParsText(CCorpus* corpus) override;
+    bool Load(std::string param = "") override;
+    void ParsText(CCorpus *corpus) override;
 
-private:
+  private:
     PyObject *HazmObj;
     PyObject *TaggerObj;
     PyObject *NormalizerObj;
