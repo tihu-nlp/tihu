@@ -1,65 +1,66 @@
 /*******************************************************************************
-* This file is part of Tihu.
-*
-* Tihu is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* Tihu is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with Tihu.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Contributor(s):
-*    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
-*
-*******************************************************************************/
+ * This file is part of Tihu.
+ *
+ * Tihu is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Tihu is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Tihu.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Contributor(s):
+ *    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
+ *
+ *******************************************************************************/
 
-#include "tihu_dict/tihu_dict.h"
-#include "phonetics/word_to_phonetic.h"
-#include "synthesis/mbrola/mbrola_syn.h"
-#include "synthesis/espeak/espeak_syn.h"
-#include "hazm/hazm.h"
 #include "engine.h"
+#include "hazm/hazm.h"
+#include "phonetics/word_to_phonetic.h"
+#include "synthesis/espeak/espeak_syn.h"
+#include "synthesis/mbrola/mbrola_syn.h"
 #include "tihu.h"
+#include "tihu_dict/tihu_dict.h"
+#include "tokenizer/tokenizer.h"
 
+#include <dlfcn.h>
 #include <iostream>
 #include <locale>
-#include <dlfcn.h>
 
-
-CEngine::CEngine()
-{
-    Hazm          = nullptr;
-    TihuDict      = nullptr;
-    LetterToSound = nullptr;
-    Synthesizer   = nullptr;
-    Settings      = new CSettings();
+CEngine::CEngine() {
+    Hazm = nullptr;
+    TihuDict = nullptr;
+    Phonetics = nullptr;
+    Tokenizer = nullptr;
+    Synthesizer = nullptr;
+    Settings = new CSettings();
 }
 
-CEngine::~CEngine()
-{
-    if(Hazm) {
+CEngine::~CEngine() {
+    if (Hazm) {
         delete Hazm;
     }
-    if(TihuDict) {
+    if (TihuDict) {
         delete TihuDict;
     }
-    if(LetterToSound) {
-        delete LetterToSound;
+    if (Phonetics) {
+        delete Phonetics;
     }
-    if(Synthesizer) {
+    if (Tokenizer) {
+        delete Tokenizer;
+    }
+    if (Synthesizer) {
         delete Synthesizer;
     }
     delete Settings;
 }
 
-int CEngine::LoadModules()
-{
+int CEngine::LoadModules() {
     /// change current directory
     std::string dir = GetCurrentModulePath();
     int res = chdir(dir.c_str());
@@ -69,62 +70,60 @@ int CEngine::LoadModules()
 
     Hazm = new CHazm();
     TihuDict = new CTihuDict();
-    LetterToSound = new CLetterToSound();
+    Phonetics = new CWordToPhonetic();
+    Tokenizer = new CTokenizer();
 
-    if(!Hazm->Load("Hazm")) {
+    if (!Hazm->Load()) {
         return TIHU_ERROR_LOAD_DATA;
     }
-
-    if(!TihuDict->Load("Dict")) {
+    if (!TihuDict->Load()) {
         return TIHU_ERROR_LOAD_DATA;
     }
-
-    if(!LetterToSound->Load("LTS")) {
+    if (!Phonetics->Load()) {
+        return TIHU_ERROR_LOAD_DATA;
+    }
+    if (!Tokenizer->Load()) {
         return TIHU_ERROR_LOAD_DATA;
     }
 
     Hazm->SetSettings(Settings);
     TihuDict->SetSettings(Settings);
-    LetterToSound->SetSettings(Settings);
+    Phonetics->SetSettings(Settings);
+    Tokenizer->SetSettings(Settings);
 
     return TIHU_ERROR_NONE;
 }
 
-int CEngine::LoadSynthesizer(TIHU_VOICE voice)
-{
-    if(Synthesizer) {
+int CEngine::LoadSynthesizer(TIHU_VOICE voice) {
+    if (Synthesizer) {
         delete Synthesizer;
     }
 
     std::string voice_name;
 
-    switch(voice) {
+    switch (voice) {
     case TIHU_VOICE_MBROLA_MALE: {
         Synthesizer = new CMbrolaSyn();
         voice_name = "mbrola/ir1";
-    }
-    break;
+    } break;
 
     case TIHU_VOICE_MBROLA_FEMALE: {
         Synthesizer = new CMbrolaSyn();
         voice_name = "mbrola/ir2";
-    }
-    break;
+    } break;
 
     case TIHU_VOICE_ESPEAK_MALE: {
         Synthesizer = new CeSpeakSyn();
         voice_name = "eSpeak/male";
-    }
-    break;
+    } break;
 
     case TIHU_VOICE_ESPEAK_FEMALE: {
         Synthesizer = new CeSpeakSyn();
         voice_name = "eSpeak/female";
-    }
-    break;
+    } break;
     }
 
-    if(!Synthesizer->Load(voice_name)) {
+    if (!Synthesizer->Load(voice_name)) {
         return TIHU_ERROR_LOAD_VOICE;
     }
 
@@ -133,57 +132,51 @@ int CEngine::LoadSynthesizer(TIHU_VOICE voice)
     return TIHU_ERROR_NONE;
 }
 
-void CEngine::SetCallback(TIHU_CALLBACK callback, void* userData)
-{
-    (TihuDict) ? TihuDict->SetCallBack((void*)callback, userData) : void();
-    (LetterToSound) ? LetterToSound->SetCallBack((void*)callback, userData) : void();
-    (Synthesizer) ? Synthesizer->SetCallBack((void*)callback, userData) : void();
+void CEngine::SetCallback(TIHU_CALLBACK callback, void *userData) {
+    (TihuDict) ? TihuDict->SetCallBack((void *)callback, userData) : void();
+    (Phonetics) ? Phonetics->SetCallBack((void *)callback, userData) : void();
+    (Synthesizer) ? Synthesizer->SetCallBack((void *)callback, userData)
+                  : void();
 }
 
-void CEngine::Stop()
-{
+void CEngine::Stop() {
     if (Synthesizer) {
         Synthesizer->Stop();
     }
 }
 
-void CEngine::Tag(const std::string &text)
-{
+void CEngine::Tag(const std::string &text) {
     CCorpus corpus(text);
 
-    Hazm->ParsText(&corpus);
+    Tokenizer->ParsText(&corpus);
     TihuDict->ParsText(&corpus);
-    LetterToSound->ParsText(&corpus);
-    // TODO: Kasre Ezafe
+    Phonetics->ParsText(&corpus);
+    // Hazm->ParsText(&corpus);
 
-    LetterToSound->Message(corpus.ToTxt().c_str());
+    Phonetics->Message(corpus.ToTxt().c_str());
 }
 
-
-void CEngine::Speak(const std::string &text)
-{
+void CEngine::Speak(const std::string &text) {
     CCorpus corpus(text);
 
-    Hazm->ParsText(&corpus);
+    Tokenizer->ParsText(&corpus);
     TihuDict->ParsText(&corpus);
-    LetterToSound->ParsText(&corpus);
+    Phonetics->ParsText(&corpus);
+    // Hazm->ParsText(&corpus);
     Synthesizer->ParsText(&corpus);
 
     /// TODO : better design for reporting messages
     Synthesizer->Message(corpus.ToTxt().c_str());
 }
 
-void CEngine::Diacritize(const std::string &text)
-{
+void CEngine::Diacritize(const std::string &text) {
     /// TODO::::
-
 }
 
-bool CEngine::SetParam(TIHU_PARAM param, int value)
-{
+bool CEngine::SetParam(TIHU_PARAM param, int value) {
     bool applied = true;
 
-    switch(param) {
+    switch (param) {
     case TIHU_PARAM_PITCH:
         Settings->SetPitch(value);
         Synthesizer->ApplyChanges();
@@ -207,11 +200,10 @@ bool CEngine::SetParam(TIHU_PARAM param, int value)
     return applied;
 }
 
-bool CEngine::GetParam(TIHU_PARAM param, int &value)
-{
+bool CEngine::GetParam(TIHU_PARAM param, int &value) {
     value = -1;
 
-    switch(param) {
+    switch (param) {
     case TIHU_PARAM_PITCH:
         value = Settings->GetPitch();
         break;
@@ -234,13 +226,13 @@ bool CEngine::GetParam(TIHU_PARAM param, int &value)
     return true;
 }
 
-void CEngine::LogText(const std::string& text) const
-{
-    const std::locale utf8_locale = std::locale(std::locale(), new std::codecvt_utf8<wchar_t>());
+void CEngine::LogText(const std::string &text) const {
+    const std::locale utf8_locale =
+        std::locale(std::locale(), new std::codecvt_utf8<wchar_t>());
 
     std::ofstream writer("text.txt", std::ofstream::out | std::ofstream::app);
 
-    if(!writer.is_open()) {
+    if (!writer.is_open()) {
         return;
     }
 
@@ -253,8 +245,7 @@ void CEngine::LogText(const std::string& text) const
     writer.close();
 }
 
-std::string CEngine::GetCurrentModulePath() const
-{
+std::string CEngine::GetCurrentModulePath() const {
     std::string path;
 
 #ifdef WIN32
@@ -262,30 +253,29 @@ std::string CEngine::GetCurrentModulePath() const
     buffer[0] = 0;
 
     HMODULE module = NULL;
-    if(!GetModuleHandleExA(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS |
-                           GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
-                           "tihu.dll",
-                           &module)) {
+    if (!GetModuleHandleExA(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS |
+                                GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
+                            "tihu.dll", &module)) {
         int ret = GetLastError();
         fprintf(stderr, "GetModuleHandle returned %d\n", ret);
         return path;
     }
 
-    if(!GetModuleFileNameA(module, buffer, _MAX_PATH)) {
+    if (!GetModuleFileNameA(module, buffer, _MAX_PATH)) {
         return path;
     }
 
     path = buffer;
 #else
     Dl_info dl_info;
-    if(!dladdr((void*)tihu_Init, &dl_info)) {
+    if (!dladdr((void *)tihu_Init, &dl_info)) {
         return path;
     }
 
     path = dl_info.dli_fname;
 #endif
 
-    size_t found=path.find_last_of("/\\");
+    size_t found = path.find_last_of("/\\");
 
-    return path.substr(0,found+1);
+    return path.substr(0, found + 1);
 }

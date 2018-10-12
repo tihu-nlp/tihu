@@ -35,7 +35,7 @@ public:
     CTihuDict();
     ~CTihuDict();
 
-    bool Load(std::string name) override;
+    bool Load(std::string param = "") override;
 
     void ParsText(CCorpus* corpus) override;
 

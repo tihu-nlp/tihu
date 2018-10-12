@@ -24,7 +24,7 @@
 
 CTokenizer::CTokenizer() { Offset = 0; }
 
-bool CTokenizer::Load() {
+bool CTokenizer::Load(std::string param) {
     CFileManager file_manager;
 
     if (file_manager.OpenFile("./data/tokens.txt")) {
@@ -49,8 +49,7 @@ bool CTokenizer::Load() {
         CharMapper.SetCharMap(std::stoi(code_l), char_map);
     }
 
-    CharMapper.SetCharMap('\t',
-                          CCharMap("\t", '\t', TIHU_TOKEN_TYPE::DELIMITER));
+    CharMapper.SetCharMap('\t',CCharMap("\t", '\t', TIHU_TOKEN_TYPE::DELIMITER));
     CharMapper.SetCharMap(' ', CCharMap(" ", ' ', TIHU_TOKEN_TYPE::DELIMITER));
 
     return true;

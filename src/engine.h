@@ -62,7 +62,8 @@ private:
 private:
     IParser* Hazm;
     IParser* TihuDict;
-    IParser* LetterToSound;
+    IParser* Phonetics;
+    IParser* Tokenizer;
     ISynthesizer* Synthesizer;
 
     CSettings* Settings;

@@ -20,11 +20,11 @@
  *******************************************************************************/
 #include "word_to_phonetic.h"
 
-CLetterToSound::CLetterToSound() {}
+CWordToPhonetic::CWordToPhonetic() {}
 
-CLetterToSound::~CLetterToSound() {}
+CWordToPhonetic::~CWordToPhonetic() {}
 
-bool CLetterToSound::Load(std::string name) {
+bool CWordToPhonetic::Load(std::string param) {
     if (!PersianToPhoneme.LoadModel("./data/g2p-seq2seq-tihudict")) {
         return false;
     }
@@ -42,14 +42,13 @@ bool CLetterToSound::Load(std::string name) {
     return true;
 }
 
-void CLetterToSound::ParsText(CCorpus *corpus) {
+void CWordToPhonetic::ParsText(CCorpus *corpus) {
     CWordList &word_list = corpus->GetWordList();
     for (auto &word : word_list) {
-        auto &entry = word->GetBestEntry();
-
-        if (entry->GetPron().empty()) {
-
+        if (word->IsEmpty()) {
+            auto entry = std::make_unique<CEntry>();
             std::string pron;
+
             if (word->IsPersianWord()) {
                 ///
                 pron = PersianToPhoneme.Convert(word->GetText());
@@ -72,6 +71,7 @@ void CLetterToSound::ParsText(CCorpus *corpus) {
             }
 
             entry->SetPron(pron);
+            word->AddEntry(entry);
         }
     }
 }

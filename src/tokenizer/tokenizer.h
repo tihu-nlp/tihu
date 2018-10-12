@@ -35,7 +35,7 @@ class CTokenizer
 public:
     CTokenizer();
 
-    bool Load();
+    bool Load(std::string param = "");
     void ParsText(CCorpus* corpus) override;
 
 private:
