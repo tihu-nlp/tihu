@@ -48,6 +48,10 @@ std::string CEntry::GetPOS() const {
     return POS; //
 }
 
+std::string CEntry::GetLemma() const {
+    return Lemma; //
+}
+
 bool CEntry::IsVerb() const {
     return StartsWith(POS, "V"); //
 }
@@ -61,7 +65,7 @@ bool CEntry::IsPronoun() const {
 }
 
 bool CEntry::IsAdjective() const {
-    return StartsWith(POS, "ADJ"); //
+    return StartsWith(POS, "AJ"); //
 }
 
 bool CEntry::IsDeterminer() const {
