@@ -499,9 +499,9 @@ bool CAfxManager::IsPrefix(const char* prefix)
 void CAfxManager::ParsEntry(struct hentry* he, CPfxEntry* pfx, CSfxEntry* sfx, CWordPtr &word)
 {
     std::string text = he->text;
-    std::string pos  = he->text + he->w_len + 1;
-    std::string pron = he->text + he->w_len + he->l_len + 2;
-    std::string stem = he->text + he->w_len + he->l_len +  + he->p_len + 3;
+    std::string pos  = he->text + he->word_len + 1;
+    std::string pron = he->text + he->word_len + he->pos_len + 2;
+    std::string stem = he->text + he->word_len + he->pos_len +  + he->pron_len + 3;
     int frequency = he->freq;
 
     if(pfx) {

@@ -106,13 +106,14 @@ bool CHashManager::LoadTable(const std::string  &filename, const std::string  &k
         return false;
     }
 
-    std::string word, label, pron, freq;
+    std::string word, pos, pron, freq, lemma;
 
     while(file_manager.ReadLine()) {
         word  = file_manager.NextPiece();
-        label = file_manager.NextPiece();
+        pos   = file_manager.NextPiece();
         pron  = file_manager.NextPiece();
         freq  = file_manager.NextPiece();
+        lemma = file_manager.NextPiece();
 
         // split each token into word and affix char strings
         // "\/" signs slash in words (not affix separator)
@@ -134,7 +135,7 @@ bool CHashManager::LoadTable(const std::string  &filename, const std::string  &k
             flags = NULL;
         }
 
-        if(AddWord(word, label, pron, flags, al, std::stoi(freq))) {
+        if(AddWord(word, lemma, pos, pron, flags, al, std::stoi(freq))) {
             return false;
         }
     }
@@ -169,32 +170,37 @@ int CHashManager::DecodeFlags(unsigned short** result, const std::string &flags)
 // add a word to the hash table (private)
 int CHashManager::AddWord(
     const std::string &word,
-    const std::string &label,
+    const std::string &lemma,
+    const std::string &pos,
     const std::string &pron,
     unsigned short* flags,
     short flags_len,
     int freq)
 {
-    int w_len = word.size();
-    int l_len = label.size();
-    int p_len = pron.size();
+    int word_len = word.size();
+    int lemma_len = lemma.size();
+    int pos_len = pos.size();
+    int pron_len = pron.size();
 
     // variable-length hash record with word and optional fields
     struct hentry* hp =
-        (struct hentry*)malloc(sizeof(struct hentry) + w_len + l_len + p_len + 3);
+        (struct hentry*)malloc(sizeof(struct hentry) + word_len + pos_len + pron_len + lemma_len + 4);
     if(!hp) {
         return 1;
     }
 
     strcpy(hp->text, word.c_str());
-    strcpy(hp->text + w_len + 1, label.c_str());
-    strcpy(hp->text + w_len + l_len + 2, pron.c_str());
+    strcpy(hp->text + word_len + 1, pos.c_str());
+    strcpy(hp->text + word_len + pos_len + 2, pron.c_str());
+    strcpy(hp->text + word_len + pos_len + pron_len + 3, lemma.c_str());
 
     int hash = Hash(hp->text);
 
-    hp->w_len = w_len;
-    hp->l_len = l_len;
+    hp->word_len = word_len;
+    hp->pos_len = pos_len;
+    hp->pron_len = pron_len;
     hp->alen = flags_len;
+    hp->freq = freq;
     hp->astr = flags;
     hp->next = NULL;
     hp->next_homonym = NULL;

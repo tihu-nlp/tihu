@@ -72,6 +72,10 @@ size_t CWord::GetOffset() const {
     return Offset; //
 }
 
+size_t CWord::GetFrequency() const {
+    return Frequency;
+}
+
 bool CWord::IsPersianWord() const {
     return (Type == TIHU_TOKEN_TYPE::PERSIAN); //
 }

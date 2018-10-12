@@ -95,9 +95,9 @@ const CWordPtr &CCorpus::GetFirstWord() const
                  word->GetLength(),
                  word->GetFrequency(),
                  word->GetText().c_str(),
-                 word->IsAutoPhonetics() ? " g2p=\"true\"" : "",
-                 word->IsEndOfParagraph() ? " eop=\"true\"" : "",
-                 word->IsEndOfSentence() ? " eos=\"true\"" : "");
+                 word->IsAutoPhonetics() ? " g2p=\"1\"" : "",
+                 word->IsEndOfParagraph() ? " eop=\"1\"" : "",
+                 word->IsEndOfSentence() ? " eos=\"1\"" : "");
 
         writer << buffer << std::endl;
 

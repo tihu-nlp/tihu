@@ -268,6 +268,7 @@ bool CTihuDict::Breakdown(CWordList &word_list,
         CWordPtr word = std::make_unique<CWord>();
 
         word->SetText(UTF16ToUTF8(partial));
+        word->SetType(TIHU_TOKEN_TYPE::PERSIAN);
         word->SetOffset(offset);
         word->SetLength(partial.length());
 

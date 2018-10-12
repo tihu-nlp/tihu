@@ -40,9 +40,9 @@ private:
 
     int DecodeFlags(unsigned short** result, const std::string &flags) const;
 
-    int AddWord(const std::string &word, const std::string &label,
-                const std::string &pron, unsigned short* flags,
-                short flags_len, int freq);
+    int AddWord(const std::string &word, const std::string &lemma,
+                const std::string &pos, const std::string &pron,
+                unsigned short* flags, short flags_len, int freq);
 
 private:
     struct hentry** TablePtr;

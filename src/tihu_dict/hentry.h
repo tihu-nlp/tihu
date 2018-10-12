@@ -43,9 +43,9 @@
 
 /// hashed entry
 struct hentry {
-    unsigned char w_len; // word length
-    unsigned char l_len; // pos length
-    unsigned char p_len; // pron length
+    unsigned char word_len; // word length
+    unsigned char pos_len; // pos length
+    unsigned char pron_len; // pron length
     short alen; // length of affix flag vector
     FLAG* astr; // affix flag vector
     struct hentry* next; // next word with same hash code
