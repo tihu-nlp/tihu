@@ -45,20 +45,15 @@ bool CWordToPhonetic::Load(std::string param) {
 void CWordToPhonetic::ParsText(CCorpus *corpus) {
     CWordList &word_list = corpus->GetWordList();
     for (auto &word : word_list) {
-        if (word->IsEmpty()) {
-            auto entry = std::make_unique<CEntry>();
+        auto &entry = word->GetBestEntry();
+
+        if (entry->GetPron().empty()) {
             std::string pron;
 
             if (word->IsPersianWord()) {
                 ///
                 pron = PersianToPhoneme.Convert(word->GetText());
-
                 word->SetIsAutoPhonetics(true);
-
-                /// Add Kasre-Ezafe
-                if (entry->HasKasreEzafe()) {
-                    entry->AddKasreEzafe();
-                }
             } else if (word->IsEnglishWord()) {
                 //
                 pron = EnglishToPhoneme.Convert(word->GetText());
@@ -71,7 +66,8 @@ void CWordToPhonetic::ParsText(CCorpus *corpus) {
             }
 
             entry->SetPron(pron);
-            word->AddEntry(entry);
         }
     }
+
+    corpus->Dump("w2p.xml");
 }

@@ -32,15 +32,18 @@ class CSettings {
     int GetPitch() const;
     int GetRate() const;
     int GetVolume() const;
+    bool IsDebugMode() const;
 
     void SetPitch(int pitch_adjust);
     void SetRate(int rate_adjust);
     void SetVolume(int volume_adjust);
+    void SetIsDebugMode(bool enable);
 
   private:
     int Pitch;
     int Rate;
     int Volume;
+    bool DebugMode;
 };
 
 #endif

@@ -54,8 +54,9 @@ class CEntry {
     bool IsNumeral() const;
     bool IsInterjection() const;
 
-    bool HasKasreEzafe() const;
-    void AddKasreEzafe();
+    void SetIsGenitive(bool is_genitive);
+    bool HasGenitive() const;
+    void AddGenitive();
 
   private:
     std::string Stem;  // Stem of the word

@@ -104,10 +104,16 @@ bool CEntry::IsNounProper() const {
     return false;
 }
 
-bool CEntry::HasKasreEzafe() const {
+void CEntry::SetIsGenitive(bool is_genitive) {
+    if (is_genitive) {
+        POS += "e";
+    }
+}
+
+bool CEntry::HasGenitive() const {
     return POS.back() == 'e'; //
 }
 
-void CEntry::AddKasreEzafe() {
+void CEntry::AddGenitive() {
     Pron = ConcatPronunciations(Pron, "e"); //
 }

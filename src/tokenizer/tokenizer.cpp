@@ -49,7 +49,8 @@ bool CTokenizer::Load(std::string param) {
         CharMapper.SetCharMap(std::stoi(code_l), char_map);
     }
 
-    CharMapper.SetCharMap('\t',CCharMap("\t", '\t', TIHU_TOKEN_TYPE::DELIMITER));
+    CharMapper.SetCharMap('\t',
+                          CCharMap("\t", '\t', TIHU_TOKEN_TYPE::DELIMITER));
     CharMapper.SetCharMap(' ', CCharMap(" ", ' ', TIHU_TOKEN_TYPE::DELIMITER));
 
     return true;
@@ -64,7 +65,7 @@ void CTokenizer::ParsText(CCorpus *corpus) {
     const char16_t *text = text_16.c_str();
 
     /// reset text offset
-    Offset = 0;
+    Offset = corpus->GetOffset();
 
     while (1) {
         CCharMap char_map = CharMapper.GetCharMap(*text);
@@ -185,6 +186,8 @@ void CTokenizer::ParsText(CCorpus *corpus) {
         ++length;
         ++text;
     }
+
+    corpus->Dump("tokens.xml");
 }
 
 int CTokenizer::ParsEvents(const CWordPtr &word, const char16_t *text) {

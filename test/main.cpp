@@ -18,6 +18,8 @@
  *    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
  *
  *******************************************************************************/
+#include <algorithm>
+#include <cstring>
 #include <dlfcn.h>
 #include <experimental/filesystem>
 #include <fstream>
@@ -25,9 +27,30 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
+
 namespace fs = std::experimental::filesystem;
 
 #include "../src/tihu.h"
+
+bool compareFiles(const std::string &p1, const std::string &p2) {
+    std::ifstream f1(p1, std::ifstream::binary | std::ifstream::ate);
+    std::ifstream f2(p2, std::ifstream::binary | std::ifstream::ate);
+
+    if (f1.fail() || f2.fail()) {
+        return false; // file problem
+    }
+
+    if (f1.tellg() != f2.tellg()) {
+        return false; // size mismatch
+    }
+
+    // seek back to beginning and use std::equal to compare contents
+    f1.seekg(0, std::ifstream::beg);
+    f2.seekg(0, std::ifstream::beg);
+    return std::equal(std::istreambuf_iterator<char>(f1.rdbuf()),
+                      std::istreambuf_iterator<char>(),
+                      std::istreambuf_iterator<char>(f2.rdbuf()));
+}
 
 std::string read_file(std::string fname) {
     std::ifstream infile(fname);
@@ -35,15 +58,19 @@ std::string read_file(std::string fname) {
     while (std::getline(infile, line)) {
         if (line.front() != '#') {
             text += line;
+            text += "\n";
         }
     }
     return text;
 }
 
-TIHU_CALLBACK_RETURN cb(TIHU_CALLBACK_MESSAGE message, long l_param,
-                        long w_param, void *user_data) {
 
-//
+TIHU_CALLBACK_RETURN cb(TIHU_CALLBACK_MESSAGE message, long l_param,
+                        long w_param, void *data) {
+    char *str = (char *)l_param;
+    FILE *fp = (FILE *)data;
+
+    fwrite(str, 1, strlen(str), fp);
 }
 
 int main(int argc, char **argv) {
@@ -82,6 +109,7 @@ int main(int argc, char **argv) {
         return 1;
     }
 
+    int ret = 0;
     std::string path = argv[2];
     for (auto &p : fs::directory_iterator(path)) {
         std::string fname = fs::path(p).filename();
@@ -89,15 +117,30 @@ int main(int argc, char **argv) {
 
         if (ext == ".txt") {
             std::string txt = read_file(p.path());
-            std::string lbl = read_file(fs::path(p).replace_extension(".lbl"));
-            printf("%s\n\n", lbl.c_str());
-            printf("%s\n\n", txt.c_str());
-            tihu_Callback(cb, (void*)lbl.c_str());
+            std::string lbl1 = fs::path(p).replace_extension(".lbl");
+            //std::string lbl2 = std::tmpnam(nullptr); /// this line generates warning!
+            std::string lbl2 = "/tmp/text.lbl";
+
+            FILE *fp = fopen(lbl2.c_str(), "w");
+
+            printf("Testing %s ... ", fname.c_str());
+
+            tihu_Callback(cb, (void *)fp);
             tihu_Tag(txt.c_str());
+
+            fclose(fp);
+
+            bool equal = compareFiles(lbl1, lbl2);
+            if (!equal) {
+                printf("FAILED\n");
+                ret = 1;
+            } else {
+                printf("OK\n");
+            }
         }
     }
 
     tihu_Close();
 
-    return 0;
+    return ret;
 }
