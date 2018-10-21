@@ -54,6 +54,7 @@ public:
     void DebugMode(bool enable);
 
 private:
+    void ParsText(const std::string &text, std::list<IParser *> parsers);
     void LogText(const std::string &text) const;
 
     std::string GetCurrentModulePath() const;

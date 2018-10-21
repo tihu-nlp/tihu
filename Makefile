@@ -7,7 +7,7 @@ OBJS = $(addprefix $(OBJSDIR),$(patsubst %.cpp,%.o,$(SRCS)))
 INC = `python2.7-config --includes` -Xlinker -export-dynamic
 ## for debugging
 CXXFLAGS = -c -Wall -std=c++14 $(INC) -DDEBUG -g -fPIC
-#CXXFLAGS = -c -fPIC -Wall -std=c++14 $(INC) -O3 -g
+#CXXFLAGS = -c -fPIC -Wall -std=c++14 $(INC) -O3
 LDFLAGS = `python2.7-config --ldflags` -shared -Wl,-soname,$(TARGET)
 
 
@@ -27,8 +27,8 @@ play:
 	$(CC) tools/tihu_play/main.cpp -o ./build/tihu_play -L. -ldl
 
 test:
-	$(CC) -std=c++17 test/main.cpp -o  ./build/tihu_test -L. -ldl -lstdc++fs
-	./build/tihu_test ./build/libtihu.so ../test/res
+	$(CC) -std=c++17 -DDEBUG  -g test/main.cpp -o  ./build/tihu_test -L. -ldl -lstdc++fs
+	./build/tihu_test ./build/libtihu.so ../test/res 2>/dev/null
 
 # to print variables in makefile
 print-%  : ; @echo $* = $($*)

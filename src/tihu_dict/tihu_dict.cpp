@@ -103,6 +103,8 @@ void CTihuDict::ParsText(CCorpus *corpus) {
 
         ++itr;
     }
+
+    corpus->Dump("dict.xml");
 }
 
 bool CTihuDict::TagCompound(CWordList &word_list,
@@ -149,9 +151,7 @@ CTihuDict::GetCompoundText(const std::vector<std::string> &compound) {
     text = *iter;
 
     for (++iter; iter != compound.cend(); ++iter) {
-        if (!EndsWithDetached(text))
-            text.append(CHR_U8_ZWNJ);
-
+        text.append(CHR_U8_ZWNJ);
         text.append(*iter);
     }
 
@@ -234,10 +234,10 @@ bool CTihuDict::Breakdown(CWordList &word_list,
 
             if (CanBeDetached(temp.c_str()) || *(p + 1) == 0) {
                 // همیشه «و» را یک کلمه جدا در نظر میگیریم
-                if (temp == u"\u0648") {
-                    partial = temp;
-                    break;
-                }
+                //if (temp == u"\u0648") {
+                //    partial = temp;
+                //    break;
+                //}
 
                 std::string temp_u8 = UTF16ToUTF8(temp);
                 if (CheckWord(temp_u8)) {

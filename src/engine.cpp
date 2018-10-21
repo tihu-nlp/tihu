@@ -31,6 +31,7 @@
 #include <dlfcn.h>
 #include <iostream>
 #include <locale>
+#include <sstream>
 
 CEngine::CEngine() {
     Hazm = nullptr;
@@ -133,10 +134,11 @@ int CEngine::LoadSynthesizer(TIHU_VOICE voice) {
 }
 
 void CEngine::SetCallback(TIHU_CALLBACK callback, void *userData) {
+    (Tokenizer) ? Tokenizer->SetCallBack((void *)callback, userData) : void();
     (TihuDict) ? TihuDict->SetCallBack((void *)callback, userData) : void();
     (Phonetics) ? Phonetics->SetCallBack((void *)callback, userData) : void();
-    (Synthesizer) ? Synthesizer->SetCallBack((void *)callback, userData)
-                  : void();
+    (Synthesizer) ? Synthesizer->SetCallBack((void *)callback, userData) : void();
+    (Hazm) ? Hazm->SetCallBack((void *)callback, userData) : void();
 }
 
 void CEngine::Stop() {
@@ -146,31 +148,48 @@ void CEngine::Stop() {
 }
 
 void CEngine::Tag(const std::string &text) {
-    CCorpus corpus(text);
+    std::list<IParser *> parsers;
+    parsers.push_back(Tokenizer);
+    parsers.push_back(TihuDict);
+    parsers.push_back(Hazm);
+    parsers.push_back(Phonetics);
 
-    Tokenizer->ParsText(&corpus);
-    TihuDict->ParsText(&corpus);
-    Phonetics->ParsText(&corpus);
-    // Hazm->ParsText(&corpus);
-
-    Phonetics->Message(corpus.ToTxt().c_str());
+    ParsText(text, parsers);
 }
 
 void CEngine::Speak(const std::string &text) {
-    CCorpus corpus(text);
+    std::list<IParser *> parsers;
+    parsers.push_back(Tokenizer);
+    parsers.push_back(TihuDict);
+    parsers.push_back(Hazm);
+    parsers.push_back(Phonetics);
+    parsers.push_back(Synthesizer);
 
-    Tokenizer->ParsText(&corpus);
-    TihuDict->ParsText(&corpus);
-    Phonetics->ParsText(&corpus);
-    // Hazm->ParsText(&corpus);
-    Synthesizer->ParsText(&corpus);
-
-    /// TODO : better design for reporting messages
-    Synthesizer->Message(corpus.ToTxt().c_str());
+    ParsText(text, parsers);
 }
 
 void CEngine::Diacritize(const std::string &text) {
     /// TODO::::
+}
+
+void CEngine::ParsText(const std::string &text, std::list<IParser *> parsers) {
+    std::stringstream ss(text);
+    std::string line;
+    int offset = 0;
+    while (std::getline(ss, line, '\n')) {
+        CCorpus corpus(line, offset);
+
+        for (auto parser : parsers) {
+            parser->ParsText(&corpus);
+        }
+
+        // TODO
+        //if (Settings->IsDebugMode()) {
+            parsers.back()->Message(corpus.ToTxt().c_str());
+        //}
+
+        offset += line.length();
+    }
 }
 
 bool CEngine::SetParam(TIHU_PARAM param, int value) {
@@ -224,6 +243,10 @@ bool CEngine::GetParam(TIHU_PARAM param, int &value) {
     }
 
     return true;
+}
+
+void CEngine::DebugMode(bool enable) {
+    Settings->SetIsDebugMode(enable);
 }
 
 void CEngine::LogText(const std::string &text) const {

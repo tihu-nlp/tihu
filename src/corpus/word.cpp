@@ -60,6 +60,11 @@ std::string CWord::GetText() const {
     return Text; //
 }
 
+std::string CWord::GetTextWithoutDiacritics() const {
+    // TODO
+    return Text; //
+}
+
 TIHU_TOKEN_TYPE CWord::GetType() const {
     return Type; //
 }

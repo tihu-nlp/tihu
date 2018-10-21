@@ -119,59 +119,68 @@ bool CHazm::Load(std::string param) {
 }
 
 void CHazm::ParsText(CCorpus *corpus) {
-    PyObject *text = PyUnicode_FromString(corpus->GetText().c_str());
+
+    PyObject *tokens = PyList_New(corpus->Size());
+    CWordList &word_list = corpus->GetWordList();
+    int index = 0;
+    for (auto &word : word_list) {
+        std::string txt = word->GetTextWithoutDiacritics();
+        PyObject *token = PyUnicode_FromString(txt.c_str());
+        PyList_SetItem(tokens, index++, token);
+    }
+
     PyObject *args = PyTuple_New(1);
-    PyTuple_SetItem(args, 0, text);
-    //
-
-    PyObject *normalized = PyObject_CallObject(NormalizeFunc, args);
-    if (normalized == nullptr) {
-        Py_DECREF(text);
-        Py_DECREF(args);
-        PyErr_Print();
-        return;
-    }
-
-    PyTuple_SetItem(args, 0, normalized);
-    PyObject *tokens = PyObject_CallObject(TokenzierFunc, args);
-    if (tokens == nullptr) {
-        Py_DECREF(text);
-        Py_DECREF(args);
-        PyErr_Print();
-        return;
-    }
-
     PyTuple_SetItem(args, 0, tokens);
     PyObject *tags = PyObject_CallObject(TagFunc, args);
     if (tags == nullptr) {
         Py_DECREF(tokens);
-        Py_DECREF(text);
         Py_DECREF(args);
         PyErr_Print();
         return;
     }
 
-    int count = (int)PyList_Size(tags);
-    PyObject *item, *obj0, *obj1, *wrd, *tag;
-    for (int i = 0; i < count; i++) {
-        item = PyList_GetItem(tags, i);
+    index = 0;
+    for (auto &word : word_list) {
 
-        obj0 = PyTuple_GetItem(item, 0);
-        obj1 = PyTuple_GetItem(item, 1);
+        PyObject *item = PyList_GetItem(tags, index++);
 
-        wrd = PyUnicode_AsUTF8String(obj0);
-        tag = PyUnicode_AsUTF8String(obj1);
+        // PyObject * obj0 = PyTuple_GetItem(item, 0);
+        PyObject *obj1 = PyTuple_GetItem(item, 1);
 
-        CWordPtr word = std::make_unique<CWord>();
-        word->SetText(PyString_AsString(wrd));
-        // word->SetPOSTag(PyString_AsString(tag));
-        corpus->AddWord(word);
+        // PyObject *wrd = PyUnicode_AsUTF8String(obj0);
+        PyObject *obj1str = PyUnicode_AsUTF8String(obj1);
+        std::string tag = PyString_AsString(obj1str);
 
-        Py_DECREF(wrd);
-        Py_DECREF(tag);
-        Py_DECREF(item);
+        CEntryList &entry_list = word->GetEntryList();
+        CEntryList::iterator it = entry_list.begin();
+        while (it != entry_list.end()) {
+            std::string pos1 = (*it)->GetPOS();
+            std::string pos2 = tag;
+            bool is_genitive = EndsWith(pos2, "e");
+
+            if (is_genitive) {
+                pos2 = RemoveLast(pos2);
+            }
+
+            if (!StartsWith(pos1, pos2)) {
+                if (entry_list.size() > 1) {
+                    entry_list.erase(it++);
+                } else {
+                    TIHU_WARNING(stderr, "Mismatched tags %s, %s\n", pos1.c_str(), pos2.c_str());
+                    (*it)->SetPOS(tag);
+                }
+            } else {
+                (*it)->SetIsGenitive(is_genitive);
+                ++it;
+            }
+        }
+
+        if (word->IsEmpty()) {
+            CEntryPtr entry = std::make_unique<CEntry>();
+            entry->SetPOS(tag);
+            word->AddEntry(entry);
+        }
     }
 
-    Py_DECREF(tags);
-    Py_DECREF(tokens);
+    corpus->Dump("hazm.xml");
 }

@@ -20,16 +20,36 @@
  *******************************************************************************/
 #include "settings.h"
 
-CSettings::CSettings() {
-    Pitch = 0;
-    Rate = 0;
-    Volume = 10;
+CSettings::CSettings() : Pitch(0), Rate(0), Volume(10), DebugMode(false) {}
+
+void CSettings::SetPitch(int pitch) {
+    Pitch = pitch; //
 }
 
-void CSettings::SetPitch(int pitch) { Pitch = pitch; }
-void CSettings::SetRate(int rate) { Rate = rate; }
-void CSettings::SetVolume(int volume) { Volume = volume; }
+void CSettings::SetRate(int rate) {
+    Rate = rate; //
+}
 
-int CSettings::GetPitch() const { return Pitch; }
-int CSettings::GetRate() const { return Rate; }
-int CSettings::GetVolume() const { return Volume; }
+void CSettings::SetVolume(int volume) {
+    Volume = volume; //
+}
+
+void CSettings::SetIsDebugMode(bool enable) {
+    DebugMode = enable;
+}
+
+int CSettings::GetPitch() const {
+    return Pitch; //
+}
+
+int CSettings::GetRate() const {
+    return Rate; //
+}
+
+int CSettings::GetVolume() const {
+    return Volume; //
+}
+
+bool CSettings::IsDebugMode() const {
+    return DebugMode; //
+}
