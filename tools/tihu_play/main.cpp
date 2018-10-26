@@ -21,7 +21,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "../src/tihu.h"
+#include "../../src/tihu.h"
 
 #ifdef WIN32
 #else
@@ -57,8 +57,7 @@ int main(int argc, char** argv)
     void* handle;
     TIHU_PROC_INIT tihu_Init;
     TIHU_PROC_CLOSE tihu_Close;
-    TIHU_PROC_SET_CALLBACK tihu_SetCallback;
-    TIHU_PROC_LOAD_VOICE tihu_LoadVoice;
+    TIHU_PROC_CALLBACK tihu_SetCallback;
     TIHU_PROC_SPEAK tihu_Speak;
     char* error;
 
@@ -70,14 +69,12 @@ int main(int argc, char** argv)
 
     tihu_Init = (TIHU_PROC_INIT)dlsym(handle, "tihu_Init");
     tihu_Close = (TIHU_PROC_CLOSE)dlsym(handle, "tihu_Close");
-    tihu_SetCallback = (TIHU_PROC_SET_CALLBACK)dlsym(handle, "tihu_SetCallback");
-    tihu_LoadVoice = (TIHU_PROC_LOAD_VOICE)dlsym(handle, "tihu_LoadVoice");
+    tihu_SetCallback = (TIHU_PROC_CALLBACK)dlsym(handle, "tihu_SetCallback");
     tihu_Speak = (TIHU_PROC_SPEAK)dlsym(handle, "tihu_Speak");
 
     if( tihu_Init == NULL ||
         tihu_Close == NULL ||
         tihu_SetCallback == NULL ||
-        tihu_LoadVoice == NULL ||
         tihu_Speak == NULL)  {
         printf("Error: Tihu module cannot load.\n");
         return 1;
@@ -91,9 +88,8 @@ int main(int argc, char** argv)
     FILE* fp = fopen(argv[3], "wb");
     fwrite(WAVE_HEADER_WAV, sizeof(WAVE_HEADER_WAV), 1, fp);
 
-    tihu_LoadVoice(TIHU_VOICE_MBROLA_MALE);
     tihu_SetCallback(cb, fp);
-    tihu_Speak(argv[2]);
+    tihu_Speak(argv[2], TIHU_VOICE_MBROLA_MALE);
     tihu_Close();
 
     int file_size	= ftell(fp);
