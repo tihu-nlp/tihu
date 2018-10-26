@@ -28,7 +28,7 @@
 
 #include "ui_tihu_console.h"
 
-#include "../src/tihu.h"
+#include "../../src/tihu.h"
 
 
 class TihuConsole : public QMainWindow

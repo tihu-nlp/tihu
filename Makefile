@@ -23,6 +23,9 @@ $(OBJSDIR)%.o: %.cpp
 clean:
 	rm -rf $(OBJSDIR)
 
+console:
+	cd tools/tihu_console && qmake && make
+
 play:
 	$(CC) tools/tihu_play/main.cpp -o ./build/tihu_play -L. -ldl
 
@@ -34,4 +37,4 @@ test:
 print-%  : ; @echo $* = $($*)
 
 
-.PHONY: all clean test
+.PHONY: all clean play console test

@@ -46,12 +46,12 @@ script:
   # remove unnecessary files
   - rm ./build/mbrola.dll
   # tihu dll
-  - cd ./tihu
   - make
-  - make test
-  - make install
+  #- make test
+  - make play
+  # - make console
   # tihu console => appimage
-  - cd ../tihu_console
+  - cd ./tools/tihu_console
   - qmake CONFIG+=release PREFIX=/usr
   - make -j$(nproc)
   - make INSTALL_ROOT=appdir -j$(nproc) install ; find appdir/
@@ -59,14 +59,15 @@ script:
   - chmod a+x linuxdeployqt-continuous-x86_64.AppImage
   - unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH
   - ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -appimage
-  - cd .. && tar -cvzf tihu-linux-x64.tar.gs ./build
+  - cp Tihu_console-x86_64.AppImage ../../build
+  - cd ../../build && tar -cvzf tihu-linux-x64.tar.gz *
 
 deploy:
   provider: releases
   api_key:
     secure: $GITHUB_OAUTH_TOKEN
   file:
-    - tihu-linux-x64.tar.gs
+    - tihu-linux-x64.tar.gz
   skip_cleanup: true
   on:
     tags: true
