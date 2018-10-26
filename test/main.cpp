@@ -118,8 +118,7 @@ int main(int argc, char **argv) {
         if (ext == ".txt") {
             std::string txt = read_file(p.path());
             std::string lbl1 = fs::path(p).replace_extension(".lbl");
-            //std::string lbl2 = std::tmpnam(nullptr); /// this line generates warning!
-            std::string lbl2 = "/tmp/text.lbl";
+            std::string lbl2 = "/tmp/" + fname + ".lbl";
 
             FILE *fp = fopen(lbl2.c_str(), "w");
 
