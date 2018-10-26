@@ -35,10 +35,9 @@ mkdir ./build/data/g2p-seq2seq-cmudict
 cp -r g2p-seq2seq-model-6.2-cmudict-nostress/* ./build/data/g2p-seq2seq-cmudict
 
 # compiling code
-cd src/tihu
 make
 make test
-make install
+make console
 ```
 
 **Tihu console**
