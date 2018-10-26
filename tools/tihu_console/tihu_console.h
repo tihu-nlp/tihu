@@ -59,7 +59,6 @@ private slots:
     void onNormalize();
     void onStop();
     void onOpenFile();
-    void onVoiceChange(QAction *action);
     void onFinishSpeaking();
 
 signals:
@@ -77,7 +76,6 @@ private:
     TIHU_PROC_SET_PARAM procSetParam;
     TIHU_PROC_GET_PARAM procGetParam;
     TIHU_PROC_CALLBACK procCallback;
-    TIHU_PROC_LOAD_VOICE procLoadVoice;
 
     QFuture<void> SpeakFuture;
 
@@ -86,6 +84,7 @@ private:
     QAudioOutput *m_audioOutput;
     QIODevice *m_output; // not owned
     QFile* m_rawAudio;
+    QMenu *m_voicesMenu;
 
     QActionGroup *actionGroup;
 };

@@ -35,12 +35,10 @@
 
 
 enum TIHU_ERROR {
-    TIHU_ERROR_NONE                 = 0,
-    TIHU_ERROR_LOAD_DATA               ,
-    TIHU_ERROR_LOAD_VOICE              ,
-    TIHU_ERROR_LOAD_USER_DIC           ,
-    TIHU_ERROR_LOAD_SETTING            ,
-    TIHU_ERROR_NO_PYTHON               ,
+    TIHU_ERR_NONE                 = 0,
+    TIHU_ERR_LOADING                 ,
+    TIHU_ERR_LOAD_USER_DIC           ,
+    TIHU_ERR_NO_PYTHON               ,
 };
 
 enum TIHU_PARAM {
@@ -70,6 +68,8 @@ enum TIHU_VOICE {
     TIHU_VOICE_MBROLA_FEMALE             ,
     TIHU_VOICE_ESPEAK_MALE               ,
     TIHU_VOICE_ESPEAK_FEMALE             ,
+
+    TIHU_VOICE_COUNT                     ,
 };
 
 typedef TIHU_CALLBACK_RETURN(*TIHU_CALLBACK)(TIHU_CALLBACK_MESSAGE message, long l_param, long w_param, void* user_data);
@@ -78,9 +78,8 @@ typedef TIHU_CALLBACK_RETURN(*TIHU_CALLBACK)(TIHU_CALLBACK_MESSAGE message, long
 typedef bool (*TIHU_PROC_INIT)();
 typedef void (*TIHU_PROC_CLOSE)();
 typedef void (*TIHU_PROC_CALLBACK)(TIHU_CALLBACK, void*);
-typedef void (*TIHU_PROC_LOAD_VOICE)(TIHU_VOICE);
 typedef void (*TIHU_PROC_TAG)(const char*);
-typedef void (*TIHU_PROC_SPEAK)(const char*);
+typedef void (*TIHU_PROC_SPEAK)(const char*, TIHU_VOICE);
 typedef void (*TIHU_PROC_STOP)();
 typedef bool (*TIHU_PROC_SET_PARAM)(TIHU_PARAM, int);
 typedef bool (*TIHU_PROC_GET_PARAM)(TIHU_PARAM, int &);
@@ -96,9 +95,8 @@ extern "C" {
 TIHU_FN_DECLARE bool         tihu_Init();
 TIHU_FN_DECLARE void         tihu_Close();
 TIHU_FN_DECLARE bool         tihu_LoadUserDic(const char* user_dic);
-TIHU_FN_DECLARE bool         tihu_LoadVoice(TIHU_VOICE voice);
 TIHU_FN_DECLARE void         tihu_Callback(TIHU_CALLBACK callback, void* user_data);
-TIHU_FN_DECLARE void         tihu_Speak(const char* text);
+TIHU_FN_DECLARE void         tihu_Speak(const char* text, TIHU_VOICE voice);
 TIHU_FN_DECLARE void         tihu_Tag(const char* text);
 TIHU_FN_DECLARE void         tihu_Stop();
 TIHU_FN_DECLARE bool         tihu_SetParam(TIHU_PARAM param, int value);

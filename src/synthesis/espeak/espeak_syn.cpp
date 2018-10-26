@@ -34,7 +34,7 @@ CeSpeakSyn::~CeSpeakSyn() {
 }
 
 bool CeSpeakSyn::Load(std::string param) {
-    if (!eSpeakLib.Initialize("./data/espeak")) {
+    if (!eSpeakLib.Initialize("./data")) {
         return false;
     }
 

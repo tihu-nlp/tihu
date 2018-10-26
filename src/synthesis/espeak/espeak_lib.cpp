@@ -95,7 +95,7 @@ bool CeSpeakLib::Initialize(const char* data_path)
     procInfo                = (ESPEAK_PROC_INFO) GetProcAddress(Module, "espeak_Info");
 #else
 
-    Module = dlopen("libespeak.so", RTLD_LAZY);
+    Module = dlopen("./libespeak.so", RTLD_LAZY);
 
     if(!Module) {
         fputs(dlerror(), stderr);

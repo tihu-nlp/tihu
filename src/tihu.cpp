@@ -27,7 +27,7 @@
 
 static CEngine *g_engine = nullptr;
 static int g_refcount = 0;
-static int g_errorcode = TIHU_ERROR_NONE;
+static int g_errorcode = TIHU_ERR_NONE;
 static std::mutex io_mutex;
 
 const char ERROR_STRING[][256] = {
@@ -46,7 +46,7 @@ TIHU_FN_DECLARE bool tihu_Init() {
         /// fix crazy error: undefined symbol: PyFloat_Type
         void *p = dlopen("libpython2.7.so", RTLD_LAZY | RTLD_GLOBAL);
         if (p == nullptr) {
-            g_errorcode = TIHU_ERROR_NO_PYTHON;
+            g_errorcode = TIHU_ERR_NO_PYTHON;
             return false;
         }
 
@@ -55,7 +55,7 @@ TIHU_FN_DECLARE bool tihu_Init() {
         g_engine = new CEngine();
         g_errorcode = g_engine->LoadModules();
 
-        if (g_errorcode != TIHU_ERROR_NONE) {
+        if (g_errorcode != TIHU_ERR_NONE) {
             delete g_engine;
             g_engine = nullptr;
 
@@ -68,40 +68,31 @@ TIHU_FN_DECLARE bool tihu_Init() {
     return true;
 }
 
-TIHU_FN_DECLARE bool tihu_LoadVoice(TIHU_VOICE voice) {
-    MUTEX_LOCK
-
-    g_errorcode = g_engine->LoadSynthesizer(voice);
-
-    if (g_errorcode != TIHU_ERROR_NONE) {
-        return false;
-    }
-
-    return true;
-}
-
 TIHU_FN_DECLARE void tihu_Close() {
     MUTEX_LOCK
 
     g_refcount--;
 
     if (g_refcount <= 0) {
-        delete g_engine;
-        g_engine = 0;
-        g_refcount = 0; /// to make sure it won't be negative
 
-        Py_Finalize();
+        if (g_engine != nullptr) {
+            delete g_engine;
+            g_engine = nullptr;
+            Py_Finalize();
+        }
+
+        g_refcount = 0; /// to make sure it won't be negative
     }
 }
 
-TIHU_FN_DECLARE void tihu_Speak(const char *text) {
+TIHU_FN_DECLARE void tihu_Speak(const char *text, TIHU_VOICE voice) {
     MUTEX_LOCK
 
     if (!g_engine) {
         return;
     }
 
-    g_engine->Speak(text);
+    g_engine->Speak(text, voice);
 }
 
 TIHU_FN_DECLARE void tihu_Tag(const char *text) {

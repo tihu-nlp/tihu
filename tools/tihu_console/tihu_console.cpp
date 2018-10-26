@@ -65,7 +65,6 @@ TihuConsole::TihuConsole(QWidget *parent, Qt::WindowFlags flags)
     procSetParam = 0;
     procGetParam = 0;
     procCallback = 0;
-    procLoadVoice = 0;
     m_audioOutput = 0;
     m_output = 0;
     m_rawAudio = 0;
@@ -96,15 +95,15 @@ TihuConsole::TihuConsole(QWidget *parent, Qt::WindowFlags flags)
     actionMbrolaFemale->setCheckable(true);
     actionEspeakMale->setCheckable(true);
     actionEspeakFemale->setCheckable(true);
-    actionMbrolaMale->setChecked(true);
 
-    QMenu *VoicesMenu = new QMenu(this);
-    VoicesMenu->addAction(actionMbrolaMale);
-    VoicesMenu->addAction(actionMbrolaFemale);
-    VoicesMenu->addAction(actionEspeakMale);
-    VoicesMenu->addAction(actionEspeakFemale);
+    m_voicesMenu = new QMenu(this);
+    m_voicesMenu->addAction(actionMbrolaMale);
+    m_voicesMenu->addAction(actionMbrolaFemale);
+    m_voicesMenu->addAction(actionEspeakMale);
+    m_voicesMenu->addAction(actionEspeakFemale);
 
-    ui.btnVoices->setMenu(VoicesMenu);
+
+    ui.btnVoices->setMenu(m_voicesMenu);
 
     connect(ui.btnLoad, SIGNAL(clicked()), this, SLOT(onLoad()));
     connect(ui.btnUnload, SIGNAL(clicked()), this, SLOT(onUnload()));
@@ -113,7 +112,7 @@ TihuConsole::TihuConsole(QWidget *parent, Qt::WindowFlags flags)
     connect(ui.btnStop, SIGNAL(clicked()), this, SLOT(onStop()));
     connect(ui.btnOpenFile, SIGNAL(clicked()), this, SLOT(onOpenFile()));
     connect(this, SIGNAL(AppendMessage(const QString &)), ui.txtMessages, SLOT(appendPlainText(const QString &)));
-    connect(actionGroup, SIGNAL(triggered(QAction*)), this, SLOT(onVoiceChange(QAction*)));
+
 
     ReadSettings();
     onUnload();
@@ -170,13 +169,12 @@ bool TihuConsole::LoadTihu(const QString& library)
 
     procInit = (TIHU_PROC_INIT)lib.resolve("tihu_Init");
     procClose = (TIHU_PROC_CLOSE)lib.resolve("tihu_Close");
-    procTag = (TIHU_PROC_SPEAK)lib.resolve("tihu_Tag");
+    procTag = (TIHU_PROC_TAG)lib.resolve("tihu_Tag");
     procSpeak = (TIHU_PROC_SPEAK)lib.resolve("tihu_Speak");
     procStop = (TIHU_PROC_STOP)lib.resolve("tihu_Stop");
     procSetParam = (TIHU_PROC_SET_PARAM)lib.resolve("tihu_SetParam");
     procGetParam = (TIHU_PROC_GET_PARAM)lib.resolve("tihu_GetParam");
     procCallback = (TIHU_PROC_CALLBACK)lib.resolve("tihu_Callback");
-    procLoadVoice = (TIHU_PROC_LOAD_VOICE)lib.resolve("tihu_LoadVoice");
 
 
     if( !procInit           ||
@@ -186,8 +184,7 @@ bool TihuConsole::LoadTihu(const QString& library)
         !procStop           ||
         !procSetParam       ||
         !procGetParam       ||
-        !procCallback    ||
-        !procLoadVoice      ) {
+        !procCallback       ) {
         lib.unload();
         return false;
     }
@@ -203,9 +200,7 @@ bool TihuConsole::LoadTihu(const QString& library)
 
     QSettings settings("Tihu", APP_NAME);
     settings.setValue("library_path", library);
-    TIHU_VOICE voice = (TIHU_VOICE)settings.value("default_voice").toInt();
 
-    procLoadVoice(voice);
     procCallback(callback, this);
 
     ///------------------------------------
@@ -235,7 +230,7 @@ bool TihuConsole::LoadTihu(const QString& library)
     if (!m_output) {
         QMessageBox::critical(this, "Tihu", "Can not initialize audio output");
     }
-    m_rawAudio = new QFile("./audio.raw");
+    m_rawAudio = new QFile("/tmp/tihu_audio.raw");
     m_rawAudio->open(QFile::WriteOnly);
 
     ui.splitter->setStretchFactor(0, 1);
@@ -252,13 +247,11 @@ void TihuConsole::closeEvent(QCloseEvent *event)
 
 void TihuConsole::onUnload()
 {
-    if(procClose)
-    {
+    if(procClose) {
         procClose();
     }
 
-    if(m_audioOutput)
-    {
+    if(m_audioOutput) {
         delete m_audioOutput;
         m_audioOutput = 0;
     }
@@ -323,7 +316,8 @@ void TihuConsole::Speak(const QString& text)
     connect(this, SIGNAL(SpeakingFinished()), this, SLOT(onFinishSpeaking()));
 
     std::string str = text.toStdString();
-    procSpeak(str.c_str());
+    TIHU_VOICE voice = (TIHU_VOICE)m_voicesMenu->activeAction()->data().toInt();
+    procSpeak(str.c_str(), voice);
 
     Q_EMIT SpeakingFinished();
 }
@@ -427,14 +421,3 @@ void TihuConsole::onFinishSpeaking()
     ui.btnStop->setEnabled(false);
 }
 
-void TihuConsole::onVoiceChange(QAction* action)
-{
-    TIHU_VOICE voice = (TIHU_VOICE)action->data().toInt();
-    procLoadVoice(voice);
-    procCallback(callback, this);
-
-    QSettings settings("Tihu", APP_NAME);
-    settings.setValue("default_voice", voice);
-
-    WriteSettings();
-}
