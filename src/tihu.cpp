@@ -145,7 +145,7 @@ TIHU_FN_DECLARE void tihu_Callback(TIHU_CALLBACK call_back, void *user_data) {
     g_engine->SetCallback(call_back, user_data);
 }
 
-TIHU_FN_DECLARE const char *tihu_GetVersion() { return "Version 0.1"; }
+TIHU_FN_DECLARE const char *tihu_GetVersion() { return "Version 0.2"; }
 
 TIHU_FN_DECLARE void tihu_DebugMode(bool enable) {
     if (!g_engine) {
