@@ -100,7 +100,6 @@ int CEngine::LoadModules() {
 }
 
 int CEngine::LoadSynthesizers() {
-
     Synthesizers[TIHU_VOICE_MBROLA_MALE] = new CMbrolaSyn();
     Synthesizers[TIHU_VOICE_MBROLA_FEMALE] = new CMbrolaSyn();
     Synthesizers[TIHU_VOICE_ESPEAK_MALE] = new CeSpeakSyn();
@@ -129,8 +128,11 @@ void CEngine::SetCallback(TIHU_CALLBACK callback, void *userData) {
     (Tokenizer) ? Tokenizer->SetCallBack((void *)callback, userData) : void();
     (TihuDict) ? TihuDict->SetCallBack((void *)callback, userData) : void();
     (Phonetics) ? Phonetics->SetCallBack((void *)callback, userData) : void();
-
     (Hazm) ? Hazm->SetCallBack((void *)callback, userData) : void();
+
+    for (int i = 0; i < TIHU_VOICE_COUNT; ++i) {
+        Synthesizers[i]->SetCallBack((void *)callback, userData);
+    }
 }
 
 void CEngine::Stop() {
@@ -157,7 +159,7 @@ void CEngine::Speak(const std::string &text, TIHU_VOICE voice) {
     parsers.push_back(Hazm);
     parsers.push_back(Phonetics);
     parsers.push_back(Synthesizers[voice]);
-
+    
     ParsText(text, parsers);
 }
 
