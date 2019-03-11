@@ -1,4 +1,3 @@
-
 language: cpp
 compiler: gcc
 sudo: require
@@ -26,41 +25,83 @@ install:
   - sudo pip install pip --upgrade
   - sudo pip install hazm
 
-
 # Build steps
 script:
-  # espeak data
+  ## espeak data
+  # NOTE: libespeak.so in build folder is compiled manualy (without portaudio).
   - curl -sLO http://sourceforge.net/projects/espeak/files/espeak/espeak-1.48/espeak-1.48.04-source.zip
   - unzip -qq espeak-1.48.04-source.zip
   - cp -r espeak-1.48.04-source/espeak-data ./build/data/
-  # g2p-seq2seq-tihudict
+
+  ## g2p-seq2seq-tihudict
   - curl -sLO https://github.com/tihu-nlp/tihudict/releases/download/v1.0/g2p-seq2seq-tihudict-model-1.0.tar.gz
-  - tar zxvf g2p-seq2seq-tihudict-model-1.0.tar.gz
+  - tar zxf g2p-seq2seq-tihudict-model-1.0.tar.gz
   - mkdir ./build/data/g2p-seq2seq-tihudict
   - cp -r g2p-seq2seq-tihudict/* ./build/data/g2p-seq2seq-tihudict
-  # g2p-seq2seq-model-6.2-cmudict
+
+  ## g2p-seq2seq-model-6.2-cmudict
   - curl -sLO https://sourceforge.net/projects/cmusphinx/files/G2P%20Models/g2p-seq2seq-model-6.2-cmudict-nostress.tar.gz
-  - tar zxvf g2p-seq2seq-model-6.2-cmudict-nostress.tar.gz
+  - tar zxf g2p-seq2seq-model-6.2-cmudict-nostress.tar.gz
   - mkdir ./build/data/g2p-seq2seq-cmudict
   - cp -r g2p-seq2seq-model-6.2-cmudict-nostress/* ./build/data/g2p-seq2seq-cmudict
-  # remove unnecessary files
+
+  ## download and install lame
+  - curl -sLO https://downloads.sourceforge.net/project/lame/lame/3.100/lame-3.100.tar.gz
+  - tar zxf lame-3.100.tar.gz
+  - cd lame-3.100
+  - ./configure
+  - make
+  - cd -
+
+  ## remove unnecessary files (windows)
   - rm ./build/mbrola.dll
-  # tihu dll
+
+  ## build Tihu
   - make
   #- make test
   - make play
   # - make console
-  # tihu console => appimage
+
+  ## tihu console => appimage
   - cd ./tools/tihu_console
   - qmake CONFIG+=release PREFIX=/usr
   - make -j$(nproc)
-  - make INSTALL_ROOT=appdir -j$(nproc) install ; find appdir/
-  - wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
-  - chmod a+x linuxdeployqt-continuous-x86_64.AppImage
-  - unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH
-  - ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -appimage
-  - cp Tihu_console-x86_64.AppImage ../../build
-  - cd ../../build && tar -cvzf tihu-linux-x64.tar.gz *
+  ### https://github.com/probonopd/linuxdeployqt/issues/338
+  #- sudo apt-get update
+  #- sudo apt-get -y install libgtk2.0-dev
+  #- git clone http://code.qt.io/qt/qtstyleplugins.git
+  #- cd qtstyleplugins
+  #- qmake # be sure to use the one from the Qt installation you are using for the application
+  #- make -j$(nproc)
+  #- sudo make install
+  #- cd -
+
+  ### https://github.com/probonopd/linuxdeployqt/issues/340
+  #- make INSTALL_ROOT=appdir -j$(nproc) install ; find appdir/
+  #- wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
+  #- chmod a+x linuxdeployqt-continuous-x86_64.AppImage
+  #- unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH
+  #- ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -appimage
+  #- ls
+  #- cp Tihu_console-*.AppImage ../../build
+  - cp tihu_console ../../build
+
+  ## tihu_server
+  - cd -
+  # installing gprc
+  # https://github.com/grpc/grpc/issues/15576
+  #- git clone --depth 1 https://github.com/grpc/grpc
+  #- cd grpc
+  #- git submodule update --init
+  #- make -DCMAKE_C_COMPILER=/usr/bin/clang -DCMAKE_CXX_COMPILER=/usr/bin/clang++
+  #- sudo make install
+  #- cd -
+  #- cd tools/grpc
+  #- make tihu_server
+  #- cp tihu_server ../../build
+
+  ## pack everything
+  - cd build && tar -czf tihu-linux-x64.tar.gz *
 
 deploy:
   provider: releases
