@@ -19,6 +19,7 @@
 *
 *******************************************************************************/
 #include <stdlib.h>
+#include <memory.h>
 #include <stdio.h>
 
 #include "../../src/tihu.h"
@@ -28,15 +29,79 @@
 #include <dlfcn.h>
 #endif
 
+#define WAVE_HDR_SIZE 44
 
-unsigned char WAVE_HEADER_WAV[44] = {
-    0x52, 0x49, 0x46, 0x46, 0x24, 0x76, 0x6B, 0x00,
-    0x57, 0x41, 0x56, 0x45, 0x66, 0x6D, 0x74, 0x20,
-    0x10, 0x00, 0x00, 0x00, 0x01, 0x00, 0x02, 0x00,
-    0x40, 0x1F, 0x00, 0x00, 0x00, 0x7D, 0x00, 0x00,
-    0x04, 0x00, 0x10, 0x00, 0x64, 0x61, 0x74, 0x61,
-    0x00, 0x00, 0x00, 0x00
+static const unsigned char wav_hdr[WAVE_HDR_SIZE] =
+{
+    'R', 'I', 'F', 'F',         /* Chunk ID : "RIFF" */
+    '\0', '\0', '\0', '\0',     /* Chunk size = file size - 8 */
+    'W', 'A', 'V', 'E',         /* Chunk format : "WAVE" */
+    'f', 'm', 't', ' ',         /*   Subchunk ID : "fmt " */
+    0x10, 0x00, 0x00, 0x00,     /*   Subchunk size : 16 for PCM format */
+    0x01, 0x00,                 /*     Audio format : 1 means PCM linear */
+    '\0', '\0',                 /*     Number of channels */
+    '\0', '\0', '\0', '\0',     /*     Sample rate */
+    '\0', '\0', '\0', '\0',     /*     Byte rate = SampleRate * NumChannels * BitsPerSample/8 */
+    '\0', '\0',                 /*     Blockalign = NumChannels * BitsPerSample/8 */
+    '\0', '\0',                 /*     Bitpersample */
+    'd', 'a', 't', 'a',         /*   Subchunk ID : "data" */
+    '\0', '\0', '\0', '\0'      /*   Subchunk size = NumSamples * NumChannels * BitsPerSample/8 */
 };
+
+void calc_wav_header(
+	unsigned char header[WAVE_HDR_SIZE],
+	unsigned char nb_channels, unsigned long sample_rate,
+    unsigned short bits_per_sample,
+    int data_size)
+{
+    int byte_rate;
+    int block_align;
+    if (bits_per_sample == 8)
+    {
+        byte_rate = nb_channels * sizeof(char) * sample_rate;
+        block_align = nb_channels * sizeof(char);
+    }
+    else
+    {
+        byte_rate = nb_channels * sizeof(short) * sample_rate;
+        block_align = nb_channels * sizeof(short);
+    }
+
+    //int data_size = voice_count;
+    int chunk_size = data_size + 36;
+
+    /* Copy the standard header */
+    memcpy(header, wav_hdr, WAVE_HDR_SIZE);
+    // Update wav header section
+    header[4] = (unsigned char)chunk_size;
+    header[5] = (unsigned char)(chunk_size >> 8);
+    header[6] = (unsigned char)(chunk_size >> 16);
+    header[7] = (unsigned char)(chunk_size >> 24);
+
+    header[22] = (unsigned char)nb_channels;
+    header[23] = 0; /* nb_channels is coded on 1 byte only */
+
+    header[24] = (unsigned char)sample_rate;
+    header[25] = (unsigned char)(sample_rate >> 8);
+    header[26] = (unsigned char)(sample_rate >> 16);
+    header[27] = (unsigned char)(sample_rate >> 24);
+
+    header[28] = (unsigned char)byte_rate;
+    header[29] = (unsigned char)(byte_rate >> 8);
+    header[30] = (unsigned char)(byte_rate >> 16);
+    header[31] = (unsigned char)(byte_rate >> 24);
+
+    header[32] = (unsigned char)block_align;
+    header[33] = (unsigned char)(block_align >> 8);
+
+    header[34] = (unsigned char)bits_per_sample;
+    header[35] = (unsigned char)(bits_per_sample >> 8);
+
+    header[40] = (unsigned char)data_size;
+    header[41] = (unsigned char)(data_size >> 8);
+    header[42] = (unsigned char)(data_size >> 16);
+    header[43] = (unsigned char)(data_size >> 24);
+}
 
 TIHU_CALLBACK_RETURN cb(TIHU_CALLBACK_MESSAGE message, long l_param, long w_param, void* user_data) {
     FILE* fp = (FILE*)user_data;
@@ -84,31 +149,24 @@ int main(int argc, char** argv)
         return 1;
     }
 
+
+    unsigned char wav_hdr_1[WAVE_HDR_SIZE];
     FILE* fp = fopen(argv[3], "wb");
-    fwrite(WAVE_HEADER_WAV, sizeof(WAVE_HEADER_WAV), 1, fp);
+    fwrite(wav_hdr_1, WAVE_HDR_SIZE, 1, fp);
 
     tihu_Callback(cb, fp);
     tihu_Speak(argv[2], TIHU_VOICE_MBROLA_MALE);
     tihu_Close();
 
-    int file_size	= ftell(fp);
-	int chunk_size	= file_size - 44;
-	int wave_size	= file_size - 8;
-    int format = 1;// pcm wave
+    int data_size = ftell(fp) - 44;
 
-	if(chunk_size % 4 != 0) {
-		chunk_size -= 2;
-	}
+    // mbrola male
+    calc_wav_header(wav_hdr_1, 1, 16000, 16, data_size);
+    // mbrola female
+    //calc_wav_header(wav_hdr_1, 1, 22050, 16, data_size);
 
-	fseek(fp, 20, SEEK_SET);
-	fwrite(&format, 2, 1, fp);
-
-	fseek(fp, 4, SEEK_SET);
-	fwrite(&wave_size, 4, 1, fp);
-
-	fseek(fp, 40, SEEK_SET);
-	fwrite(&chunk_size, 4, 1, fp);
-    fclose(fp);
+	fseek(fp, 0, SEEK_SET);
+	fwrite(wav_hdr_1, WAVE_HDR_SIZE, 1, fp);
 
     dlclose(handle);
     return 0;
