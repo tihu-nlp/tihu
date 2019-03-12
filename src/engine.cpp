@@ -125,13 +125,20 @@ int CEngine::LoadSynthesizers() {
 }
 
 void CEngine::SetCallback(TIHU_CALLBACK callback, void *userData) {
-    (Tokenizer) ? Tokenizer->SetCallBack((void *)callback, userData) : void();
-    (TihuDict) ? TihuDict->SetCallBack((void *)callback, userData) : void();
-    (Phonetics) ? Phonetics->SetCallBack((void *)callback, userData) : void();
-    (Hazm) ? Hazm->SetCallBack((void *)callback, userData) : void();
+    Callback = callback;
+    UserData = userData;
+
+    IParser::callback_t fn = [&](int t, long l, long w) {
+        return Callback((TIHU_CALLBACK_MESSAGE)t, l, w, UserData);
+    };
+
+    (Tokenizer) ? Tokenizer->SetCallback(fn) : void();
+    (TihuDict) ? TihuDict->SetCallback(fn) : void();
+    (Phonetics) ? Phonetics->SetCallback(fn) : void();
+    (Hazm) ? Hazm->SetCallback(fn) : void();
 
     for (int i = 0; i < TIHU_VOICE_COUNT; ++i) {
-        Synthesizers[i]->SetCallBack((void *)callback, userData);
+        Synthesizers[i]->SetCallback(fn);
     }
 }
 
@@ -149,7 +156,7 @@ void CEngine::Tag(const std::string &text) {
     parsers.push_back(Hazm);
     parsers.push_back(Phonetics);
 
-    ParsText(text, parsers);
+    ParsText(text, parsers, true);
 }
 
 void CEngine::Speak(const std::string &text, TIHU_VOICE voice) {
@@ -159,15 +166,16 @@ void CEngine::Speak(const std::string &text, TIHU_VOICE voice) {
     parsers.push_back(Hazm);
     parsers.push_back(Phonetics);
     parsers.push_back(Synthesizers[voice]);
-    
-    ParsText(text, parsers);
+
+    ParsText(text, parsers, true);
 }
 
 void CEngine::Diacritize(const std::string &text) {
     /// TODO::::
 }
 
-void CEngine::ParsText(const std::string &text, std::list<IParser *> parsers) {
+void CEngine::ParsText(const std::string &text, std::list<IParser *> parsers,
+                       bool report_tags) {
     std::stringstream ss(text);
     std::string line;
     int offset = 0;
@@ -178,10 +186,11 @@ void CEngine::ParsText(const std::string &text, std::list<IParser *> parsers) {
             parser->ParsText(&corpus);
         }
 
-        // TODO
-        // if (Settings->IsDebugMode()) {
-        parsers.back()->Message(corpus.ToTxt().c_str());
-        //}
+        if (report_tags) {
+            std::string tags = corpus.ToTxt();
+            Callback(TIHU_TEXT_TAGS, (long)tags.c_str(), tags.length(),
+                     UserData);
+        }
 
         offset += line.length();
     }

@@ -26,23 +26,21 @@
 
 IParser::IParser() {
     Callback = nullptr;
-    UserData = nullptr;
     Settings = nullptr;
 }
 
 IParser::~IParser() {}
 
-void IParser::SetCallBack(void *callback, void *userdata) {
-    Callback = callback;
-    UserData = userdata;
+void IParser::SetCallback(const callback_t& cb) {
+    Callback = cb;
 }
 
 void IParser::SetSettings(CSettings *settings) { Settings = settings; }
 
 void IParser::Message(const char *message) const {
     if (Callback) {
-        reinterpret_cast<TIHU_CALLBACK>(Callback)(
-            TIHU_TEXT_MESSAGE, (long)message, strlen(message) - 1, UserData);
+        (Callback)(
+            TIHU_TEXT_MESSAGE, (long)message, strlen(message) - 1);
     }
 }
 
@@ -56,9 +54,5 @@ void IParser::MessageF(const char *message, ...) const {
     va_end(arglist);
 
     ////wcscat(temp, L"\r\n");
-
-    if (Callback) {
-        reinterpret_cast<TIHU_CALLBACK>(Callback)(TIHU_TEXT_MESSAGE, (long)temp,
-                                                  strlen(temp) - 1, UserData);
-    }
+    Message(temp);
 }

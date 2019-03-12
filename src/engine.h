@@ -51,7 +51,8 @@ class CEngine {
 
   private:
     int LoadSynthesizers();
-    void ParsText(const std::string &text, std::list<IParser *> parsers);
+    void ParsText(const std::string &text, std::list<IParser *> parsers,
+                  bool report_tags);
     void LogText(const std::string &text) const;
 
     std::string GetCurrentModulePath() const;
@@ -62,8 +63,9 @@ class CEngine {
     IParser *Phonetics;
     IParser *Tokenizer;
     ISynthesizer *Synthesizers[TIHU_VOICE_COUNT];
-
     CSettings *Settings;
+    TIHU_CALLBACK Callback;
+    void *UserData;
 };
 
 #endif

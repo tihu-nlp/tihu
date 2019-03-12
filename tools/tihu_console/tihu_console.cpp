@@ -42,7 +42,8 @@ TIHU_CALLBACK_RETURN callback(TIHU_CALLBACK_MESSAGE Message, long lParam, long w
         consol->WriteAudioBuffer((char*)lParam, (int)wParam);
     }break;
 
-    case TIHU_TEXT_MESSAGE: {
+    case TIHU_TEXT_TAGS:
+    case TIHU_TEXT_MESSAGE:{
         consol->ReportMessage((char*)lParam, wParam);
     }break;
 
@@ -55,8 +56,7 @@ TIHU_CALLBACK_RETURN callback(TIHU_CALLBACK_MESSAGE Message, long lParam, long w
 
 TihuConsole::TihuConsole(QWidget *parent, Qt::WindowFlags flags)
     : QMainWindow(parent, flags)
-    , m_device(QAudioDeviceInfo::defaultInputDevice())
-{
+    , m_device(QAudioDeviceInfo::defaultInputDevice()) {
     procInit = 0;
     procClose = 0;
     procTag = 0;
@@ -100,14 +100,12 @@ TihuConsole::TihuConsole(QWidget *parent, Qt::WindowFlags flags)
         LoadTihu(path);
 }
 
-TihuConsole::~TihuConsole()
-{
+TihuConsole::~TihuConsole() {
     onStop();
     onUnload();
 }
 
-void TihuConsole::onLoad()
-{
+void TihuConsole::onLoad() {
     QString path = QFileDialog::getOpenFileName(this, tr("Open Tihu Library"), "",
 #ifdef _WIN32
     "*.dll;;*"
@@ -119,15 +117,13 @@ void TihuConsole::onLoad()
     if(path.isEmpty())
         return;
 
-    if(!LoadTihu(path))
-    {
+    if(!LoadTihu(path)) {
         QMessageBox::critical(this, "Tihu", "Can not load tihu.");
         return;
     }
 }
 
-bool TihuConsole::LoadTihu(const QString& library)
-{
+bool TihuConsole::LoadTihu(const QString& library) {
     onUnload();
 
     /// set currect directory to load required dlls.
@@ -195,8 +191,7 @@ bool TihuConsole::LoadTihu(const QString& library)
     m_format.setSampleType(QAudioFormat::SignedInt);
 
     QAudioDeviceInfo info(m_device);
-    if (!info.isFormatSupported(m_format))
-    {
+    if (!info.isFormatSupported(m_format)) {
         qWarning() << "Default format not supported - trying to use nearest";
         //m_format = info.nearestFormat(m_format);
     }
@@ -215,14 +210,12 @@ bool TihuConsole::LoadTihu(const QString& library)
     return true;
 }
 
-void TihuConsole::closeEvent(QCloseEvent *event)
-{
+void TihuConsole::closeEvent(QCloseEvent *event) {
     WriteSettings();
     event->accept();
 }
 
-void TihuConsole::onUnload()
-{
+void TihuConsole::onUnload() {
     if(procClose) {
         procClose();
     }
@@ -243,8 +236,7 @@ void TihuConsole::onUnload()
     ui.btnStop->setEnabled(false);
 }
 
-void TihuConsole::onStop()
-{
+void TihuConsole::onStop() {
     if(procStop)
         procStop();
 
@@ -254,8 +246,7 @@ void TihuConsole::onStop()
     ui.btnStop->setEnabled(false);
 }
 
-void TihuConsole::onSpeak()
-{
+void TihuConsole::onSpeak() {
     if (m_rawAudio) {
         m_rawAudio ->seek(0);
     }
@@ -271,13 +262,11 @@ void TihuConsole::onSpeak()
     WriteSettings();
 }
 
-void TihuConsole::onNormalize()
-{
+void TihuConsole::onNormalize() {
     AppendMessage("Sorry. Not implemented yet!");
 }
 
-void TihuConsole::onTag()
-{
+void TihuConsole::onTag() {
     ui.txtMessages->clear();
 
     QString text = ui.txtInput->toPlainText();
@@ -287,8 +276,7 @@ void TihuConsole::onTag()
     WriteSettings();
 }
 
-void TihuConsole::Speak(const QString& text)
-{
+void TihuConsole::Speak(const QString& text) {
     connect(this, SIGNAL(SpeakingFinished()), this, SLOT(onFinishSpeaking()));
 
     std::string str = text.toStdString();
@@ -299,8 +287,7 @@ void TihuConsole::Speak(const QString& text)
     Q_EMIT SpeakingFinished();
 }
 
-void TihuConsole::ReadSettings()
-{
+void TihuConsole::ReadSettings() {
     QSettings settings("Tihu", APP_NAME);
     settings.beginGroup("TihuConsole");
     QString text = settings.value("text").toString();
@@ -313,8 +300,7 @@ void TihuConsole::ReadSettings()
     restoreGeometry(geo_console);
 }
 
-void TihuConsole::WriteSettings()
-{
+void TihuConsole::WriteSettings() {
     QSettings settings("Tihu", APP_NAME);
 
     QString text = ui.txtInput->toPlainText();
@@ -327,8 +313,7 @@ void TihuConsole::WriteSettings()
     settings.endGroup();
 }
 
-void TihuConsole::onOpenFile()
-{
+void TihuConsole::onOpenFile() {
     const QString DEFAULT_DIR_KEY("default_dir_text_file");
 
     QSettings settings("Tihu", APP_NAME);
@@ -365,8 +350,7 @@ void TihuConsole::onOpenFile()
     ui.txtInput->setPlainText(text);
 }
 
-void TihuConsole::WriteAudioBuffer(char* buffer, int length)
-{
+void TihuConsole::WriteAudioBuffer(char* buffer, int length) {
     if(!m_output) {
         qWarning() << "no output io.";
         return;
@@ -385,15 +369,13 @@ void TihuConsole::WriteAudioBuffer(char* buffer, int length)
     }
 }
 
-void TihuConsole::ReportMessage(char* message, int length)
-{
+void TihuConsole::ReportMessage(char* message, int length) {
     QString qmessage = QString::fromUtf8(message, length);
 
     emit AppendMessage(qmessage);
 }
 
-void TihuConsole::onFinishSpeaking()
-{
+void TihuConsole::onFinishSpeaking() {
     ui.btnSpeak->setEnabled(true);
     ui.btnStop->setEnabled(false);
 }

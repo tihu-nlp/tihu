@@ -27,24 +27,27 @@
 #include "helper.h"
 #include "settings.h"
 
+#include <functional>
+
 class IParser {
   public:
+    typedef std::function<int(int,long,long)> callback_t;
+
     IParser();
     virtual ~IParser();
 
     virtual bool Load(std::string param = "") = 0;
     virtual void ParsText(CCorpus *corpus) = 0;
-
-    virtual void SetCallBack(void *callback, void *userdata);
     virtual void SetSettings(CSettings *settings);
+    virtual void SetCallback(const callback_t& cb);
 
+protected:
     void Message(const char *message) const;
     void MessageF(const char *message, ...) const;
 
   protected:
     CSettings *Settings;
-    void *Callback;
-    void *UserData;
+    callback_t Callback;
 };
 
 #endif

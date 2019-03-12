@@ -42,7 +42,7 @@ class CHazm : public IParser {
     PyObject *HazmObj;
     PyObject *TaggerObj;
     PyObject *NormalizerObj;
-    PyObject *TokenzierFunc;
+    PyObject *TokenizerFunc;
     PyObject *NormalizeFunc;
     PyObject *TagFunc;
 };

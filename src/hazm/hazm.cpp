@@ -26,7 +26,7 @@ CHazm::CHazm() {
     HazmObj = nullptr;
     TaggerObj = nullptr;
     NormalizerObj = nullptr;
-    TokenzierFunc = nullptr;
+    TokenizerFunc = nullptr;
     NormalizeFunc = nullptr;
     TagFunc = nullptr;
 }
@@ -38,8 +38,8 @@ CHazm::~CHazm() {
         Py_DecRef(TaggerObj);
     if (NormalizerObj)
         Py_DecRef(NormalizerObj);
-    if (TokenzierFunc)
-        Py_DecRef(TokenzierFunc);
+    if (TokenizerFunc)
+        Py_DecRef(TokenizerFunc);
     if (NormalizeFunc)
         Py_DecRef(NormalizeFunc);
     if (TagFunc)
@@ -97,8 +97,8 @@ bool CHazm::Load(std::string param) {
         return false;
     }
 
-    TokenzierFunc = PyObject_GetAttrString(HazmObj, "word_tokenize");
-    if (!TokenzierFunc || !PyCallable_Check(TokenzierFunc)) {
+    TokenizerFunc = PyObject_GetAttrString(HazmObj, "word_tokenize");
+    if (!TokenizerFunc || !PyCallable_Check(TokenizerFunc)) {
         PyErr_Print();
         return false;
     }

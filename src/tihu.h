@@ -58,8 +58,9 @@ enum TIHU_CALLBACK_RETURN {
 enum TIHU_CALLBACK_MESSAGE {
     TIHU_WAVE_BUFFER                  = 0,
     TIHU_TEXT_MESSAGE                    ,
-    TIHU_EVENT_WORD_BOUNDRY              ,
-    TIHU_EVENT_SENTENCE_BOUNDRY          ,
+    TIHU_TEXT_TAGS                       ,
+    TIHU_EVENT_WORD_BOUNDARY             ,
+    TIHU_EVENT_SENTENCE_BOUNDARY         ,
     TIHU_EVENT_BOOKMARK                  ,
 };
 
