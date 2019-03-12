@@ -75,35 +75,11 @@ TihuConsole::TihuConsole(QWidget *parent, Qt::WindowFlags flags)
     ///ui.txtMessages->setAlignment(Qt::AlignRight);
     ///
 
-    actionGroup = new QActionGroup(this);
-    QAction* actionMbrolaMale = new QAction("Mbrola Male", this);
-    QAction* actionMbrolaFemale = new QAction("Mbrola Female", this);
-    QAction* actionEspeakMale = new QAction("Espeak Male", this);
-    QAction* actionEspeakFemale = new QAction("Espeak Female", this);
-
-    actionMbrolaMale->setData(TIHU_VOICE_MBROLA_MALE);
-    actionMbrolaFemale->setData(TIHU_VOICE_MBROLA_FEMALE);
-    actionEspeakMale->setData(TIHU_VOICE_ESPEAK_MALE);
-    actionEspeakFemale->setData(TIHU_VOICE_ESPEAK_FEMALE);
-
-    actionGroup->addAction(actionMbrolaMale);
-    actionGroup->addAction(actionMbrolaFemale);
-    actionGroup->addAction(actionEspeakMale);
-    actionGroup->addAction(actionEspeakFemale);
-
-    actionMbrolaMale->setCheckable(true);
-    actionMbrolaFemale->setCheckable(true);
-    actionEspeakMale->setCheckable(true);
-    actionEspeakFemale->setCheckable(true);
-
-    m_voicesMenu = new QMenu(this);
-    m_voicesMenu->addAction(actionMbrolaMale);
-    m_voicesMenu->addAction(actionMbrolaFemale);
-    m_voicesMenu->addAction(actionEspeakMale);
-    m_voicesMenu->addAction(actionEspeakFemale);
-
-
-    ui.btnVoices->setMenu(m_voicesMenu);
+    ui.cbVoice->addItem("Mbrola Male", TIHU_VOICE_MBROLA_MALE);
+    ui.cbVoice->addItem("Mbrola Female", TIHU_VOICE_MBROLA_FEMALE);
+    ui.cbVoice->addItem("Espeak Male", TIHU_VOICE_ESPEAK_MALE);
+    ui.cbVoice->addItem("Espeak Female", TIHU_VOICE_ESPEAK_FEMALE);
+    ui.cbVoice->setCurrentIndex(0);
 
     connect(ui.btnLoad, SIGNAL(clicked()), this, SLOT(onLoad()));
     connect(ui.btnUnload, SIGNAL(clicked()), this, SLOT(onUnload()));
@@ -316,7 +292,8 @@ void TihuConsole::Speak(const QString& text)
     connect(this, SIGNAL(SpeakingFinished()), this, SLOT(onFinishSpeaking()));
 
     std::string str = text.toStdString();
-    TIHU_VOICE voice = (TIHU_VOICE)m_voicesMenu->activeAction()->data().toInt();
+    TIHU_VOICE voice = (TIHU_VOICE)ui.cbVoice->currentData().toInt();
+
     procSpeak(str.c_str(), voice);
 
     Q_EMIT SpeakingFinished();

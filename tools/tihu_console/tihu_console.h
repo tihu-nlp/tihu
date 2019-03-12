@@ -84,9 +84,6 @@ private:
     QAudioOutput *m_audioOutput;
     QIODevice *m_output; // not owned
     QFile* m_rawAudio;
-    QMenu *m_voicesMenu;
-
-    QActionGroup *actionGroup;
 };
 
 #endif // TIHUCONSOL_H

@@ -135,27 +135,6 @@
             </property>
            </widget>
           </item>
-          <item>
-           <widget class="QPushButton" name="btnVoices">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>5</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="font">
-             <font>
-              <pointsize>1</pointsize>
-             </font>
-            </property>
-           </widget>
-          </item>
          </layout>
         </item>
         <item>
@@ -164,6 +143,9 @@
            <string>Stop</string>
           </property>
          </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="cbVoice"/>
         </item>
         <item>
          <spacer name="verticalSpacer_1">
