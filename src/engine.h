@@ -47,7 +47,7 @@ class CEngine {
     bool SetParam(TIHU_PARAM param, int value);
     bool GetParam(TIHU_PARAM param, int &value);
 
-    void DebugMode(bool enable);
+    void EnableDebugMode(bool enable);
 
   private:
     int LoadSynthesizers();

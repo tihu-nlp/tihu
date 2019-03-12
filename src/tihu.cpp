@@ -113,9 +113,9 @@ TIHU_FN_DECLARE void tihu_Stop() {
     g_engine->Stop();
 }
 
-TIHU_FN_DECLARE int tihu_GetLastError() { return g_errorcode; }
+TIHU_FN_DECLARE int tihu_LastError() { return g_errorcode; }
 
-TIHU_FN_DECLARE const char *tihu_GetErrorString(int error_code) {
+TIHU_FN_DECLARE const char *tihu_ErrorString(int error_code) {
     return ERROR_STRING[error_code];
 }
 
@@ -145,12 +145,12 @@ TIHU_FN_DECLARE void tihu_Callback(TIHU_CALLBACK call_back, void *user_data) {
     g_engine->SetCallback(call_back, user_data);
 }
 
-TIHU_FN_DECLARE const char *tihu_GetVersion() { return "Version 0.2"; }
+TIHU_FN_DECLARE const char *tihu_Version() { return "Version 0.2"; }
 
-TIHU_FN_DECLARE void tihu_DebugMode(bool enable) {
+TIHU_FN_DECLARE void tihu_EnableDebugMode(bool enable) {
     if (!g_engine) {
         return;
     }
 
-    g_engine->DebugMode(enable);
+    g_engine->EnableDebugMode(enable);
 }

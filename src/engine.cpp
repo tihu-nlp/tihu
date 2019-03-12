@@ -247,7 +247,7 @@ bool CEngine::GetParam(TIHU_PARAM param, int &value) {
     return true;
 }
 
-void CEngine::DebugMode(bool enable) { Settings->SetIsDebugMode(enable); }
+void CEngine::EnableDebugMode(bool enable) { Settings->SetIsDebugMode(enable); }
 
 void CEngine::LogText(const std::string &text) const {
     const std::locale utf8_locale =
