@@ -45,13 +45,13 @@ script:
   - mkdir ./build/data/g2p-seq2seq-cmudict
   - cp -r g2p-seq2seq-model-6.2-cmudict-nostress/* ./build/data/g2p-seq2seq-cmudict
 
-  ## download and install lame
-  - curl -sLO https://downloads.sourceforge.net/project/lame/lame/3.100/lame-3.100.tar.gz
-  - tar zxf lame-3.100.tar.gz
-  - cd lame-3.100
-  - ./configure
-  - make
-  - cd -
+  ### download and install lame
+  #- curl -sLO https://downloads.sourceforge.net/project/lame/lame/3.100/lame-3.100.tar.gz
+  #- tar zxf lame-3.100.tar.gz
+  #- cd lame-3.100
+  #- ./configure
+  #- make
+  #- cd -
 
   ## remove unnecessary files (windows)
   - rm ./build/mbrola.dll
@@ -89,19 +89,30 @@ script:
   ## tihu_server
   - cd -
   # installing gprc
-  # https://github.com/grpc/grpc/issues/15576
-  #- git clone --depth 1 https://github.com/grpc/grpc
-  #- cd grpc
-  #- git submodule update --init
-  #- make -DCMAKE_C_COMPILER=/usr/bin/clang -DCMAKE_CXX_COMPILER=/usr/bin/clang++
-  #- sudo make install
-  #- cd -
-  #- cd tools/grpc
-  #- make tihu_server
-  #- cp tihu_server ../../build
+  - git clone https://github.com/grpc/grpc
+  - cd grpc
+  - git checkout tags/v1.19.1
+  - git submodule update --init
+  - sed -i 's/-Werror/ /g' Makefile
+  - make
+  - sudo make install
+  # protoc
+  - cd third_party/protobuf
+  - sudo apt-get install autoconf automake libtool curl make g++ unzip
+  - git submodule update --init --recursive
+  - ./autogen.sh
+  - ./configure
+  - make
+  - sudo make install
+  - sudo ldconfig
+  # compile tihu_server
+  - cd ../../..
+  - cd tools/grpc
+  - make tihu_server
+  - cp tihu_server ../../build
 
   ## pack everything
-  - cd build && tar -czf tihu-linux-x64.tar.gz *
+  - cd ../../build && tar -czf tihu-linux-x64.tar.gz *
 
 deploy:
   provider: releases
