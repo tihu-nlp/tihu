@@ -42,31 +42,7 @@
 #include <stdint.h>
 #include <vector>
 
-#ifdef __ANDROID__
-#include <android/log.h>
-
-#define LOG_TAG "tihu_native_so"
-#define LOG_VERBOSE(...)                                                       \
-    __android_log_print(ANDROID_LOG_VERBOSE, LOG_TAG, __VA_ARGS__)
-#define LOG_DEBUG                                                              \
-    (...) __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__)
-#define LOG_INFO                                                               \
-    (...) __android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__)
-#define LOG_WARN                                                               \
-    (...) __android_log_print(ANDROID_LOG_WARN, LOG_TAG, __VA_ARGS__)
-#define LOG_ERROR                                                              \
-    (...) __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__)
-
-#else
-#define LOG_VERBOSE(...)
-#define LOG_DEBUG (...)
-#define LOG_INFO (...)
-#define LOG_WARN (...)
-#define LOG_ERROR (...)
-#endif
-
-#define TIHU_WARNING_ON
-
+//#define TIHU_WARNING_ON
 #ifdef TIHU_WARNING_ON
 #define TIHU_WARNING fprintf
 #else
