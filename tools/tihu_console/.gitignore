@@ -1,0 +1,6 @@
+build/
+*pro.usr
+.qmake.stash
+*.AppImage
+Makefile
+tihu_console
