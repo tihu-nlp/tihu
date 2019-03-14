@@ -84,10 +84,10 @@ typedef void (*TIHU_PROC_SPEAK)(const char*, TIHU_VOICE);
 typedef void (*TIHU_PROC_STOP)();
 typedef bool (*TIHU_PROC_SET_PARAM)(TIHU_PARAM, int);
 typedef bool (*TIHU_PROC_GET_PARAM)(TIHU_PARAM, int &);
-typedef int (*TIHU_PROC_GET_LAST_ERROR)();
-typedef const char* (*TIHU_PROC_GET_ERROR_STRING)(int);
-typedef const char* (*TIHU_PROC_GET_VERSION)();
-typedef void (*TIHU_PROC_DEBUG_MODE)(bool);
+typedef int (*TIHU_PROC_LAST_ERROR)();
+typedef const char* (*TIHU_PROC_ERROR_STRING)(int);
+typedef const char* (*TIHU_PROC_VERSION)();
+typedef void (*TIHU_PROC_ENABLE_DEBUG_MODE)(bool);
 
 #ifdef __cplusplus
 extern "C" {
@@ -102,10 +102,10 @@ TIHU_FN_DECLARE void         tihu_Tag(const char* text);
 TIHU_FN_DECLARE void         tihu_Stop();
 TIHU_FN_DECLARE bool         tihu_SetParam(TIHU_PARAM param, int value);
 TIHU_FN_DECLARE bool         tihu_GetParam(TIHU_PARAM param, int &value);
-TIHU_FN_DECLARE int          tihu_GetLastError();
-TIHU_FN_DECLARE const char*  tihu_GetErrorString(int error_code);
-TIHU_FN_DECLARE const char*  tihu_GetVersion();
-TIHU_FN_DECLARE void         tihu_DebugMode(bool enable);
+TIHU_FN_DECLARE int          tihu_LastError();
+TIHU_FN_DECLARE const char*  tihu_ErrorString(int error_code);
+TIHU_FN_DECLARE const char*  tihu_Version();
+TIHU_FN_DECLARE void         tihu_EnableDebugMode(bool enable);
 
 
 #ifdef __cplusplus
