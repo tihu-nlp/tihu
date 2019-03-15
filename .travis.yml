@@ -18,6 +18,7 @@ before_install:
   - g++ --versio
 
 install:
+  - sudo apt-get install openssl -y
   - sudo apt-get install gcc-7-multilib g++-7-multilib -y
   - sudo apt-get install qt510base qt510multimedia -y
   - source /opt/qt510/bin/qt510-env.sh
@@ -27,6 +28,13 @@ install:
 
 # Build steps
 script:
+  ## MBROLA
+  - git clone https://github.com/numediart/MBROLA
+  - cd MBROLA
+  - make
+  - cp Bin/mbrola ../build/
+  - cd ..
+
   ## espeak data
   # NOTE: libespeak.so in build folder is compiled manualy (without portaudio).
   - curl -sLO http://sourceforge.net/projects/espeak/files/espeak/espeak-1.48/espeak-1.48.04-source.zip
@@ -45,16 +53,13 @@ script:
   - mkdir ./build/data/g2p-seq2seq-cmudict
   - cp -r g2p-seq2seq-model-6.2-cmudict-nostress/* ./build/data/g2p-seq2seq-cmudict
 
-  ### download and install lame
+  ## download and install lame
   #- curl -sLO https://downloads.sourceforge.net/project/lame/lame/3.100/lame-3.100.tar.gz
   #- tar zxf lame-3.100.tar.gz
   #- cd lame-3.100
   #- ./configure
   #- make
   #- cd -
-
-  ## remove unnecessary files (windows)
-  - rm ./build/mbrola.dll
 
   ## build Tihu
   - make
@@ -66,7 +71,7 @@ script:
   - cd ./tools/tihu_console
   - qmake CONFIG+=release PREFIX=/usr
   - make -j$(nproc)
-  ### https://github.com/probonopd/linuxdeployqt/issues/338
+  ## https://github.com/probonopd/linuxdeployqt/issues/338
   #- sudo apt-get update
   #- sudo apt-get -y install libgtk2.0-dev
   #- git clone http://code.qt.io/qt/qtstyleplugins.git
@@ -76,7 +81,7 @@ script:
   #- sudo make install
   #- cd -
 
-  ### https://github.com/probonopd/linuxdeployqt/issues/340
+  ## https://github.com/probonopd/linuxdeployqt/issues/340
   #- make INSTALL_ROOT=appdir -j$(nproc) install ; find appdir/
   #- wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
   #- chmod a+x linuxdeployqt-continuous-x86_64.AppImage
@@ -110,6 +115,11 @@ script:
   - cd tools/grpc
   - make tihu_server
   - cp tihu_server ../../build
+  # to solve undefined_symbols (Unknown reason)
+  - cp /usr/local/lib/libgrpc++.so.1 ../../build
+  - cp /usr/local/lib/libgrpc++_reflection.so.1 ../../build
+  - cp /usr/local/lib/libgrpc.so.7 ../../build
+  - cp /usr/local/lib/libprotobuf.so.17 ../../build
 
   ## pack everything
   - cd ../../build && tar -czf tihu-linux-x64.tar.gz *

@@ -15,10 +15,16 @@ cd tihu
 # install hazm
 pip install hazm
 
+#compile MBROLA
+git clone https://github.com/numediart/MBROLA
+cd MBROLA
+make
+cp mbrola ./build/
+
 # espeak-data
 curl -sLO http://sourceforge.net/projects/espeak/files/espeak/espeak-1.48/espeak-1.48.04-source.zip
 unzip espeak-1.48.04-source.zip
-cp -r espeak-1.48.04-source/espeak-data src/build/data/
+cp -r espeak-1.48.04-source/espeak-data ./build/data/
 rm espeak-1.48.04-source.zip
 rm -rf espeak-1.48.04-source
 
@@ -30,13 +36,12 @@ cp -r g2p-seq2seq-tihudict/* ./build/data/g2p-seq2seq-tihudict
 
 # g2p-seq2seq-model-6.2-cmudict
 curl -sLO https://sourceforge.net/projects/cmusphinx/files/G2P%20Models/g2p-seq2seq-model-6.2-cmudict-nostress.tar.gz
-tar zxvf g2p-seq2seq-model-6.2-cmudict-nostress.tar.gz
+tar zxf g2p-seq2seq-model-6.2-cmudict-nostress.tar.gz
 mkdir ./build/data/g2p-seq2seq-cmudict
 cp -r g2p-seq2seq-model-6.2-cmudict-nostress/* ./build/data/g2p-seq2seq-cmudict
 
 # compiling code
 make
-make test
 make console
 ```
 
