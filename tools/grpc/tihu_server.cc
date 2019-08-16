@@ -95,7 +95,7 @@ class TihuServiceImpl final : public tihu::Tihu::Service {
                  ServerWriter<tihu::SpeakReply> *writer) override {
         log(request->text());
         tihu_Callback(tihu_cb, (void *)writer);
-        tihu_Speak(request->text().c_str(), TIHU_VOICE_MBROLA_FEMALE);
+        tihu_Speak(request->text().c_str(), (TIHU_VOICE)request->voice());
         writer->WriteLast(tihu::SpeakReply(), grpc::WriteOptions());
 
         return Status::OK;
