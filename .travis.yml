@@ -19,6 +19,7 @@ before_install:
 
 install:
   - sudo apt-get install openssl -y
+  - sudo apt-get install libsamplerate0-dev -y
   - sudo apt-get install gcc-7-multilib g++-7-multilib -y
   - sudo apt-get install qt510base qt510multimedia -y
   - source /opt/qt510/bin/qt510-env.sh
