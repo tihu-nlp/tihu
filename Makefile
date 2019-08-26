@@ -4,11 +4,11 @@ CC = g++
 OBJSDIR = obj/
 SRCS = $(wildcard src/*.cpp) $(wildcard src/*/*.cpp) $(wildcard src/*/*/*.cpp)
 OBJS = $(addprefix $(OBJSDIR),$(patsubst %.cpp,%.o,$(SRCS)))
-INC = `python2.7-config --includes` -Xlinker -export-dynamic
+INC = `python-config --includes` -Xlinker -export-dynamic
 ## for debugging
-##CXXFLAGS = -c -Wall -std=c++14 $(INC) -DDEBUG -g -fPIC
-CXXFLAGS = -c -fPIC -Wall -std=c++14 $(INC) -O3
-LDFLAGS = `python2.7-config --ldflags` -shared -Wl,-soname,$(TARGET)
+CXXFLAGS = -c -Wall -std=c++14 $(INC) -DDEBUG -g -fPIC
+##CXXFLAGS = -c -fPIC -Wall -std=c++14 $(INC) -O3
+LDFLAGS = `python-config --ldflags` -lsamplerate -shared -Wl,-soname,$(TARGET)
 
 
 all: $(TARGET)

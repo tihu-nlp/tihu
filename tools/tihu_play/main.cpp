@@ -112,6 +112,8 @@ TIHU_CALLBACK_RETURN cb(TIHU_CALLBACK_MESSAGE message, long l_param,
     if (message == TIHU_WAVE_BUFFER) {
         fwrite((char *)l_param, sizeof(char), w_param, fp);
     }
+
+    return TIHU_DATA_PROCESSED;
 }
 
 int main(int argc, char **argv) {
@@ -155,7 +157,7 @@ int main(int argc, char **argv) {
     fwrite(wav_hdr_1, WAVE_HDR_SIZE, 1, fp);
 
     tihu_Callback(cb, fp);
-    tihu_Speak(argv[2], TIHU_VOICE_MBROLA_FEMALE);
+    tihu_Speak(argv[2], TIHU_VOICE_MBROLA_MALE);
     tihu_Close();
 
     int data_size = ftell(fp) - 44;

@@ -23,7 +23,8 @@
 
 #pragma once
 
-#include "../../synthesizer.h"
+#include "mbrowrap.h"
+#include <string>
 
 class CMbrolaLib {
   public:
@@ -37,7 +38,7 @@ class CMbrolaLib {
     int Read(short *samples, int length);
 
     int GetLastError() const;
-    void GetLastErrorStr(char *buffer, int length) const;
+    void GetLastErrorStr(char *buffer, int length);
 
     void ApplyPitch(int pitch);
     void ApplyRate(int rate);
@@ -50,6 +51,7 @@ class CMbrolaLib {
     void Reset();
 
   private:
+    mbrowrap mbr;
 };
 
 #endif

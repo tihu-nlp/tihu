@@ -57,17 +57,19 @@ TIHU_CALLBACK_RETURN callback(TIHU_CALLBACK_MESSAGE Message, long lParam, long w
 TihuConsole::TihuConsole(QWidget *parent, Qt::WindowFlags flags)
     : QMainWindow(parent, flags)
     , m_device(QAudioDeviceInfo::defaultInputDevice()) {
-    procInit = 0;
-    procClose = 0;
-    procTag = 0;
-    procSpeak = 0;
-    procStop = 0;
-    procSetParam = 0;
-    procGetParam = 0;
-    procCallback = 0;
-    m_audioOutput = 0;
-    m_output = 0;
-    m_rawAudio = 0;
+    procInit = nullptr;
+    procClose = nullptr;
+    procTag = nullptr;
+    procSpeak = nullptr;
+    procStop = nullptr;
+    procSetParam = nullptr;
+    procGetParam = nullptr;
+    procCallback = nullptr;
+    procLastError = nullptr;
+    procErrorString = nullptr;
+    m_audioOutput = nullptr;
+    m_output = nullptr;
+    m_rawAudio = nullptr;
 
     ui.setupUi(this);
 
@@ -147,6 +149,8 @@ bool TihuConsole::LoadTihu(const QString& library) {
     procSetParam = (TIHU_PROC_SET_PARAM)lib.resolve("tihu_SetParam");
     procGetParam = (TIHU_PROC_GET_PARAM)lib.resolve("tihu_GetParam");
     procCallback = (TIHU_PROC_CALLBACK)lib.resolve("tihu_Callback");
+    procLastError = (TIHU_PROC_LAST_ERROR)lib.resolve("tihu_LastError");
+    procErrorString = (TIHU_PROC_ERROR_STRING)lib.resolve("tihu_ErrorString");
 
 
     if( !procInit           ||
@@ -156,7 +160,9 @@ bool TihuConsole::LoadTihu(const QString& library) {
         !procStop           ||
         !procSetParam       ||
         !procGetParam       ||
-        !procCallback       ) {
+        !procCallback       ||
+        !procLastError      ||
+        !procErrorString) {
         lib.unload();
         return false;
     }
@@ -164,7 +170,7 @@ bool TihuConsole::LoadTihu(const QString& library) {
     bool initialized = procInit();
 
     if(!initialized) {
-        qErrnoWarning("Tihu: load failed");
+        qErrnoWarning("Tihu: load failed: %s.\n", procErrorString(procLastError()));
 
         onUnload();
         return false;

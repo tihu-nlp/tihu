@@ -26,67 +26,8 @@
 #define DEFAULT_MBR_PITCH 1.0F
 #define DEFAULT_MBR_SPEED 1.0F
 
-#ifdef WIN32
-
-#include <windows.h>
-typedef void(WINAPI *PROCVV)();
-typedef void(WINAPI *PROCVI)(int);
-typedef void(WINAPI *PROCVF)(float);
-typedef int(WINAPI *PROCIV)();
-typedef int(WINAPI *PROCIC)(char *);
-typedef int(WINAPI *PROCISI)(short *, int);
-typedef char *(WINAPI *PROCVCI)(char *, int);
-
-PROCIC init_MBR;
-PROCIC write_MBR;
-PROCIV flush_MBR;
-PROCISI read_MBR;
-PROCVV close_MBR;
-PROCVV reset_MBR;
-PROCIV lastError_MBR;
-PROCVCI lastErrorStr_MBR;
-PROCVI setNoError_MBR;
-PROCIV getFreq_MBR;
-PROCVF setVolumeRatio_MBR;
-
-HINSTANCE hinstDllMBR = NULL;
-
-BOOL load_MBR(char *mbrola) {
-    if (hinstDllMBR != NULL) {
-        return TRUE; // already loaded
-    }
-
-    if ((hinstDllMBR = LoadLibraryA(mbrola)) == 0) {
-        return FALSE;
-    }
-    init_MBR = (PROCIC)GetProcAddress(hinstDllMBR, "init_MBR");
-    write_MBR = (PROCIC)GetProcAddress(hinstDllMBR, "write_MBR");
-    flush_MBR = (PROCIV)GetProcAddress(hinstDllMBR, "flush_MBR");
-    read_MBR = (PROCISI)GetProcAddress(hinstDllMBR, "read_MBR");
-    close_MBR = (PROCVV)GetProcAddress(hinstDllMBR, "close_MBR");
-    reset_MBR = (PROCVV)GetProcAddress(hinstDllMBR, "reset_MBR");
-    lastError_MBR = (PROCIV)GetProcAddress(hinstDllMBR, "lastError_MBR");
-    lastErrorStr_MBR = (PROCVCI)GetProcAddress(hinstDllMBR, "lastErrorStr_MBR");
-    setNoError_MBR = (PROCVI)GetProcAddress(hinstDllMBR, "setNoError_MBR");
-    setVolumeRatio_MBR =
-        (PROCVF)GetProcAddress(hinstDllMBR, "setVolumeRatio_MBR");
-    getFreq_MBR = (PROCIV)GetProcAddress(hinstDllMBR, "getFreq_MBR");
-
-    return TRUE;
-}
-
-void unload_MBR() {
-    if (hinstDllMBR) {
-        FreeLibrary(hinstDllMBR);
-        hinstDllMBR = NULL;
-    }
-}
-
-#else
-#define INCLUDE_MBROLA
 
 #include "mbrowrap.h"
-#endif
 
 CMbrolaLib::CMbrolaLib() {}
 
@@ -97,43 +38,28 @@ CMbrolaLib::~CMbrolaLib() {
 bool CMbrolaLib::Initialize(const std::string &data_path) {
     Finalize();
 
-#ifdef WIN32
-    if (load_MBR("mbrola.dll") == FALSE) { // load mbrola.dll
-        fprintf(stderr, "Can't load mbrola.dll\n");
-        return false;
-    }
-#endif
-
     // --- Load DataBase ---
-    if (init_MBR((char *)data_path.c_str()) < 0) {
+    if (mbr.init_MBR((char *)data_path.c_str()) < 0) {
         Finalize();
         return false;
     }
     // ---------------------
 
-    setNoError_MBR(1);
+    mbr.setNoError_MBR(1);
 
     return true;
 }
 
 void CMbrolaLib::Finalize() {
-#ifdef WIN32
-    unload_MBR();
-#else
-    close_MBR();
-#endif
+    mbr.close_MBR();
 }
 
 int CMbrolaLib::GetLastError() const {
-#ifdef WIN32
-    return lastError_MBR();
-#else
     return 0; ///
-#endif
 }
 
-void CMbrolaLib::GetLastErrorStr(char *buf, int length) const {
-    lastErrorStr_MBR(buf, length);
+void CMbrolaLib::GetLastErrorStr(char *buf, int length) {
+    mbr.lastErrorStr_MBR(buf, length);
 }
 
 void CMbrolaLib::ApplyPitch(int pitch_adjust) {
@@ -168,23 +94,23 @@ void CMbrolaLib::ApplyVolume(int volume_adjust) {
     // The volume range must be between 0.2 and 3.0
     float fVolume = (volume_adjust * 2.8F / 100) + 0.2F; //
 
-    setVolumeRatio_MBR(fVolume);
+    mbr.setVolumeRatio_MBR(fVolume);
 }
 
-int CMbrolaLib::GetFrequency() const { return getFreq_MBR(); }
+int CMbrolaLib::GetFrequency() const { return mbr.getFreq_MBR(); }
 
-void CMbrolaLib::Write(const std::string &mbr) {
-    write_MBR((char *)mbr.c_str());
+void CMbrolaLib::Write(const std::string &t) {
+    mbr.write_MBR(t.c_str());
 }
 
 int CMbrolaLib::Read(short *samples, int length) {
-    return read_MBR(samples, length);
+    return mbr.read_MBR(samples, length);
 }
 
-void CMbrolaLib::Flush() { flush_MBR(); }
+void CMbrolaLib::Flush() { mbr.flush_MBR(); }
 
 void CMbrolaLib::Clear() {
     /// Flush();
 }
 
-void CMbrolaLib::Reset() { reset_MBR(); }
+void CMbrolaLib::Reset() { mbr.reset_MBR(); }

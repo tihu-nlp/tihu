@@ -105,6 +105,10 @@ int CEngine::LoadSynthesizers() {
     Synthesizers[TIHU_VOICE_ESPEAK_MALE] = new CeSpeakSyn();
     Synthesizers[TIHU_VOICE_ESPEAK_FEMALE] = new CeSpeakSyn();
 
+    for (int i = 0; i < TIHU_VOICE_COUNT; ++i) {
+        Synthesizers[i]->SetSettings(Settings);
+    }
+
     if (!Synthesizers[TIHU_VOICE_MBROLA_MALE]->Load("mbrola/ir1")) {
         return TIHU_ERR_LOADING;
     }
@@ -234,8 +238,7 @@ bool CEngine::GetParam(TIHU_PARAM param, int &value) {
         value = Settings->GetRate();
         break;
     case TIHU_PARAM_FREQUENCY:
-        // TODO:
-        value = Synthesizers[TIHU_VOICE_MBROLA_MALE]->GetFrequency();
+        value = Settings->GetFrequency();
         break;
     case TIHU_PARAM_READ_PUNCS:
         // TODO

@@ -31,41 +31,13 @@
 
 #include "mbrowrap.h"
 #include "speech.h"
-/*
- * mbrola instance parameters
- */
 
-enum mbr_state {
-    MBR_INACTIVE = 0,
-    MBR_IDLE,
-    MBR_NEWDATA,
-    MBR_AUDIO,
-    MBR_WEDGED
-};
-
-static enum mbr_state mbr_state;
-
-static char* mbr_voice_path;
-static int mbr_cmd_fd, mbr_audio_fd, mbr_error_fd, mbr_proc_stat;
-static pid_t mbr_pid;
-static int mbr_samplerate;
-static float mbr_volume = 1.0;
-static char mbr_errorbuf[160];
-
-struct datablock {
-    struct datablock* next;
-    int done;
-    int size;
-    char buffer[1];  /* 1 or more, dynamically allocated */
-};
-
-static struct datablock* mbr_pending_data_head, *mbr_pending_data_tail;
 
 /*
  * Private support code.
  */
 
-static void log(const char* msg, ...)
+void log(const char* msg, ...)
 {
     va_list params;
 
@@ -76,7 +48,21 @@ static void log(const char* msg, ...)
     va_end(params);
 }
 
-static void err(const char* errmsg, ...)
+mbrowrap::mbrowrap() {
+    mbr_state = MBR_INACTIVE;
+    mbr_voice_path = nullptr;
+    mbr_cmd_fd = 0;
+    mbr_audio_fd = 0;
+    mbr_error_fd = 0;
+    mbr_proc_stat = 0;
+    mbr_pid = 0;
+    mbr_samplerate = 0;
+    mbr_volume = 1.0;
+    mbr_pending_data_head = 0;
+    mbr_pending_data_tail = 0;
+}
+
+void mbrowrap::err(const char* errmsg, ...)
 {
     va_list params;
 
@@ -86,7 +72,7 @@ static void err(const char* errmsg, ...)
     log("mbrowrap error: %s", mbr_errorbuf);
 }
 
-static int create_pipes(int p1[2], int p2[2], int p3[2])
+int mbrowrap::create_pipes(int p1[2], int p2[2], int p3[2])
 {
     int error;
 
@@ -112,7 +98,7 @@ static int create_pipes(int p1[2], int p2[2], int p3[2])
     return -1;
 }
 
-static void close_pipes(int p1[2], int p2[2], int p3[2])
+void mbrowrap::close_pipes(int p1[2], int p2[2], int p3[2])
 {
     close(p1[0]);
     close(p1[1]);
@@ -122,7 +108,7 @@ static void close_pipes(int p1[2], int p2[2], int p3[2])
     close(p3[1]);
 }
 
-static int start_mbrola(const char* voice_path)
+int mbrowrap::start_mbrola(const char* voice_path)
 {
     int error, p_stdin[2], p_stdout[2], p_stderr[2];
     ssize_t written;
@@ -214,7 +200,7 @@ static int start_mbrola(const char* voice_path)
     return 0;
 }
 
-static void stop_mbrola(void)
+void mbrowrap::stop_mbrola(void)
 {
     if(mbr_state == MBR_INACTIVE) {
         return;
@@ -231,7 +217,7 @@ static void stop_mbrola(void)
     mbr_state = MBR_INACTIVE;
 }
 
-static void free_pending_data(void)
+void mbrowrap::free_pending_data(void)
 {
     struct datablock* p, *head = mbr_pending_data_head;
     while(head) {
@@ -243,7 +229,7 @@ static void free_pending_data(void)
     mbr_pending_data_tail = NULL;
 }
 
-static int mbrola_died(void)
+int mbrowrap::mbrola_died(void)
 {
     pid_t pid;
     int status, len;
@@ -283,7 +269,7 @@ static int mbrola_died(void)
     return -1;
 }
 
-static int mbrola_has_errors(void)
+int mbrowrap::mbrola_has_errors(void)
 {
     int result;
     char buffer[256];
@@ -330,7 +316,7 @@ static int mbrola_has_errors(void)
     }
 }
 
-static int send_to_mbrola(const char* cmd)
+int mbrowrap::send_to_mbrola(const char* cmd)
 {
     ssize_t result;
     int len;
@@ -375,7 +361,7 @@ static int send_to_mbrola(const char* cmd)
     return result;
 }
 
-static int mbrola_is_idle(void)
+int mbrowrap::mbrola_is_idle(void)
 {
     char* p;
     char buffer[20]; /* looking for "12345 (mbrola) S" so 20 is plenty*/
@@ -394,7 +380,7 @@ static int mbrola_is_idle(void)
     return (p[1] == ' ' && p[2] == 'S');
 }
 
-static ssize_t receive_from_mbrola(void* buffer, size_t bufsize)
+ssize_t mbrowrap::receive_from_mbrola(void* buffer, size_t bufsize)
 {
     int result, wait = 1;
     size_t cursize = 0;
@@ -495,7 +481,7 @@ static ssize_t receive_from_mbrola(void* buffer, size_t bufsize)
  * API functions.
  */
 
-int init_MBR(const char* voice_path)
+int mbrowrap::init_MBR(const char* voice_path)
 {
     int error, result;
     unsigned char wavhdr[45];
@@ -543,7 +529,7 @@ int init_MBR(const char* voice_path)
     return 0;
 }
 
-void close_MBR(void)
+void mbrowrap::close_MBR(void)
 {
     stop_mbrola();
     free_pending_data();
@@ -552,7 +538,7 @@ void close_MBR(void)
     mbr_volume = 1.0;
 }
 
-int reset_MBR()
+int mbrowrap::reset_MBR()
 {
     int result, success = 1;
     char dummybuf[4096];
@@ -583,7 +569,7 @@ int reset_MBR()
     return success;
 }
 
-int read_MBR(void* buffer, int nb_samples)
+int mbrowrap::read_MBR(void* buffer, int nb_samples)
 {
     int result = receive_from_mbrola(buffer, nb_samples * 2);
     if(result > 0) {
@@ -592,23 +578,23 @@ int read_MBR(void* buffer, int nb_samples)
     return result;
 }
 
-int write_MBR(const char* data)
+int mbrowrap::write_MBR(const char* data)
 {
     mbr_state = MBR_NEWDATA;
     return send_to_mbrola(data);
 }
 
-int flush_MBR(void)
+int mbrowrap::flush_MBR(void)
 {
     return send_to_mbrola("\n#\n") == 3;
 }
 
-int getFreq_MBR(void)
+int mbrowrap::getFreq_MBR(void) const
 {
     return mbr_samplerate;
 }
 
-void setVolumeRatio_MBR(float value)
+void mbrowrap::setVolumeRatio_MBR(float value)
 {
     if(value == mbr_volume) {
         return;
@@ -625,7 +611,7 @@ void setVolumeRatio_MBR(float value)
     init_MBR(mbr_voice_path);
 }
 
-int lastErrorStr_MBR(char* buffer, int bufsize)
+int mbrowrap::lastErrorStr_MBR(char* buffer, int bufsize)
 {
     int result;
     if(mbr_pid) {
@@ -635,7 +621,7 @@ int lastErrorStr_MBR(char* buffer, int bufsize)
     return result >= bufsize ? (bufsize - 1) : result;
 }
 
-void resetError_MBR(void)
+void mbrowrap::resetError_MBR(void)
 {
     mbr_errorbuf[0] = 0;
 }

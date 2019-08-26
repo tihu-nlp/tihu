@@ -32,10 +32,9 @@ static std::mutex io_mutex;
 
 const char ERROR_STRING[][256] = {
     "No Error.",
-    "Loading lexicon failed",
-    "Loading voice failed",
-    "Loading user lexicon failed",
-    "Loading settings failed",
+    "Error loading loading failed",
+    "Error loading user lexicon failed",
+    "Error loading python3.7",
 };
 #define MUTEX_LOCK std::lock_guard<std::mutex> lk(io_mutex);
 

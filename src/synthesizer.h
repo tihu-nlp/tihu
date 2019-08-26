@@ -25,6 +25,8 @@
 
 #include "parser.h"
 
+#include <samplerate.h>
+
 class ISynthesizer
     : public IParser
 {
@@ -40,9 +42,11 @@ protected:
     void FireEvents(const CWordPtr& word) const;
     bool PlaySamples(short* samples, int length) const;
 
+
 protected:
     bool IsStop;
     int  SampleCounter;
+    SRC_STATE* SRCState;
 };
 
 #endif

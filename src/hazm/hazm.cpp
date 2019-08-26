@@ -149,7 +149,7 @@ void CHazm::ParsText(CCorpus *corpus) {
 
         // PyObject *wrd = PyUnicode_AsUTF8String(obj0);
         PyObject *obj1str = PyUnicode_AsUTF8String(obj1);
-        std::string tag = PyString_AsString(obj1str);
+        std::string tag = PyBytes_AsString(obj1str);
 
         CEntryList &entry_list = word->GetEntryList();
         CEntryList::iterator it = entry_list.begin();
