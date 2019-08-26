@@ -274,32 +274,12 @@ void CEngine::LogText(const std::string &text) const {
 std::string CEngine::GetCurrentModulePath() const {
     std::string path;
 
-#ifdef WIN32
-    char buffer[_MAX_PATH];
-    buffer[0] = 0;
-
-    HMODULE module = NULL;
-    if (!GetModuleHandleExA(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS |
-                                GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
-                            "tihu.dll", &module)) {
-        int ret = GetLastError();
-        fprintf(stderr, "GetModuleHandle returned %d\n", ret);
-        return path;
-    }
-
-    if (!GetModuleFileNameA(module, buffer, _MAX_PATH)) {
-        return path;
-    }
-
-    path = buffer;
-#else
     Dl_info dl_info;
     if (!dladdr((void *)tihu_Init, &dl_info)) {
         return path;
     }
 
     path = dl_info.dli_fname;
-#endif
 
     size_t found = path.find_last_of("/\\");
 

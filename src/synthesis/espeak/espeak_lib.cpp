@@ -22,12 +22,10 @@
 #include "../../helper.h"
 
 #include <cstring>
-
-#ifndef WIN32
 #include <stdlib.h>
 #include <stdio.h>
 #include <dlfcn.h>
-#endif
+
 
 CeSpeakLib::CeSpeakLib()
 {
@@ -65,35 +63,6 @@ CeSpeakLib::~CeSpeakLib()
 bool CeSpeakLib::Initialize(const char* data_path)
 {
     Finalize();
-#ifdef WIN32
-    Module = LoadLibraryA("espeak.dll");
-
-    if(!Module) {
-        return false;
-    }
-
-    procInitialize          = (ESPEAK_PROC_INITIALIZE) GetProcAddress(Module, "espeak_Initialize");
-    procSetSynthCallback    = (ESPEAK_PROC_SETSYNTHCALLBACK) GetProcAddress(Module, "espeak_SetSynthCallback");
-    procSetUriCallback      = (ESPEAK_PROC_SETURICALLBACK) GetProcAddress(Module, "espeak_SetUriCallback");
-    procSynth               = (ESPEAK_PROC_SYNTH) GetProcAddress(Module, "espeak_Synth");
-    procSynth_Mark          = (ESPEAK_PROC_SYNTH_MARK) GetProcAddress(Module, "espeak_Synth_Mark");
-    procKey                 = (ESPEAK_PROC_KEY) GetProcAddress(Module, "espeak_Key");
-    procChar                = (ESPEAK_PROC_CHAR) GetProcAddress(Module, "espeak_Char");
-    procSetParameter        = (ESPEAK_PROC_SETPARAMETER) GetProcAddress(Module, "espeak_SetParameter");
-    procGetParameter        = (ESPEAK_PROC_GETPARAMETER) GetProcAddress(Module, "espeak_GetParameter");
-    procSetPunctuationList  = (ESPEAK_PROC_SETPUNCTUATIONLIST) GetProcAddress(Module, "espeak_SetPunctuationList");
-    procSetPhonemeTrace     = (ESPEAK_PROC_SETPHONEMETRACE) GetProcAddress(Module, "espeak_SetPhonemeTrace");
-    procCompileDictionary   = (ESPEAK_PROC_COMPILEDICTIONARY) GetProcAddress(Module, "espeak_CompileDictionary");
-    procListVoices          = (ESPEAK_PROC_LISTVOICES) GetProcAddress(Module, "espeak_ListVoices");
-    procSetVoiceByName      = (ESPEAK_PROC_SETVOICEBYNAME) GetProcAddress(Module, "espeak_SetVoiceByName");
-    procSetVoiceByProperties= (ESPEAK_PROC_SETVOICEBYPROPERTIES) GetProcAddress(Module, "espeak_SetVoiceByProperties");
-    procGetCurrentVoice     = (ESPEAK_PROC_GETCURRENTVOICE) GetProcAddress(Module, "espeak_GetCurrentVoice");
-    procCancel              = (ESPEAK_PROC_CANCEL) GetProcAddress(Module, "espeak_Cancel");
-    procIsPlaying           = (ESPEAK_PROC_ISPLAYING) GetProcAddress(Module, "espeak_IsPlaying");
-    procSynchronize         = (ESPEAK_PROC_SYNCHRONIZE) GetProcAddress(Module, "espeak_Synchronize");
-    procTerminate           = (ESPEAK_PROC_TERMINATE) GetProcAddress(Module, "espeak_Terminate");
-    procInfo                = (ESPEAK_PROC_INFO) GetProcAddress(Module, "espeak_Info");
-#else
 
     Module = dlopen("./libespeak.so", RTLD_LAZY);
 
@@ -123,10 +92,6 @@ bool CeSpeakLib::Initialize(const char* data_path)
     procSynchronize         = (ESPEAK_PROC_SYNCHRONIZE) dlsym(Module, "espeak_Synchronize");
     procTerminate           = (ESPEAK_PROC_TERMINATE) dlsym(Module, "espeak_Terminate");
     procInfo                = (ESPEAK_PROC_INFO) dlsym(Module, "espeak_Info");
-#endif
-
-
-
 
     if(!procInitialize             ||
        !procInitialize             ||
@@ -167,12 +132,8 @@ void CeSpeakLib::Finalize()
 {
     if(Module) {
         procTerminate();
-#ifdef WIN32
-        FreeLibrary(Module);
-#else
         dlclose(Module);
-#endif
-        Module =  nullptr;
+        Module = nullptr;
     }
 }
 

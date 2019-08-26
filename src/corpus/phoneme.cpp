@@ -158,11 +158,7 @@ std::string CPhoneme::GetMbrolString() {
     // /*terminator arg*/);
 
     static char temp[1024];
-#ifdef WIN32
-    _snprintf
-#else
     snprintf
-#endif
         (temp, 1024, "%s%s %d \n", (PrevVoweled) ? "? 50 \n" : "",
          PhonemeTable[PhonemeIndex].MbrName,
          PhonemeTable[PhonemeIndex].Duration);

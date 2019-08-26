@@ -108,13 +108,7 @@ TihuConsole::~TihuConsole() {
 }
 
 void TihuConsole::onLoad() {
-    QString path = QFileDialog::getOpenFileName(this, tr("Open Tihu Library"), "",
-#ifdef _WIN32
-    "*.dll;;*"
-#else
-    "*.so;;*"
-#endif
-    );
+    QString path = QFileDialog::getOpenFileName(this, tr("Open Tihu Library"), "", "*.so;;*");
 
     if(path.isEmpty())
         return;

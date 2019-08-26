@@ -21,13 +21,9 @@
 #include <memory.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <dlfcn.h>
 
 #include "../../src/tihu.h"
-
-#ifdef WIN32
-#else
-#include <dlfcn.h>
-#endif
 
 #define WAVE_HDR_SIZE 44
 

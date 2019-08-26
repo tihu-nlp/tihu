@@ -28,12 +28,7 @@
 #include <stdio.h>
 #include <stddef.h>
 
-#ifdef __WIN32__
-#define ESPEAK_API __declspec(dllexport)
-#else
 #define ESPEAK_API
-#endif
-
 #define ESPEAK_API_REVISION  9
 /*
 Revision 2

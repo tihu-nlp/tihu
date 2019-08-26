@@ -23,16 +23,7 @@
 
 #pragma once
 
-#ifdef WIN32
-#ifdef TIHU_EXPORTS
-#define TIHU_FN_DECLARE __declspec(dllexport)
-#else
-#define TIHU_FN_DECLARE __declspec(dllimport)
-#endif
-#else
 #define TIHU_FN_DECLARE
-#endif
-
 
 enum TIHU_ERROR {
     TIHU_ERR_NONE                 = 0,

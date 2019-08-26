@@ -27,10 +27,6 @@
 
 #include <string>
 
-#ifdef WIN32
-#include <windows.h>
-#endif
-
 typedef int (*ESPEAK_PROC_INITIALIZE)(espeak_AUDIO_OUTPUT output, int buflength, const char* path, int options);
 typedef void (*ESPEAK_PROC_SETSYNTHCALLBACK)(t_espeak_callback* SynthCallback);
 typedef void (*ESPEAK_PROC_SETSYNTHCALLBACK)(t_espeak_callback* SynthCallback);
@@ -55,9 +51,6 @@ typedef espeak_ERROR(*ESPEAK_PROC_TERMINATE)(void);
 typedef const char*             (*ESPEAK_PROC_INFO)(const char** path_data);
 
 
-
-
-
 class CeSpeakLib
 {
 public:
@@ -78,11 +71,7 @@ public:
 protected:
 
 private:
-#ifdef WIN32
-    HINSTANCE   Module;
-#else
     void*       Module;
-#endif
 
     ESPEAK_PROC_INITIALIZE               procInitialize;
     ESPEAK_PROC_SETSYNTHCALLBACK         procSetSynthCallback;
