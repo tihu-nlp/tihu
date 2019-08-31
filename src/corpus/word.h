@@ -52,7 +52,7 @@ class CWord {
     bool IsEndOfParagraph() const;
     bool IsEndOfSentence() const;
     bool IsPersianWord() const;
-    bool IsEnglishWord() const;
+    bool IsNonPersianWord() const;
     bool IsPunctuation() const;
     bool IsNumber() const;
     bool IsEmpty() const;

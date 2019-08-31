@@ -18,31 +18,25 @@
  *    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
  *
  *******************************************************************************/
-#include "word_to_phonetic.h"
+#include "phonetics.h"
 
-CWordToPhonetic::CWordToPhonetic() {}
+CPhonetics::CPhonetics() {}
 
-CWordToPhonetic::~CWordToPhonetic() {}
+CPhonetics::~CPhonetics() {}
 
-bool CWordToPhonetic::Load(std::string param) {
-    if (!PersianToPhoneme.LoadModel("./data/g2p-seq2seq-tihudict")) {
+bool CPhonetics::Load(std::string param) {
+    if (!Word2Phoneme.LoadModel("./data/g2p-seq2seq-tihudict")) {
         return false;
     }
 
-    /*
-    if(!EnglishToPhoneme.LoadModel("./data/g2p-seq2seq-cmudict")) {
-        return false;
-    }
-    */
-
-    if (!PunctuationToPhoneme.Load("data/punctuations.txt")) {
+    if (!Punctuation2Phoneme.Load("data/punctuations.txt")) {
         return false;
     }
 
     return true;
 }
 
-void CWordToPhonetic::ParsText(CCorpus *corpus) {
+void CPhonetics::ParsText(CCorpus *corpus) {
     CWordList &word_list = corpus->GetWordList();
     for (auto &word : word_list) {
         auto &entry = word->GetBestEntry();
@@ -52,17 +46,14 @@ void CWordToPhonetic::ParsText(CCorpus *corpus) {
 
             if (word->IsPersianWord()) {
                 ///
-                pron = PersianToPhoneme.Convert(word->GetText());
+                pron = Word2Phoneme.Convert(word->GetText());
                 word->SetIsAutoPhonetics(true);
-            } else if (word->IsEnglishWord()) {
-                //
-                pron = EnglishToPhoneme.Convert(word->GetText());
             } else if (word->IsNumber()) {
                 ///
-                pron = NumberToPhoneme.Convert(word->GetText());
+                pron = Number2Phoneme.Convert(word->GetText());
             } else if (word->IsPunctuation()) {
                 ///
-                pron = PunctuationToPhoneme.Convert(word->GetText());
+                pron = Punctuation2Phoneme.Convert(word->GetText());
             }
 
             entry->SetPron(pron);

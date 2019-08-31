@@ -36,37 +36,29 @@ public:
                    CPfxEntry* pfx,
                    const FLAG needflag, CWordPtr &word);
 
-    inline FLAG GetFlag() const
-    {
+    inline FLAG GetFlag() const {
         return Flag;
     }
-    inline const char* GetKey() const
-    {
+    inline const char* GetKey() const {
         return rAppnd.c_str();
     }
-    inline CSfxEntry* GetNext() const
-    {
+    inline CSfxEntry* GetNext() const {
         return next;
     }
-    inline CSfxEntry* GetNextNE() const
-    {
+    inline CSfxEntry* GetNextNE() const {
         return nextne;
     }
-    inline CSfxEntry* GetNextEQ() const
-    {
+    inline CSfxEntry* GetNextEQ() const {
         return nexteq;
     }
 
-    inline void SetNext(CSfxEntry* ptr)
-    {
+    inline void SetNext(CSfxEntry* ptr) {
         next = ptr;
     }
-    inline void SetNextNE(CSfxEntry* ptr)
-    {
+    inline void SetNextNE(CSfxEntry* ptr) {
         nextne = ptr;
     }
-    inline void SetNextEQ(CSfxEntry* ptr)
-    {
+    inline void SetNextEQ(CSfxEntry* ptr) {
         nexteq = ptr;
     }
 

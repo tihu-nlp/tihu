@@ -42,7 +42,7 @@
 #include <stdint.h>
 #include <vector>
 
-//#define TIHU_WARNING_ON
+#define TIHU_WARNING_ON
 #ifdef TIHU_WARNING_ON
 #define TIHU_WARNING fprintf
 #else
@@ -83,7 +83,7 @@ static inline void TIHU_WARNING(FILE *, const char *, ...) {}
 
 enum class TIHU_TOKEN_TYPE {
     LINE_BREAK = 'n',
-    ENGLISH = '@',
+    NON_PERSIAN = '@',
     PERSIAN = '!',
     NUMBER = '#',
     PUNCTUATION = '$',

@@ -18,29 +18,29 @@
  *    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
  *
  *******************************************************************************/
-#include "persian_to_phonetic.h"
+#include "word2phoneme.h"
 
 #include <algorithm>
 
 #define LTS_LOG_WORDS
 
-CPersianToPhoneme::CPersianToPhoneme() {
+CWord2Phoneme::CWord2Phoneme() {
 #ifdef LTS_LOG_WORDS
     LoadWordFrequency();
 #endif
 }
 
-CPersianToPhoneme::~CPersianToPhoneme() {
+CWord2Phoneme::~CWord2Phoneme() {
 #ifdef LTS_LOG_WORDS
     SaveWordFrequency();
 #endif
 }
 
-bool CPersianToPhoneme::LoadModel(const std::string &model) {
+bool CWord2Phoneme::LoadModel(const std::string &model) {
     return g2p.LoadModel(model);
 }
 
-void CPersianToPhoneme::LoadWordFrequency() {
+void CWord2Phoneme::LoadWordFrequency() {
     std::string log_file = "./log/unknown_word_freqeuncy.txt";
     FILE *file = fopen(log_file.c_str(), "r");
 
@@ -62,7 +62,7 @@ void CPersianToPhoneme::LoadWordFrequency() {
     fclose(file);
 }
 
-void CPersianToPhoneme::SaveWordFrequency() {
+void CWord2Phoneme::SaveWordFrequency() {
     std::string log_file = "./log/unknown_word_freqeuncy.txt";
     FILE *file = fopen(log_file.c_str(), "w");
 
@@ -97,7 +97,7 @@ void CPersianToPhoneme::SaveWordFrequency() {
     fclose(file);
 }
 
-std::string CPersianToPhoneme::Convert(std::string word) {
+std::string CWord2Phoneme::Convert(std::string word) {
 #ifdef LTS_LOG_WORDS
     ++WordFrequency[word];
 #endif

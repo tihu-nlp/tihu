@@ -18,32 +18,24 @@
 *    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
 *
 *******************************************************************************/
-#ifndef __TIHU__PERSIAN_TO_PHONEME_H
-#define __TIHU__PERSIAN_TO_PHONEME_H
+#ifndef __TIHU__NUMBER2PHONEME_H
+#define __TIHU__NUMBER2PHONEME_H
 
 #pragma once
 
 #include "../helper.h"
 
-#include <map>
-#include "g2p_seq2seq.h"
-
-class CPersianToPhoneme
+class CNumber2Phoneme
 {
 public:
-    CPersianToPhoneme();
-    ~CPersianToPhoneme();
+    CNumber2Phoneme();
+    ~CNumber2Phoneme();
 
-    bool LoadModel(const std::string &model);
-    std::string Convert(std::string word);
-
-private:
-    void LoadWordFrequency();
-    void SaveWordFrequency();
+    std::string Convert(const std::string &number_text);
 
 private:
-    std::map<std::string, int> WordFrequency;
-    Cg2pSeq2Seq g2p;
+    std::string GetBlockPronounce(int number, int seg_len);
+    const char* GetDigitPronounce(int first_index, int sec_index);
 };
 
 #endif

@@ -24,7 +24,6 @@ CCharMap::CCharMap() : Code(0), Type(TIHU_TOKEN_TYPE::UNKNOWN) {}
 
 CCharMap::CCharMap(const CCharMap &char_map)
     : Normed(char_map.Normed), Code(char_map.Code), Type(char_map.Type)
-
 {}
 
 CCharMap::CCharMap(std::string normed, uint16_t code, TIHU_TOKEN_TYPE type)

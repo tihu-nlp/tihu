@@ -85,8 +85,8 @@ bool CWord::IsPersianWord() const {
     return (Type == TIHU_TOKEN_TYPE::PERSIAN); //
 }
 
-bool CWord::IsEnglishWord() const {
-    return (Type == TIHU_TOKEN_TYPE::ENGLISH); //
+bool CWord::IsNonPersianWord() const {
+    return (Type == TIHU_TOKEN_TYPE::NON_PERSIAN); //
 }
 
 bool CWord::IsPunctuation() const {

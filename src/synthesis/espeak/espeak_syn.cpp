@@ -64,7 +64,7 @@ void CeSpeakSyn::ParsText(CCorpus *corpus) {
 
         phonetic.clear();
 
-        if (word->IsEnglishWord()) {
+        if (word->IsNonPersianWord()) {
             phonetic.append(word->GetText());
         } else {
             word->ParsPron();

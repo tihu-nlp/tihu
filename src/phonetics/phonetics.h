@@ -18,31 +18,29 @@
  *    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
  *
  *******************************************************************************/
-#ifndef __TIHU__WORD_TO_PHONETIC_H
-#define __TIHU__WORD_TO_PHONETIC_H
+#ifndef __TIHU__PHONETICS_H
+#define __TIHU__PHONETICS_H
 
 #pragma once
 
 #include "../parser.h"
-#include "english_to_phonetic.h"
-#include "number_to_phonetic.h"
-#include "persian_to_phonetic.h"
-#include "punctuation_to_phonetic.h"
+#include "number2phoneme.h"
+#include "word2phoneme.h"
+#include "punctuation2phoneme.h"
 
-class CWordToPhonetic : public IParser {
+class CPhonetics : public IParser {
   public:
-    CWordToPhonetic();
-    ~CWordToPhonetic();
+    CPhonetics();
+    ~CPhonetics();
 
     bool Load(std::string param = "") override;
 
     void ParsText(CCorpus *corpus) override;
 
   private:
-    CPersianToPhoneme PersianToPhoneme;
-    CEnglishToPhoneme EnglishToPhoneme;
-    CNumberToPhoneme NumberToPhoneme;
-    CPunctuationToPhoneme PunctuationToPhoneme;
+    CWord2Phoneme Word2Phoneme;
+    CNumber2Phoneme Number2Phoneme;
+    CPunctuation2Phoneme Punctuation2Phoneme;
 };
 
 #endif

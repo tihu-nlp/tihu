@@ -44,46 +44,45 @@ typedef struct {
 ///    https://en.wikipedia.org/wiki/Persian_phonology
 /// Never trust it!
 const static PHONEME PhonemeTable[] = {
-    { '!', "_" , "_" , 100, ConsonantType::CONSONANT_TYPE_NOT_SET       } ,/// unknown, error
-    { '_', "_" , "_" , 100, ConsonantType::CONSONANT_TYPE_NOT_SET       } ,
-    { 'h', "h" , "h" ,  83, ConsonantType::CONSONANT_TYPE_FRICATIVE     } ,
-    { 'C', "c:", "tS", 120, ConsonantType::CONSONANT_TYPE_AFFRICATIVE   } ,
-    { '?', "?" , "?" ,  50, ConsonantType::CONSONANT_TYPE_STOP          },
-    { 'p', "p" , "p" , 112, ConsonantType::CONSONANT_TYPE_STOP          },
-    { 't', "t" , "t" ,  81, ConsonantType::CONSONANT_TYPE_STOP          },
-    { 'c', "c" , "k" , 100, ConsonantType::CONSONANT_TYPE_STOP          },
-    { 'k', "k" , "k" , 100, ConsonantType::CONSONANT_TYPE_STOP          },
-    { 's', "s" , "s" , 123, ConsonantType::CONSONANT_TYPE_FRICATIVE     },
-    { 'S', "s:", "S" , 111, ConsonantType::CONSONANT_TYPE_FRICATIVE     },
-    { 'x', "x" , "x" , 109, ConsonantType::CONSONANT_TYPE_FRICATIVE     },
-    { 'f', "f" , "f" ,  99, ConsonantType::CONSONANT_TYPE_FRICATIVE     },
-    { 'b', "b" , "b" ,  70, ConsonantType::CONSONANT_TYPE_STOP          },
-    { 'd', "d" , "d" ,  66, ConsonantType::CONSONANT_TYPE_STOP          },
-    { 'g', "g:", "g" ,  78, ConsonantType::CONSONANT_TYPE_STOP          },
-    { 'G', "g" , "g" ,  78, ConsonantType::CONSONANT_TYPE_STOP          },
-    { 'q', "q" , "q" ,  87, ConsonantType::CONSONANT_TYPE_STOP          },
-    { 'z', "z" , "z" ,  86, ConsonantType::CONSONANT_TYPE_FRICATIVE     },
-    { 'Z', "z:", "Z" ,  96, ConsonantType::CONSONANT_TYPE_FRICATIVE     },
-    { 'v', "v" , "v" ,  52, ConsonantType::CONSONANT_TYPE_FRICATIVE     },
-    { 'j', "j:", "dZ",  92, ConsonantType::CONSONANT_TYPE_AFFRICATIVE   },
-    { 'r', "r" , "R" ,  38, ConsonantType::CONSONANT_TYPE_APPROXIMANT   },
-    { 'm', "m" , "m" ,  73, ConsonantType::CONSONANT_TYPE_NASAL         },
-    { 'n', "n" , "n" ,  61, ConsonantType::CONSONANT_TYPE_NASAL         },
-    { 'l', "l" , "l" ,  58, ConsonantType::CONSONANT_TYPE_APPROXIMANT   },
-    { 'y', "y" , "j" ,  71, ConsonantType::CONSONANT_TYPE_APPROXIMANT   },
-    { 'i', "i" , "i" , 101, ConsonantType::CONSONANT_TYPE_VOWEL         },
-    { 'u', "u" , "u" , 112, ConsonantType::CONSONANT_TYPE_VOWEL         },
-    { 'A', "a:", "A:", 138, ConsonantType::CONSONANT_TYPE_VOWEL         },
-    { 'e', "e" , "e" ,  69, ConsonantType::CONSONANT_TYPE_VOWEL         },
-    { 'o', "o" , "u" ,  83, ConsonantType::CONSONANT_TYPE_VOWEL         },
-    { 'a', "a" , "a" ,  90, ConsonantType::CONSONANT_TYPE_VOWEL         },
+    { '!', "_" , "_" , 100, ConsonantType::CONSONANT_TYPE_NOT_SET       },/// unknown, error
+    { '_', "_" , "_" , 100, ConsonantType::CONSONANT_TYPE_NOT_SET       }, //
+    { 'h', "h" , "h" ,  83, ConsonantType::CONSONANT_TYPE_FRICATIVE     }, //
+    { 'C', "c:", "tS", 120, ConsonantType::CONSONANT_TYPE_AFFRICATIVE   }, //
+    { '?', "?" , "?" ,  50, ConsonantType::CONSONANT_TYPE_STOP          }, //
+    { 'p', "p" , "p" , 112, ConsonantType::CONSONANT_TYPE_STOP          }, //
+    { 't', "t" , "t" ,  81, ConsonantType::CONSONANT_TYPE_STOP          }, //
+    { 'c', "c" , "k" , 100, ConsonantType::CONSONANT_TYPE_STOP          }, //
+    { 'k', "k" , "k" , 100, ConsonantType::CONSONANT_TYPE_STOP          }, //
+    { 's', "s" , "s" , 123, ConsonantType::CONSONANT_TYPE_FRICATIVE     }, //
+    { 'S', "s:", "S" , 111, ConsonantType::CONSONANT_TYPE_FRICATIVE     }, //
+    { 'x', "x" , "x" , 109, ConsonantType::CONSONANT_TYPE_FRICATIVE     }, //
+    { 'f', "f" , "f" ,  99, ConsonantType::CONSONANT_TYPE_FRICATIVE     }, //
+    { 'b', "b" , "b" ,  70, ConsonantType::CONSONANT_TYPE_STOP          }, //
+    { 'd', "d" , "d" ,  66, ConsonantType::CONSONANT_TYPE_STOP          }, //
+    { 'g', "g:", "g" ,  78, ConsonantType::CONSONANT_TYPE_STOP          }, //
+    { 'G', "g" , "g" ,  78, ConsonantType::CONSONANT_TYPE_STOP          }, //
+    { 'q', "q" , "q" ,  87, ConsonantType::CONSONANT_TYPE_STOP          }, //
+    { 'z', "z" , "z" ,  86, ConsonantType::CONSONANT_TYPE_FRICATIVE     }, //
+    { 'Z', "z:", "Z" ,  96, ConsonantType::CONSONANT_TYPE_FRICATIVE     }, //
+    { 'v', "v" , "v" ,  52, ConsonantType::CONSONANT_TYPE_FRICATIVE     }, //
+    { 'j', "j:", "dZ",  92, ConsonantType::CONSONANT_TYPE_AFFRICATIVE   }, //
+    { 'r', "r" , "R" ,  38, ConsonantType::CONSONANT_TYPE_APPROXIMANT   }, //
+    { 'm', "m" , "m" ,  73, ConsonantType::CONSONANT_TYPE_NASAL         }, //
+    { 'n', "n" , "n" ,  61, ConsonantType::CONSONANT_TYPE_NASAL         }, //
+    { 'l', "l" , "l" ,  58, ConsonantType::CONSONANT_TYPE_APPROXIMANT   }, //
+    { 'y', "y" , "j" ,  71, ConsonantType::CONSONANT_TYPE_APPROXIMANT   }, //
+    { 'i', "i" , "i" , 101, ConsonantType::CONSONANT_TYPE_VOWEL         }, //
+    { 'u', "u" , "u" , 112, ConsonantType::CONSONANT_TYPE_VOWEL         }, //
+    { 'A', "a:", "A:", 138, ConsonantType::CONSONANT_TYPE_VOWEL         }, //
+    { 'e', "e" , "e" ,  69, ConsonantType::CONSONANT_TYPE_VOWEL         }, //
+    { 'o', "o" , "u" ,  83, ConsonantType::CONSONANT_TYPE_VOWEL         }, //
+    { 'a', "a" , "a" ,  90, ConsonantType::CONSONANT_TYPE_VOWEL         }, //
 };
 
 #define PHONEME_TABLE_SIZE ARRAY_LENGTH(PhonemeTable)
 
 /*
-int main()
-{
+int main() {
     int PhonemeTableHelper[256];
     memset((void*)PhonemeTableHelper,  0, sizeof(PhonemeTableHelper));
     for (size_t index = 0; index < PHONEME_TABLE_SIZE; ++index)
@@ -121,8 +120,7 @@ std::string CPhoneme::GetIPAName() {
     return PhonemeTable[PhonemeIndex].IPAName; //
 }
 
-/*void CPhoneme::operator =(Phoneme &pho)
-{
+/*void CPhoneme::operator =(Phoneme &pho) {
 }*/
 
 void CPhoneme::SetPhonetic(char prev_phoneme, char phoneme, char next_phoneme) {

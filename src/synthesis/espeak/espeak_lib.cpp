@@ -27,8 +27,7 @@
 #include <dlfcn.h>
 
 
-CeSpeakLib::CeSpeakLib()
-{
+CeSpeakLib::CeSpeakLib() {
     Module                  = nullptr;
     procInitialize          = nullptr;
     procSetSynthCallback    = nullptr;
@@ -55,13 +54,11 @@ CeSpeakLib::CeSpeakLib()
     Frequency               = -1;
 }
 
-CeSpeakLib::~CeSpeakLib()
-{
+CeSpeakLib::~CeSpeakLib() {
     Finalize();
 }
 
-bool CeSpeakLib::Initialize(const char* data_path)
-{
+bool CeSpeakLib::Initialize(const char* data_path) {
     Finalize();
 
     Module = dlopen("./libespeak.so", RTLD_LAZY);
@@ -128,8 +125,7 @@ bool CeSpeakLib::Initialize(const char* data_path)
     return true;
 }
 
-void CeSpeakLib::Finalize()
-{
+void CeSpeakLib::Finalize() {
     if(Module) {
         procTerminate();
         dlclose(Module);
@@ -137,13 +133,11 @@ void CeSpeakLib::Finalize()
     }
 }
 
-void CeSpeakLib::SetCallback(t_espeak_callback callback)
-{
+void CeSpeakLib::SetCallback(t_espeak_callback callback) {
     procSetSynthCallback(callback);
 }
 
-bool CeSpeakLib::Synthesize(const char* text, void* user_data)
-{
+bool CeSpeakLib::Synthesize(const char* text, void* user_data) {
     if(!procSynth){
         TIHU_WARNING(stderr, "eSpeak hasn't' loaded properly.");
         return false;
@@ -156,8 +150,7 @@ bool CeSpeakLib::Synthesize(const char* text, void* user_data)
     return (error == EE_OK);
 }
 
-void CeSpeakLib::Stop()
-{
+void CeSpeakLib::Stop() {
     if(procCancel){
         procCancel();
     }

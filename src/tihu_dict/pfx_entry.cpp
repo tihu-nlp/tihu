@@ -27,15 +27,13 @@ CPfxEntry::CPfxEntry(CAfxManager* afx_manager)
     : CAfxEntry(afx_manager)
     , next(nullptr)
     , nexteq(nullptr)
-    , nextne(nullptr)
-{
+    , nextne(nullptr) {
 
 }
 
 // check if this prefix entry matches
 void CPfxEntry::CheckWord(const char* text, int len,
-                          const FLAG needflag, CWordPtr &word)
-{
+                          const FLAG needflag, CWordPtr &word) {
     struct hentry* he;  // hash entry of root text or NULL
 
     int tmpl = len - Appnd.size(); // length of tmpword

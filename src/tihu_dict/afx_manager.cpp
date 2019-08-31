@@ -26,8 +26,7 @@
 
 
 CAfxManager::CAfxManager(CHashManager* hash_manager)
-    : HashManager(hash_manager)
-{
+    : HashManager(hash_manager) {
     for(int i = 0; i < SETSIZE; i++) {
         PrefixStart[i] = NULL;
         SuffixStart[i] = NULL;
@@ -36,12 +35,10 @@ CAfxManager::CAfxManager(CHashManager* hash_manager)
     }
 }
 
-CAfxManager::~CAfxManager()
-{
+CAfxManager::~CAfxManager() {
 }
 
-bool CAfxManager::Load(std::string filename)
-{
+bool CAfxManager::Load(std::string filename) {
     CFileManager file_manager;
 
     if(file_manager.OpenFile(filename)) {
@@ -67,8 +64,7 @@ bool CAfxManager::Load(std::string filename)
     return true;
 }
 
-int CAfxManager::ParseAffix(char afx_type, CFileManager &file_manager)
-{
+int CAfxManager::ParseAffix(char afx_type, CFileManager &file_manager) {
     std::string flag_s = file_manager.NextPiece();
     int numents = std::stoi(file_manager.NextPiece());
 
@@ -134,8 +130,7 @@ int CAfxManager::ParseAffix(char afx_type, CFileManager &file_manager)
 // we want to be able to quickly access prefix information
 // both by prefix flag, and sorted by prefix string itself
 // so we need to set up two indexes
-int CAfxManager::BuildPrefixTree(CPfxEntry* pfxptr)
-{
+int CAfxManager::BuildPrefixTree(CPfxEntry* pfxptr) {
     CPfxEntry* ptr;
     CPfxEntry* pptr;
     CPfxEntry* ep = pfxptr;
@@ -187,8 +182,7 @@ int CAfxManager::BuildPrefixTree(CPfxEntry* pfxptr)
 // we want to be able to quickly access suffix information
 // both by suffix flag, and sorted by the reverse of the
 // suffix string itself; so we need to set up two indexes
-int CAfxManager::BuildSuffixTree(CSfxEntry* sfxptr)
-{
+int CAfxManager::BuildSuffixTree(CSfxEntry* sfxptr) {
     sfxptr->initReverseWord();
 
     CSfxEntry* ptr;
@@ -241,16 +235,14 @@ int CAfxManager::BuildSuffixTree(CSfxEntry* sfxptr)
 }
 
 // convert from binary tree to sorted list
-int CAfxManager::ProcessPfxTreeToList()
-{
+int CAfxManager::ProcessPfxTreeToList() {
     for(int i = 1; i < SETSIZE; i++) {
         PrefixStart[i] = ProcessPfxInOrder(PrefixStart[i], NULL);
     }
     return 0;
 }
 
-CPfxEntry* CAfxManager::ProcessPfxInOrder(CPfxEntry* ptr, CPfxEntry* nptr)
-{
+CPfxEntry* CAfxManager::ProcessPfxInOrder(CPfxEntry* ptr, CPfxEntry* nptr) {
     if(ptr) {
         nptr = ProcessPfxInOrder(ptr->GetNextNE(), nptr);
         ptr->SetNext(nptr);
@@ -260,16 +252,14 @@ CPfxEntry* CAfxManager::ProcessPfxInOrder(CPfxEntry* ptr, CPfxEntry* nptr)
 }
 
 // convert from binary tree to sorted list
-int CAfxManager::ProcessSfxTreeToList()
-{
+int CAfxManager::ProcessSfxTreeToList() {
     for(int i = 1; i < SETSIZE; i++) {
         SuffixStart[i] = ProcessSfxInOrder(SuffixStart[i], NULL);
     }
     return 0;
 }
 
-CSfxEntry* CAfxManager::ProcessSfxInOrder(CSfxEntry* ptr, CSfxEntry* nptr)
-{
+CSfxEntry* CAfxManager::ProcessSfxInOrder(CSfxEntry* ptr, CSfxEntry* nptr) {
     if(ptr) {
         nptr = ProcessSfxInOrder(ptr->GetNextNE(), nptr);
         ptr->SetNext(nptr);
@@ -280,8 +270,7 @@ CSfxEntry* CAfxManager::ProcessSfxInOrder(CSfxEntry* ptr, CSfxEntry* nptr)
 
 // reinitialize the PfxEntry links NextEQ and NextNE to speed searching
 // using the idea of leading subsets this time
-int CAfxManager::ProcessPrefixOrder()
-{
+int CAfxManager::ProcessPrefixOrder() {
     CPfxEntry* ptr;
 
     // loop through each prefix list starting point
@@ -335,8 +324,7 @@ int CAfxManager::ProcessPrefixOrder()
 
 // initialize the SfxEntry links NextEQ and NextNE to speed searching
 // using the idea of leading subsets this time
-int CAfxManager::ProcessSuffixOrder()
-{
+int CAfxManager::ProcessSuffixOrder() {
     CSfxEntry* ptr;
 
     // loop through each prefix list starting point
@@ -391,8 +379,7 @@ int CAfxManager::ProcessSuffixOrder()
 
 
 // return 1 if s1 is a leading subset of s2
-inline int CAfxManager::isSubset(const char* s1, const char* s2)
-{
+inline int CAfxManager::isSubset(const char* s1, const char* s2) {
     while((*s1 == *s2) && (*s1 != '\0')) {
         s1++;
         s2++;
@@ -402,8 +389,7 @@ inline int CAfxManager::isSubset(const char* s1, const char* s2)
 
 inline int CAfxManager::isRevSubset(const char* s1,
                                     const char* end_of_s2,
-                                    int len)
-{
+                                    int len) {
     while((len > 0) && (*s1 != '\0') && ((*s1 == *end_of_s2) || (*s1 == '.'))) {
         s1++;
         end_of_s2--;
@@ -413,8 +399,7 @@ inline int CAfxManager::isRevSubset(const char* s1,
 }
 
 void CAfxManager::AffixCheck(const char* text, int len,
-                             const FLAG needflag, CWordPtr &word)
-{
+                             const FLAG needflag, CWordPtr &word) {
     // check all prefixes (also crossed with suffixes if allowed)
     PrefixCheck(text, len, needflag, word);
 
@@ -425,8 +410,7 @@ void CAfxManager::AffixCheck(const char* text, int len,
 
 // check text for prefixes
 void CAfxManager::PrefixCheck(const char* text, int len,
-                              const FLAG needflag, CWordPtr &word)
-{
+                              const FLAG needflag, CWordPtr &word) {
     // now handle the general case
     unsigned char sp = *((const unsigned char*)text);
     CPfxEntry* pfx = PrefixStart[sp];
@@ -448,8 +432,7 @@ void CAfxManager::PrefixCheck(const char* text, int len,
 // check text for suffixes
 void CAfxManager::SuffixCheck(const char* text, int len,
                               CPfxEntry* pfx,
-                              const FLAG needflag, CWordPtr &word)
-{
+                              const FLAG needflag, CWordPtr &word) {
     if(len == 0) {
         return ;    // FULLSTRIP
     }
@@ -472,13 +455,11 @@ void CAfxManager::SuffixCheck(const char* text, int len,
 
 
 // utility method to look up root words in hash table
-struct hentry* CAfxManager::Lookup(const char* text)
-{
+struct hentry* CAfxManager::Lookup(const char* text) {
     return HashManager->Lookup(text);
 }
 
-bool CAfxManager::IsPrefix(const char* prefix)
-{
+bool CAfxManager::IsPrefix(const char* prefix) {
 
     // now handle the general case
     unsigned char sp = *((const unsigned char*)prefix);
@@ -496,8 +477,7 @@ bool CAfxManager::IsPrefix(const char* prefix)
     return false;
 }
 
-void CAfxManager::ParsEntry(struct hentry* he, CPfxEntry* pfx, CSfxEntry* sfx, CWordPtr &word)
-{
+void CAfxManager::ParsEntry(struct hentry* he, CPfxEntry* pfx, CSfxEntry* sfx, CWordPtr &word) {
     std::string text = he->text;
     std::string pos  = he->text + he->word_len + 1;
     std::string pron = he->text + he->word_len + he->pos_len + 2;

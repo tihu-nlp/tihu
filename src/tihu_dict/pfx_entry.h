@@ -30,37 +30,29 @@ class CPfxEntry
 public:
     CPfxEntry(CAfxManager* afx_manager);
 
-    inline FLAG GetFlag() const
-    {
+    inline FLAG GetFlag() const {
         return Flag;
     }
-    inline const char* GetKey() const
-    {
+    inline const char* GetKey() const {
         return Appnd.c_str();
     }
-    inline CPfxEntry* GetNext() const
-    {
+    inline CPfxEntry* GetNext() const {
         return next;
     }
-    inline CPfxEntry* GetNextNE() const
-    {
+    inline CPfxEntry* GetNextNE() const {
         return nextne;
     }
-    inline CPfxEntry* GetNextEQ() const
-    {
+    inline CPfxEntry* GetNextEQ() const {
         return nexteq;
     }
 
-    inline void SetNext(CPfxEntry* ptr)
-    {
+    inline void SetNext(CPfxEntry* ptr) {
         next = ptr;
     }
-    inline void SetNextNE(CPfxEntry* ptr)
-    {
+    inline void SetNextNE(CPfxEntry* ptr) {
         nextne = ptr;
     }
-    inline void SetNextEQ(CPfxEntry* ptr)
-    {
+    inline void SetNextEQ(CPfxEntry* ptr) {
         nexteq = ptr;
     }
 

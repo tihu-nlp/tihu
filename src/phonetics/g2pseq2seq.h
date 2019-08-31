@@ -18,8 +18,8 @@
 *    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
 *
 *******************************************************************************/
-#ifndef __TIHU__G2P_SEQ2SEQ_H
-#define __TIHU__G2P_SEQ2SEQ_H
+#ifndef __TIHU__G2PSEQ2SEQ_H
+#define __TIHU__G2PSEQ2SEQ_H
 
 #pragma once
 
@@ -42,6 +42,8 @@ private:
     int p_stdin[2];     /* pipe to feed the exec'ed program input */
     int p_stdout[2];    /* pipe to get the exec'ed program output */
     pid_t pid;
+
+    bool FirstRead;
 };
 
 #endif

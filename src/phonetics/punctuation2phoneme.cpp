@@ -18,23 +18,20 @@
 *    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
 *
 *******************************************************************************/
-#include "punctuation_to_phonetic.h"
+#include "punctuation2phoneme.h"
 #include "../file_manager.h"
 
 
 #include <algorithm>
 
 
-CPunctuationToPhoneme::CPunctuationToPhoneme()
-{
+CPunctuation2Phoneme::CPunctuation2Phoneme() {
 }
 
-CPunctuationToPhoneme::~CPunctuationToPhoneme()
-{
+CPunctuation2Phoneme::~CPunctuation2Phoneme() {
 }
 
-bool CPunctuationToPhoneme::Load(std::string filename)
-{
+bool CPunctuation2Phoneme::Load(std::string filename) {
     CFileManager file_manager;
 
     if(file_manager.OpenFile(filename)) {
@@ -61,8 +58,7 @@ bool CPunctuationToPhoneme::Load(std::string filename)
     return true;
 }
 
-std::string CPunctuationToPhoneme::Convert(const std::string &text)
-{
+std::string CPunctuation2Phoneme::Convert(const std::string &text) {
     std::string pronunciation;
 
     std::map<std::string, CPunctuationPtr>

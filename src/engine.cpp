@@ -21,7 +21,7 @@
 
 #include "engine.h"
 #include "hazm/hazm.h"
-#include "phonetics/word_to_phonetic.h"
+#include "phonetics/phonetics.h"
 #include "synthesis/espeak/espeak_syn.h"
 #include "synthesis/mbrola/mbrola_syn.h"
 #include "tihu.h"
@@ -75,7 +75,7 @@ int CEngine::LoadModules() {
 
     Hazm = new CHazm();
     TihuDict = new CTihuDict();
-    Phonetics = new CWordToPhonetic();
+    Phonetics = new CPhonetics();
     Tokenizer = new CTokenizer();
 
     if (!Hazm->Load()) {

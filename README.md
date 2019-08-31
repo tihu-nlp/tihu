@@ -34,12 +34,6 @@ tar zxvf g2p-seq2seq-tihudict-model-1.0.tar.gz
 mkdir ./build/data/g2p-seq2seq-tihudict
 cp -r g2p-seq2seq-tihudict/* ./build/data/g2p-seq2seq-tihudict
 
-# g2p-seq2seq-model-6.2-cmudict
-curl -sLO https://sourceforge.net/projects/cmusphinx/files/G2P%20Models/g2p-seq2seq-model-6.2-cmudict-nostress.tar.gz
-tar zxf g2p-seq2seq-model-6.2-cmudict-nostress.tar.gz
-mkdir ./build/data/g2p-seq2seq-cmudict
-cp -r g2p-seq2seq-model-6.2-cmudict-nostress/* ./build/data/g2p-seq2seq-cmudict
-
 # compiling code
 make
 make console

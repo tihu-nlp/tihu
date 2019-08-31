@@ -18,31 +18,30 @@
 *    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
 *
 *******************************************************************************/
-#include "english_to_phonetic.h"
+#ifndef __TIHU__PUNCTUATION2PHONEME_H
+#define __TIHU__PUNCTUATION2PHONEME_H
 
-#include <algorithm>
+#pragma once
+
+#include "punctuation.h"
+
+#include <map>
 
 
-CEnglishToPhoneme::CEnglishToPhoneme()
+class CPunctuation2Phoneme
 {
-}
+public:
+    CPunctuation2Phoneme();
+    ~CPunctuation2Phoneme();
 
-CEnglishToPhoneme::~CEnglishToPhoneme()
-{
-}
+    bool Load(std::string filename);
+    std::string Convert(const std::string &text);
 
-bool CEnglishToPhoneme::LoadModel(const std::string &model)
-{
-    return true;
-    return g2p.LoadModel(model);
-}
+private:
 
-std::string CEnglishToPhoneme::Convert(const std::string &word)
-{
-    std::string pronunciation;
+private:
+    std::map<std::string,
+        CPunctuationPtr> Punctuations;
+};
 
-    /// TODO:::
-    //pronunciation = g2p.Convert(word);
-
-    return pronunciation;
-}
+#endif

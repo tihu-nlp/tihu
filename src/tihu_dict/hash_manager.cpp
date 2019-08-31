@@ -27,16 +27,14 @@
 
 // lookup a root word in the hashtable
 
-CHashManager::CHashManager()
-{
+CHashManager::CHashManager() {
     TablePtr = nullptr;
     TableSize = 0;
 }
 
 struct hentry* CHashManager::Lookup(const char* text) const {
     struct hentry* dp;
-    if(TablePtr)
-    {
+    if(TablePtr) {
         dp = TablePtr[Hash(text)];
         if(!dp) {
             return NULL;
@@ -66,8 +64,7 @@ int CHashManager::Hash(const char* word) const
 }
 
 // load a munched word list and build a hash table on the fly
-bool CHashManager::LoadTable(const std::string  &filename, const std::string  &key)
-{
+bool CHashManager::LoadTable(const std::string  &filename, const std::string  &key) {
     // open dictionary file
     CFileManager file_manager;
 
@@ -175,8 +172,7 @@ int CHashManager::AddWord(
     const std::string &pron,
     unsigned short* flags,
     short flags_len,
-    int freq)
-{
+    int freq) {
     int word_len = word.size();
     int lemma_len = lemma.size();
     int pos_len = pos.size();

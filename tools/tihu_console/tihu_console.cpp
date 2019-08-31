@@ -32,12 +32,10 @@
 #define APP_NAME "tihu-with-hazm"
 
 
-TIHU_CALLBACK_RETURN callback(TIHU_CALLBACK_MESSAGE Message, long lParam, long wParam, void* pData)
-{
+TIHU_CALLBACK_RETURN callback(TIHU_CALLBACK_MESSAGE Message, long lParam, long wParam, void* pData) {
     TihuConsole* consol = static_cast<TihuConsole*>(pData);
 
-    switch(Message)
-    {
+    switch(Message) {
     case TIHU_WAVE_BUFFER: {
         consol->WriteAudioBuffer((char*)lParam, (int)wParam);
     }break;
@@ -333,8 +331,7 @@ void TihuConsole::onOpenFile() {
 
     /// read first line
     QString line = file.readLine();
-    if(line.startsWith("#Test Name: "))
-    {
+    if(line.startsWith("#Test Name: ")) {
         file.readLine();
         file.readLine();
         file.readLine();

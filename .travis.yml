@@ -23,6 +23,11 @@ install:
   - sudo apt-get install gcc-7-multilib g++-7-multilib -y
   - sudo apt-get install qt510base qt510multimedia -y
   - source /opt/qt510/bin/qt510-env.sh
+  - pip install --upgrade pip
+  - pip --version
+  # As I checked g2p-seq2seq interactive mode works on tensorflow 1.14 on python 3.7 (training doesn't work!)
+  - pip install tensorflow==1.14.0
+  - pip install tensor2tensor==1.7.6
   - sudo pip install six --upgrade
   - sudo pip install pip --upgrade
   - sudo pip install hazm
@@ -48,12 +53,6 @@ script:
   - mkdir ./build/data/g2p-seq2seq-tihudict
   - cp -r g2p-seq2seq-tihudict/* ./build/data/g2p-seq2seq-tihudict
 
-  ## g2p-seq2seq-model-6.2-cmudict
-  - curl -sLO https://sourceforge.net/projects/cmusphinx/files/G2P%20Models/g2p-seq2seq-model-6.2-cmudict-nostress.tar.gz
-  - tar zxf g2p-seq2seq-model-6.2-cmudict-nostress.tar.gz
-  - mkdir ./build/data/g2p-seq2seq-cmudict
-  - cp -r g2p-seq2seq-model-6.2-cmudict-nostress/* ./build/data/g2p-seq2seq-cmudict
-
   ## download and install lame
   #- curl -sLO https://downloads.sourceforge.net/project/lame/lame/3.100/lame-3.100.tar.gz
   #- tar zxf lame-3.100.tar.gz
@@ -61,6 +60,11 @@ script:
   #- ./configure
   #- make
   #- cd -
+
+  #installing g2p-seq2seq 6.2
+  - git clone https://github.com/cmusphinx/g2p-seq2seq.git
+  - cd g2p-seq2seq
+  - python3 setup.py install
 
   ## build Tihu
   - make

@@ -70,8 +70,7 @@ namespace utf8
     /// The library API - functions intended to be called by the users
 
     template <typename octet_iterator>
-    octet_iterator append(uint32_t cp, octet_iterator result)
-    {
+    octet_iterator append(uint32_t cp, octet_iterator result) {
         if (!utf8::internal::is_code_point_valid(cp))
             throw invalid_code_point(cp);
 
@@ -96,8 +95,7 @@ namespace utf8
     }
 
     template <typename octet_iterator, typename output_iterator>
-    output_iterator replace_invalid(octet_iterator start, octet_iterator end, output_iterator out, uint32_t replacement)
-    {
+    output_iterator replace_invalid(octet_iterator start, octet_iterator end, output_iterator out, uint32_t replacement) {
         while (start != end) {
             octet_iterator sequence_start = start;
             internal::utf_error err_code = utf8::internal::validate_next(start, end);
@@ -127,15 +125,13 @@ namespace utf8
     }
 
     template <typename octet_iterator, typename output_iterator>
-    inline output_iterator replace_invalid(octet_iterator start, octet_iterator end, output_iterator out)
-    {
+    inline output_iterator replace_invalid(octet_iterator start, octet_iterator end, output_iterator out) {
         static const uint32_t replacement_marker = utf8::internal::mask16(0xfffd);
         return utf8::replace_invalid(start, end, out, replacement_marker);
     }
 
     template <typename octet_iterator>
-    uint32_t next(octet_iterator& it, octet_iterator end)
-    {
+    uint32_t next(octet_iterator& it, octet_iterator end) {
         uint32_t cp = 0;
         internal::utf_error err_code = utf8::internal::validate_next(it, end, cp);
         switch (err_code) {
@@ -154,14 +150,12 @@ namespace utf8
     }
 
     template <typename octet_iterator>
-    uint32_t peek_next(octet_iterator it, octet_iterator end)
-    {
+    uint32_t peek_next(octet_iterator it, octet_iterator end) {
         return utf8::next(it, end);
     }
 
     template <typename octet_iterator>
-    uint32_t prior(octet_iterator& it, octet_iterator start)
-    {
+    uint32_t prior(octet_iterator& it, octet_iterator start) {
         // can't do much if it == start
         if (it == start)
             throw not_enough_room();
@@ -176,8 +170,7 @@ namespace utf8
 
     /// Deprecated in versions that include "prior"
     template <typename octet_iterator>
-    uint32_t previous(octet_iterator& it, octet_iterator pass_start)
-    {
+    uint32_t previous(octet_iterator& it, octet_iterator pass_start) {
         octet_iterator end = it;
         while (utf8::internal::is_trail(*(--it)))
             if (it == pass_start)
@@ -187,16 +180,14 @@ namespace utf8
     }
 
     template <typename octet_iterator, typename distance_type>
-    void advance (octet_iterator& it, distance_type n, octet_iterator end)
-    {
+    void advance (octet_iterator& it, distance_type n, octet_iterator end) {
         for (distance_type i = 0; i < n; ++i)
             utf8::next(it, end);
     }
 
     template <typename octet_iterator>
     typename std::iterator_traits<octet_iterator>::difference_type
-    distance (octet_iterator first, octet_iterator last)
-    {
+    distance (octet_iterator first, octet_iterator last) {
         typename std::iterator_traits<octet_iterator>::difference_type dist;
         for (dist = 0; first < last; ++dist)
             utf8::next(first, last);
@@ -204,8 +195,7 @@ namespace utf8
     }
 
     template <typename u16bit_iterator, typename octet_iterator>
-    octet_iterator utf16to8 (u16bit_iterator start, u16bit_iterator end, octet_iterator result)
-    {
+    octet_iterator utf16to8 (u16bit_iterator start, u16bit_iterator end, octet_iterator result) {
         while (start != end) {
             uint32_t cp = utf8::internal::mask16(*start++);
             // Take care of surrogate pairs first
@@ -231,8 +221,7 @@ namespace utf8
     }
 
     template <typename u16bit_iterator, typename octet_iterator>
-    u16bit_iterator utf8to16 (octet_iterator start, octet_iterator end, u16bit_iterator result)
-    {
+    u16bit_iterator utf8to16 (octet_iterator start, octet_iterator end, u16bit_iterator result) {
         while (start != end) {
             uint32_t cp = utf8::next(start, end);
             if (cp > 0xffff) { //make a surrogate pair
@@ -246,8 +235,7 @@ namespace utf8
     }
 
     template <typename octet_iterator, typename u32bit_iterator>
-    octet_iterator utf32to8 (u32bit_iterator start, u32bit_iterator end, octet_iterator result)
-    {
+    octet_iterator utf32to8 (u32bit_iterator start, u32bit_iterator end, octet_iterator result) {
         while (start != end)
             result = utf8::append(*(start++), result);
 
@@ -255,8 +243,7 @@ namespace utf8
     }
 
     template <typename octet_iterator, typename u32bit_iterator>
-    u32bit_iterator utf8to32 (octet_iterator start, octet_iterator end, u32bit_iterator result)
-    {
+    u32bit_iterator utf8to32 (octet_iterator start, octet_iterator end, u32bit_iterator result) {
         while (start != end)
             (*result++) = utf8::next(start, end);
 

@@ -18,7 +18,7 @@
 *    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
 *
 *******************************************************************************/
-#include "number_to_phonetic.h"
+#include "number2phoneme.h"
 
 #include <math.h>
 
@@ -86,23 +86,19 @@ char SadganDigits[][16] = {
 };
 
 
-CNumberToPhoneme::CNumberToPhoneme()
-{
+CNumber2Phoneme::CNumber2Phoneme() {
 }
 
-CNumberToPhoneme::~CNumberToPhoneme()
-{
+CNumber2Phoneme::~CNumber2Phoneme() {
 }
 
-std::string CNumberToPhoneme::Convert(const std::string &text)
-{
+std::string CNumber2Phoneme::Convert(const std::string &text) {
 #define SEG_APPENDER  "o"
 
     std::string pronounce, block_pronounce, prefix;
     std::string number_text(text);
 
-    /*if(wtoi(number_text.c_str()) == 0)
-    {
+    /*if(wtoi(number_text.c_str()) == 0
     return "sefr";
     }*/
 
@@ -171,8 +167,7 @@ std::string CNumberToPhoneme::Convert(const std::string &text)
     return pronounce;
 }
 
-std::string CNumberToPhoneme::GetBlockPronounce(int number, int seg_len)
-{
+std::string CNumber2Phoneme::GetBlockPronounce(int number, int seg_len) {
     assert(!(number > 999 || seg_len > 3));
 
     int         remainder = 0;
@@ -222,8 +217,7 @@ std::string CNumberToPhoneme::GetBlockPronounce(int number, int seg_len)
     return pronounce;
 }
 
-const char* CNumberToPhoneme::GetDigitPronounce(int first_index, int sec_index)
-{
+const char* CNumber2Phoneme::GetDigitPronounce(int first_index, int sec_index) {
     assert(first_index < 3);
     assert(sec_index < 19);
 

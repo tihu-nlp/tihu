@@ -27,13 +27,11 @@ CSfxEntry::CSfxEntry(CAfxManager* afx_manager)
     : CAfxEntry(afx_manager)
     , next(nullptr)
     , nexteq(nullptr)
-    , nextne(nullptr)
-{
+    , nextne(nullptr) {
 
 }
 
-void CSfxEntry::initReverseWord()
-{
+void CSfxEntry::initReverseWord() {
     rAppnd = Appnd;
 
     std::reverse(rAppnd.begin(), rAppnd.end());
@@ -43,8 +41,7 @@ void CSfxEntry::initReverseWord()
 
 // see if this suffix is present in the word
 void CSfxEntry::CheckWord(const char* text, int len,
-                          CPfxEntry* pfx, const FLAG needflag, CWordPtr &word)
-{
+                          CPfxEntry* pfx, const FLAG needflag, CWordPtr &word) {
     struct hentry* he;  // hash entry pointer
 
     // upon entry suffix is 0 length or already matches the end of the word.

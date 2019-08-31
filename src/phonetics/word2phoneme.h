@@ -18,30 +18,32 @@
 *    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
 *
 *******************************************************************************/
-#ifndef __TIHU__PUNCTUATION_TO_PHONEME_H
-#define __TIHU__PUNCTUATION_TO_PHONEME_H
+#ifndef __TIHU__PERSIAN2PHONEME_H
+#define __TIHU__PERSIAN2PHONEME_H
 
 #pragma once
 
-#include "punctuation.h"
+#include "../helper.h"
 
 #include <map>
+#include "g2pseq2seq.h"
 
-
-class CPunctuationToPhoneme
+class CWord2Phoneme
 {
 public:
-    CPunctuationToPhoneme();
-    ~CPunctuationToPhoneme();
+    CWord2Phoneme();
+    ~CWord2Phoneme();
 
-    bool Load(std::string filename);
-    std::string Convert(const std::string &text);
-
-private:
+    bool LoadModel(const std::string &model);
+    std::string Convert(std::string word);
 
 private:
-    std::map<std::string,
-        CPunctuationPtr> Punctuations;
+    void LoadWordFrequency();
+    void SaveWordFrequency();
+
+private:
+    std::map<std::string, int> WordFrequency;
+    Cg2pSeq2Seq g2p;
 };
 
 #endif

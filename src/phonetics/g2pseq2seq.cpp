@@ -18,7 +18,7 @@
 *    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
 *
 *******************************************************************************/
-#include "g2p_seq2seq.h"
+#include "g2pseq2seq.h"
 
 
 #include <unistd.h>
@@ -31,17 +31,16 @@
 #define PIPE_WRITE 1
 
 
-Cg2pSeq2Seq::Cg2pSeq2Seq()
-{
+Cg2pSeq2Seq::Cg2pSeq2Seq() {
     p_stdin[PIPE_READ] = 0;
     p_stdin[PIPE_WRITE] = 0;
     p_stdout[PIPE_READ] = 0;
     p_stdout[PIPE_WRITE] = 0;
     pid = 0;
+    FirstRead = true;
 }
 
-Cg2pSeq2Seq::~Cg2pSeq2Seq()
-{
+Cg2pSeq2Seq::~Cg2pSeq2Seq() {
     if(p_stdin[PIPE_READ]) {
         int result = write(p_stdin[PIPE_WRITE], "\n", 1);
         (void)result;
@@ -49,8 +48,7 @@ Cg2pSeq2Seq::~Cg2pSeq2Seq()
         close(p_stdin[PIPE_WRITE]);
         close(p_stdout[PIPE_READ]);
 
-        if (pid)
-        {
+        if (pid) {
             kill(pid, SIGTERM);
             waitpid(pid, NULL, 0);
             pid = 0;
@@ -58,31 +56,25 @@ Cg2pSeq2Seq::~Cg2pSeq2Seq()
     }
 }
 
-bool Cg2pSeq2Seq::LoadModel(const std::string& model)
-{
-    if ( pipe( p_stdin ) != 0 )
-    {
+bool Cg2pSeq2Seq::LoadModel(const std::string& model) {
+    if ( pipe( p_stdin ) != 0 ) {
         perror( "pipe() to" );
         exit(255);
     }
-    if ( pipe( p_stdout ) != 0 )
-    {
+    if ( pipe( p_stdout ) != 0 ) {
         perror( "pipe() from" );
         exit(255);
     }
 
     pid = fork();
-    if ( pid < 0 )
-    {
+    if ( pid < 0 ) {
         perror( "fork() 1" );
         exit(255);
     }
-    else if ( pid == 0 )
-    {
+    else if ( pid == 0 ) {
         /* dup pipe read/write to stdin/stdout */
         dup2( p_stdin [PIPE_READ], STDIN_FILENO );
         dup2( p_stdout[PIPE_WRITE], STDOUT_FILENO );
-        //dup2( p_stdout[PIPE_WRITE], STDERR_FILENO );
 
         /* close unnecessary pipe descriptors for a clean environment */
         close( p_stdin[PIPE_READ] );
@@ -91,22 +83,26 @@ bool Cg2pSeq2Seq::LoadModel(const std::string& model)
         close( p_stdout[PIPE_WRITE] );
 
         /// TODO:: check if model exists
-        execlp("./g2p_seq2seq_pyinstaller_linux_64", "g2p_seq2seq_pyinstaller_linux_64",
-               "--interactive", "--model", model.c_str(), (char *)NULL);
+        int err = execlp("g2p-seq2seq", "g2p-seq2seq",
+               "--interactive", "--model_dir", model.c_str(), (char *)NULL);
+
+        if (err!= 0) {
+            TIHU_WARNING(stderr, "error loading g2p model: %d", err);
+            exit(255);
+        }
 
         exit(1);
     }
-    else
-    {
-        close(p_stdin[PIPE_READ]);
-        close(p_stdout[PIPE_WRITE]);
+    else {
+        //close(p_stdin[PIPE_READ]);
+        //close(p_stdout[PIPE_WRITE]);
+        //close(p_stderr[PIPE_WRITE]);
     }
 
     return true;
 }
 
-std::string Cg2pSeq2Seq::Convert(const std::string &word)
-{
+std::string Cg2pSeq2Seq::Convert(const std::string &word) {
     std::string phonemes;
 
     ///
@@ -119,12 +115,23 @@ std::string Cg2pSeq2Seq::Convert(const std::string &word)
     }
 
     char buf[256];
+    int result = 0;
     buf[0]=0;
 
+    if (FirstRead) {
+        // >
+        result = read(p_stdout[PIPE_READ], buf, 256);
+        if (result == -1) {
+            TIHU_WARNING(stderr, "error on reading from g2p: %s", buf);
+            return phonemes;
+        }
+        FirstRead = false;
+    }
+
     snprintf(buf, 255, "%s\n", word.c_str());
-    int result = write(p_stdin[PIPE_WRITE], buf, strlen(buf));
+    result = write(p_stdin[PIPE_WRITE], buf, strlen(buf));
     if(result == -1) {
-        TIHU_WARNING(stderr, "error on writting to g2p");
+        TIHU_WARNING(stderr, "error on writting to g2p: %s", buf);
         return phonemes;
     }
 
@@ -139,28 +146,25 @@ std::string Cg2pSeq2Seq::Convert(const std::string &word)
     ///   sys.stdout.flush()
     ///
 
+    //buf[0]=0;
+    //result = read(p_stderr[PIPE_READ], buf, 256);
+    //if (result == -1) {
+    //    TIHU_WARNING(stderr, "error on reading from g2p: %s", buf);
+    //    return phonemes;
+    //}
+
     buf[0]=0;
     result = read(p_stdout[PIPE_READ], buf, 256);
     if (result == -1) {
-        TIHU_WARNING(stderr, "error on reading from g2p");
+        TIHU_WARNING(stderr, "error on reading from g2p: %s", buf);
         return phonemes;
     }
-    buf[result]=0;
 
-    ///
-    /// find offset of the last line break (\n)
-    ///
-    int length = strlen(buf);
-    int offset = 0;
-    for(int i = 0; i < length-1; ++i) {
-        if(buf[i] == '\n')
-            offset = i+1;
-    }
-
-    offset++; //ignore '>' charcter
-    for(int i = offset; i < length-1; ++i) {
-        ++i;/// ignore space
-        phonemes += buf[i];
+    if (result > 3) {
+        // hello
+        // >HH EH L OW
+        buf[result-3]=0;
+        phonemes = buf;
     }
 
     return phonemes;

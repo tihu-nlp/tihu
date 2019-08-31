@@ -64,6 +64,10 @@ void CMbrolaSyn::ParsText(CCorpus *corpus) {
 
         FireEvents(word);
 
+        if (word->IsNonPersianWord()) {
+            continue;
+        }
+
         phoneme_line.clear();
 
         word->ParsPron();

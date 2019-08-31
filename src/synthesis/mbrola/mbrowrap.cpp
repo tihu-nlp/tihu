@@ -37,8 +37,7 @@
  * Private support code.
  */
 
-void log(const char* msg, ...)
-{
+void log(const char* msg, ...) {
     va_list params;
 
     va_start(params, msg);
@@ -62,8 +61,7 @@ mbrowrap::mbrowrap() {
     mbr_pending_data_tail = 0;
 }
 
-void mbrowrap::err(const char* errmsg, ...)
-{
+void mbrowrap::err(const char* errmsg, ...) {
     va_list params;
 
     va_start(params, errmsg);
@@ -72,8 +70,7 @@ void mbrowrap::err(const char* errmsg, ...)
     log("mbrowrap error: %s", mbr_errorbuf);
 }
 
-int mbrowrap::create_pipes(int p1[2], int p2[2], int p3[2])
-{
+int mbrowrap::create_pipes(int p1[2], int p2[2], int p3[2]) {
     int error;
 
     if(pipe(p1) != -1) {
@@ -98,8 +95,7 @@ int mbrowrap::create_pipes(int p1[2], int p2[2], int p3[2])
     return -1;
 }
 
-void mbrowrap::close_pipes(int p1[2], int p2[2], int p3[2])
-{
+void mbrowrap::close_pipes(int p1[2], int p2[2], int p3[2]) {
     close(p1[0]);
     close(p1[1]);
     close(p2[0]);
@@ -108,8 +104,7 @@ void mbrowrap::close_pipes(int p1[2], int p2[2], int p3[2])
     close(p3[1]);
 }
 
-int mbrowrap::start_mbrola(const char* voice_path)
-{
+int mbrowrap::start_mbrola(const char* voice_path) {
     int error, p_stdin[2], p_stdout[2], p_stderr[2];
     ssize_t written;
     char charbuf[20];
@@ -200,8 +195,7 @@ int mbrowrap::start_mbrola(const char* voice_path)
     return 0;
 }
 
-void mbrowrap::stop_mbrola(void)
-{
+void mbrowrap::stop_mbrola(void) {
     if(mbr_state == MBR_INACTIVE) {
         return;
     }
@@ -217,8 +211,7 @@ void mbrowrap::stop_mbrola(void)
     mbr_state = MBR_INACTIVE;
 }
 
-void mbrowrap::free_pending_data(void)
-{
+void mbrowrap::free_pending_data(void) {
     struct datablock* p, *head = mbr_pending_data_head;
     while(head) {
         p = head;
@@ -229,8 +222,7 @@ void mbrowrap::free_pending_data(void)
     mbr_pending_data_tail = NULL;
 }
 
-int mbrowrap::mbrola_died(void)
-{
+int mbrowrap::mbrola_died(void) {
     pid_t pid;
     int status, len;
     const char* msg;
@@ -269,8 +261,7 @@ int mbrowrap::mbrola_died(void)
     return -1;
 }
 
-int mbrowrap::mbrola_has_errors(void)
-{
+int mbrowrap::mbrola_has_errors(void) {
     int result;
     char buffer[256];
     char* buf_ptr, *lf;
@@ -316,8 +307,7 @@ int mbrowrap::mbrola_has_errors(void)
     }
 }
 
-int mbrowrap::send_to_mbrola(const char* cmd)
-{
+int mbrowrap::send_to_mbrola(const char* cmd) {
     ssize_t result;
     int len;
 
@@ -361,8 +351,7 @@ int mbrowrap::send_to_mbrola(const char* cmd)
     return result;
 }
 
-int mbrowrap::mbrola_is_idle(void)
-{
+int mbrowrap::mbrola_is_idle(void) {
     char* p;
     char buffer[20]; /* looking for "12345 (mbrola) S" so 20 is plenty*/
 
@@ -380,8 +369,7 @@ int mbrowrap::mbrola_is_idle(void)
     return (p[1] == ' ' && p[2] == 'S');
 }
 
-ssize_t mbrowrap::receive_from_mbrola(void* buffer, size_t bufsize)
-{
+ssize_t mbrowrap::receive_from_mbrola(void* buffer, size_t bufsize) {
     int result, wait = 1;
     size_t cursize = 0;
 
@@ -481,8 +469,7 @@ ssize_t mbrowrap::receive_from_mbrola(void* buffer, size_t bufsize)
  * API functions.
  */
 
-int mbrowrap::init_MBR(const char* voice_path)
-{
+int mbrowrap::init_MBR(const char* voice_path) {
     int error, result;
     unsigned char wavhdr[45];
 
@@ -529,8 +516,7 @@ int mbrowrap::init_MBR(const char* voice_path)
     return 0;
 }
 
-void mbrowrap::close_MBR(void)
-{
+void mbrowrap::close_MBR(void) {
     stop_mbrola();
     free_pending_data();
     free(mbr_voice_path);
@@ -538,8 +524,7 @@ void mbrowrap::close_MBR(void)
     mbr_volume = 1.0;
 }
 
-int mbrowrap::reset_MBR()
-{
+int mbrowrap::reset_MBR() {
     int result, success = 1;
     char dummybuf[4096];
 
@@ -569,8 +554,7 @@ int mbrowrap::reset_MBR()
     return success;
 }
 
-int mbrowrap::read_MBR(void* buffer, int nb_samples)
-{
+int mbrowrap::read_MBR(void* buffer, int nb_samples) {
     int result = receive_from_mbrola(buffer, nb_samples * 2);
     if(result > 0) {
         result /= 2;
@@ -578,14 +562,12 @@ int mbrowrap::read_MBR(void* buffer, int nb_samples)
     return result;
 }
 
-int mbrowrap::write_MBR(const char* data)
-{
+int mbrowrap::write_MBR(const char* data) {
     mbr_state = MBR_NEWDATA;
     return send_to_mbrola(data);
 }
 
-int mbrowrap::flush_MBR(void)
-{
+int mbrowrap::flush_MBR(void) {
     return send_to_mbrola("\n#\n") == 3;
 }
 
@@ -594,8 +576,7 @@ int mbrowrap::getFreq_MBR(void) const
     return mbr_samplerate;
 }
 
-void mbrowrap::setVolumeRatio_MBR(float value)
-{
+void mbrowrap::setVolumeRatio_MBR(float value) {
     if(value == mbr_volume) {
         return;
     }
@@ -611,8 +592,7 @@ void mbrowrap::setVolumeRatio_MBR(float value)
     init_MBR(mbr_voice_path);
 }
 
-int mbrowrap::lastErrorStr_MBR(char* buffer, int bufsize)
-{
+int mbrowrap::lastErrorStr_MBR(char* buffer, int bufsize) {
     int result;
     if(mbr_pid) {
         mbrola_has_errors();
@@ -621,7 +601,6 @@ int mbrowrap::lastErrorStr_MBR(char* buffer, int bufsize)
     return result >= bufsize ? (bufsize - 1) : result;
 }
 
-void mbrowrap::resetError_MBR(void)
-{
+void mbrowrap::resetError_MBR(void) {
     mbr_errorbuf[0] = 0;
 }

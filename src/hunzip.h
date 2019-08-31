@@ -64,8 +64,7 @@ protected:
 public:
     Hunzip(const char* filename, const char* key = NULL);
     ~Hunzip();
-    bool is_open()
-    {
+    bool is_open() {
         return fin.is_open();
     }
     bool getline(std::string &dest);

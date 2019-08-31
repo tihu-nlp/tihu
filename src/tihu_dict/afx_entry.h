@@ -31,8 +31,7 @@ class CAfxEntry
 public:
     explicit CAfxEntry(CAfxManager* afx_manager)
         : Flag(0)
-        , AfxManager(afx_manager)
-    {
+        , AfxManager(afx_manager) {
     }
 
 
