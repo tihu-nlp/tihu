@@ -42,8 +42,6 @@ private:
     int p_stdin[2];     /* pipe to feed the exec'ed program input */
     int p_stdout[2];    /* pipe to get the exec'ed program output */
     pid_t pid;
-
-    bool FirstRead;
 };
 
 #endif

@@ -37,7 +37,6 @@ Cg2pSeq2Seq::Cg2pSeq2Seq() {
     p_stdout[PIPE_READ] = 0;
     p_stdout[PIPE_WRITE] = 0;
     pid = 0;
-    FirstRead = true;
 }
 
 Cg2pSeq2Seq::~Cg2pSeq2Seq() {
@@ -118,15 +117,7 @@ std::string Cg2pSeq2Seq::Convert(const std::string &word) {
     int result = 0;
     buf[0]=0;
 
-    if (FirstRead) {
-        // >
-        result = read(p_stdout[PIPE_READ], buf, 256);
-        if (result == -1) {
-            TIHU_WARNING(stderr, "error on reading from g2p: %s", buf);
-            return phonemes;
-        }
-        FirstRead = false;
-    }
+
 
     snprintf(buf, 255, "%s\n", word.c_str());
     result = write(p_stdin[PIPE_WRITE], buf, strlen(buf));
@@ -146,12 +137,6 @@ std::string Cg2pSeq2Seq::Convert(const std::string &word) {
     ///   sys.stdout.flush()
     ///
 
-    //buf[0]=0;
-    //result = read(p_stderr[PIPE_READ], buf, 256);
-    //if (result == -1) {
-    //    TIHU_WARNING(stderr, "error on reading from g2p: %s", buf);
-    //    return phonemes;
-    //}
 
     buf[0]=0;
     result = read(p_stdout[PIPE_READ], buf, 256);
@@ -159,12 +144,15 @@ std::string Cg2pSeq2Seq::Convert(const std::string &word) {
         TIHU_WARNING(stderr, "error on reading from g2p: %s", buf);
         return phonemes;
     }
+    buf[result]=0;
 
     if (result > 3) {
         // hello
         // >HH EH L OW
-        buf[result-3]=0;
-        phonemes = buf;
+        for(int i = 2; i < result-1; ++i) {
+            phonemes += buf[i];
+            ++i;/// ignore space
+        }
     }
 
     return phonemes;
