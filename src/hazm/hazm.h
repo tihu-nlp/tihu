@@ -35,7 +35,7 @@ class CHazm : public IParser {
     CHazm();
     ~CHazm();
 
-    bool Load(std::string param = "") override;
+    bool Load() override;
     void ParsText(CCorpus *corpus) override;
 
   private:

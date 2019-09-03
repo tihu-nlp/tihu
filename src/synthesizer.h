@@ -35,7 +35,6 @@ public:
     virtual ~ISynthesizer();
 
     virtual int  GetFrequency() const = 0;
-    virtual void Stop() = 0;
     virtual void ApplyChanges() = 0;
 
 protected:
@@ -44,9 +43,9 @@ protected:
 
 
 protected:
-    bool IsStop;
     int  SampleCounter;
     SRC_STATE* SRCState;
+    std::string VoiceParam;
 };
 
 #endif

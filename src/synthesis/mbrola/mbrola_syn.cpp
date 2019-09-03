@@ -25,14 +25,16 @@
 #define CHANGE_PITCH_RANGE(pitch) (pitch)    //  Do not change pitch range
 #define CHANGE_VOLUME_RANGE(volume) (volume) // Do not change volume range
 
-CMbrolaSyn::CMbrolaSyn() {}
+CMbrolaSyn::CMbrolaSyn(std::string voice_param) {
+    VoiceParam = voice_param;
+}
 
 CMbrolaSyn::~CMbrolaSyn() {
     MbrolaLib.Finalize(); //
 }
 
-bool CMbrolaSyn::Load(std::string param) {
-    std::string data_path = "./data/" + param;
+bool CMbrolaSyn::Load() {
+    std::string data_path = "./data/" + VoiceParam;
     if (!MbrolaLib.Initialize(data_path)) {
         return false;
     }
@@ -51,12 +53,10 @@ void CMbrolaSyn::ParsText(CCorpus *corpus) {
 
     std::string non_persian;
     std::string phoneme_line;
-
     const CWordList &token_list = corpus->GetWordList();
-
-    IsStop = false;
     for (auto itt = token_list.begin(); itt != token_list.end(); ++itt) {
-        if (IsStop) {
+        if (IsStopped) {
+            MbrolaLib.Clear();
             break; /// External stop
         }
 
@@ -115,11 +115,6 @@ bool CMbrolaSyn::Synthesize(char *line) {
     }
 
     return true;
-}
-
-void CMbrolaSyn::Stop() {
-    IsStop = true;
-    MbrolaLib.Clear();
 }
 
 void CMbrolaSyn::ApplyChanges() {

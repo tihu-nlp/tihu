@@ -27,13 +27,15 @@ int espeak_callback(short *samples, int length, espeak_EVENT *espeak_event) {
     return synth->ParsEvent(samples, length, espeak_event);
 }
 
-CeSpeakSyn::CeSpeakSyn() {}
+CeSpeakSyn::CeSpeakSyn(std::string voice_param) {
+    VoiceParam = voice_param;
+}
 
 CeSpeakSyn::~CeSpeakSyn() {
     eSpeakLib.Finalize(); //
 }
 
-bool CeSpeakSyn::Load(std::string param) {
+bool CeSpeakSyn::Load() {
     if (!eSpeakLib.Initialize("./data")) {
         return false;
     }
@@ -49,12 +51,10 @@ void CeSpeakSyn::ParsText(CCorpus *corpus) {
     }
 
     std::string phonetic;
-
     const CWordList &token_list = corpus->GetWordList();
-
-    IsStop = false;
     for (auto itt = token_list.begin(); itt != token_list.end(); ++itt) {
-        if (IsStop) {
+        if (IsStopped) {
+            eSpeakLib.Stop();
             break; /// External stop
         }
 
@@ -84,11 +84,6 @@ void CeSpeakSyn::ParsText(CCorpus *corpus) {
 
         eSpeakLib.Synthesize(phonetic.c_str(), this);
     }
-}
-
-void CeSpeakSyn::Stop() {
-    IsStop = true;
-    eSpeakLib.Stop();
 }
 
 void CeSpeakSyn::ApplyChanges() {

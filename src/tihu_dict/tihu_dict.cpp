@@ -34,7 +34,7 @@ CTihuDict::~CTihuDict() {
     delete HashManager;
 }
 
-bool CTihuDict::Load(std::string param) {
+bool CTihuDict::Load() {
     if (!AfxManager->Load("./data/lexicon.aff")) {
         return false;
     }
@@ -89,6 +89,10 @@ bool CTihuDict::TagWord(CWordPtr &word, const std::string &_text) const {
 void CTihuDict::ParsText(CCorpus *corpus) {
     CWordList &word_list = corpus->GetWordList();
     for (auto itr = word_list.begin(); itr != word_list.end();) {
+        if (IsStopped) {
+            break;
+        }
+
         CWordPtr &word = (*itr);
 
         if (word->IsPersianWord()) {

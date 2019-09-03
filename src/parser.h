@@ -36,10 +36,11 @@ class IParser {
     IParser();
     virtual ~IParser();
 
-    virtual bool Load(std::string param = "") = 0;
+    virtual bool Load() = 0;
     virtual void ParsText(CCorpus *corpus) = 0;
     virtual void SetSettings(CSettings *settings);
     virtual void SetCallback(const callback_t& cb);
+    virtual void Stop();
 
 protected:
     void Message(const char *message) const;
@@ -48,6 +49,7 @@ protected:
   protected:
     CSettings *Settings;
     callback_t Callback;
+    bool IsStopped;
 };
 
 #endif

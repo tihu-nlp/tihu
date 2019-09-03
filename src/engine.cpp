@@ -33,36 +33,27 @@
 #include <locale>
 #include <sstream>
 
+
+enum parseIds{
+    ID_PARSER_TOKENIZER = 0,
+    ID_PARSER_TIHUDICT,
+    ID_PARSER_HAZM,
+    ID_PARSER_PHONETICS,
+    ID_PARSER_MBROLA_MALE,
+    ID_PARSER_MBROLA_FEMALE,
+    ID_PARSER_ESPEAK_MALE,
+    ID_PARSER_ESPEAK_FEMALE,
+};
+
 CEngine::CEngine() {
-    Hazm = nullptr;
-    TihuDict = nullptr;
-    Phonetics = nullptr;
-    Tokenizer = nullptr;
-    for (int i = 0; i < TIHU_VOICE_COUNT; ++i) {
-        Synthesizers[i] = nullptr;
-    }
-    Settings = new CSettings();
+    IsStopped = false;
 }
 
 CEngine::~CEngine() {
-    if (Hazm) {
-        delete Hazm;
+    for (auto const& p : Parsers){
+        p.second->Stop();
+        delete p.second;
     }
-    if (TihuDict) {
-        delete TihuDict;
-    }
-    if (Phonetics) {
-        delete Phonetics;
-    }
-    if (Tokenizer) {
-        delete Tokenizer;
-    }
-    for (int i = 0; i < TIHU_VOICE_COUNT; ++i) {
-        if (Synthesizers[i]) {
-            delete Synthesizers[i];
-        }
-    }
-    delete Settings;
 }
 
 int CEngine::LoadModules() {
@@ -73,56 +64,22 @@ int CEngine::LoadModules() {
         std::cout << "Can not change current directory to " << dir << std::endl;
     }
 
-    Hazm = new CHazm();
-    TihuDict = new CTihuDict();
-    Phonetics = new CPhonetics();
-    Tokenizer = new CTokenizer();
+    Parsers[ID_PARSER_TOKENIZER] = new CTokenizer();
+    Parsers[ID_PARSER_TIHUDICT] = new CTihuDict();
+    Parsers[ID_PARSER_HAZM] = new CHazm();
+    Parsers[ID_PARSER_PHONETICS] = new CPhonetics();
+    Parsers[ID_PARSER_MBROLA_MALE] = new CMbrolaSyn("mbrola/ir1");
+    Parsers[ID_PARSER_MBROLA_FEMALE] = new CMbrolaSyn("mbrola/ir2");
+    Parsers[ID_PARSER_ESPEAK_MALE] = new CeSpeakSyn("eSpeak/male");
+    Parsers[ID_PARSER_ESPEAK_FEMALE] = new CeSpeakSyn("eSpeak/female");
 
-    if (!Hazm->Load()) {
-        return TIHU_ERR_LOADING;
-    }
-    if (!TihuDict->Load()) {
-        return TIHU_ERR_LOADING;
-    }
-    if (!Phonetics->Load()) {
-        return TIHU_ERR_LOADING;
-    }
-    if (!Tokenizer->Load()) {
-        return TIHU_ERR_LOADING;
-    }
 
-    Hazm->SetSettings(Settings);
-    TihuDict->SetSettings(Settings);
-    Phonetics->SetSettings(Settings);
-    Tokenizer->SetSettings(Settings);
+    for (auto const& p : Parsers){
+        p.second->SetSettings(&Settings);
 
-    return LoadSynthesizers();
-}
-
-int CEngine::LoadSynthesizers() {
-    Synthesizers[TIHU_VOICE_MBROLA_MALE] = new CMbrolaSyn();
-    Synthesizers[TIHU_VOICE_MBROLA_FEMALE] = new CMbrolaSyn();
-    Synthesizers[TIHU_VOICE_ESPEAK_MALE] = new CeSpeakSyn();
-    Synthesizers[TIHU_VOICE_ESPEAK_FEMALE] = new CeSpeakSyn();
-
-    for (int i = 0; i < TIHU_VOICE_COUNT; ++i) {
-        Synthesizers[i]->SetSettings(Settings);
-    }
-
-    if (!Synthesizers[TIHU_VOICE_MBROLA_MALE]->Load("mbrola/ir1")) {
-        return TIHU_ERR_LOADING;
-    }
-
-    if (!Synthesizers[TIHU_VOICE_MBROLA_FEMALE]->Load("mbrola/ir2")) {
-        return TIHU_ERR_LOADING;
-    }
-
-    if (!Synthesizers[TIHU_VOICE_ESPEAK_MALE]->Load("eSpeak/male")) {
-        return TIHU_ERR_LOADING;
-    }
-
-    if (!Synthesizers[TIHU_VOICE_ESPEAK_FEMALE]->Load("eSpeak/female")) {
-        return TIHU_ERR_LOADING;
+        if (!p.second->Load()) {
+            return TIHU_ERR_LOADING;
+        }
     }
 
     return TIHU_ERR_NONE;
@@ -136,40 +93,32 @@ void CEngine::SetCallback(TIHU_CALLBACK callback, void *userData) {
         return Callback((TIHU_CALLBACK_MESSAGE)t, l, w, UserData);
     };
 
-    (Tokenizer) ? Tokenizer->SetCallback(fn) : void();
-    (TihuDict) ? TihuDict->SetCallback(fn) : void();
-    (Phonetics) ? Phonetics->SetCallback(fn) : void();
-    (Hazm) ? Hazm->SetCallback(fn) : void();
-
-    for (int i = 0; i < TIHU_VOICE_COUNT; ++i) {
-        Synthesizers[i]->SetCallback(fn);
+    for (auto const& p : Parsers){
+        p.second->SetCallback(fn);
     }
 }
 
 void CEngine::Stop() {
-    Synthesizers[TIHU_VOICE_MBROLA_MALE]->Stop();
-    Synthesizers[TIHU_VOICE_MBROLA_FEMALE]->Stop();
-    Synthesizers[TIHU_VOICE_ESPEAK_MALE]->Stop();
-    Synthesizers[TIHU_VOICE_ESPEAK_FEMALE]->Stop();
+    IsStopped = true;
 }
 
 void CEngine::Tag(const std::string &text) {
     std::list<IParser *> parsers;
-    parsers.push_back(Tokenizer);
-    parsers.push_back(TihuDict);
-    parsers.push_back(Hazm);
-    parsers.push_back(Phonetics);
+    parsers.push_back(Parsers[ID_PARSER_TOKENIZER]);
+    parsers.push_back(Parsers[ID_PARSER_TIHUDICT]);
+    parsers.push_back(Parsers[ID_PARSER_HAZM]);
+    parsers.push_back(Parsers[ID_PARSER_PHONETICS]);
 
     ParsText(text, parsers, true);
 }
 
 void CEngine::Speak(const std::string &text, TIHU_VOICE voice) {
     std::list<IParser *> parsers;
-    parsers.push_back(Tokenizer);
-    parsers.push_back(TihuDict);
-    parsers.push_back(Hazm);
-    parsers.push_back(Phonetics);
-    parsers.push_back(Synthesizers[voice]);
+    parsers.push_back(Parsers[ID_PARSER_TOKENIZER]);
+    parsers.push_back(Parsers[ID_PARSER_TIHUDICT]);
+    parsers.push_back(Parsers[ID_PARSER_HAZM]);
+    parsers.push_back(Parsers[ID_PARSER_PHONETICS]);
+    parsers.push_back(Parsers[voice+ID_PARSER_MBROLA_MALE]);
 
     ParsText(text, parsers, true);
 }
@@ -180,10 +129,15 @@ void CEngine::Diacritize(const std::string &text) {
 
 void CEngine::ParsText(const std::string &text, std::list<IParser *> parsers,
                        bool report_tags) {
+    IsStopped = false;
     std::stringstream ss(text);
     std::string line;
     int offset = 0;
     while (std::getline(ss, line, '\n')) {
+        if (IsStopped) {
+            break;
+        }
+
         CCorpus corpus(line, offset);
 
         for (auto parser : parsers) {
@@ -205,19 +159,19 @@ bool CEngine::SetParam(TIHU_PARAM param, int value) {
 
     switch (param) {
     case TIHU_PARAM_PITCH:
-        Settings->SetPitch(value);
+        Settings.SetPitch(value);
         break;
     case TIHU_PARAM_VOLUME:
-        Settings->SetVolume(value);
+        Settings.SetVolume(value);
         break;
     case TIHU_PARAM_RATE:
-        Settings->SetRate(value);
+        Settings.SetRate(value);
         break;
     case TIHU_PARAM_READ_PUNCS:
         // TODO
         break;
     case TIHU_PARAM_FREQUENCY:
-        applied = false;
+        Settings.SetFrequency(value);
         break;
     }
 
@@ -229,16 +183,16 @@ bool CEngine::GetParam(TIHU_PARAM param, int &value) {
 
     switch (param) {
     case TIHU_PARAM_PITCH:
-        value = Settings->GetPitch();
+        value = Settings.GetPitch();
         break;
     case TIHU_PARAM_VOLUME:
-        value = Settings->GetVolume();
+        value = Settings.GetVolume();
         break;
     case TIHU_PARAM_RATE:
-        value = Settings->GetRate();
+        value = Settings.GetRate();
         break;
     case TIHU_PARAM_FREQUENCY:
-        value = Settings->GetFrequency();
+        value = Settings.GetFrequency();
         break;
     case TIHU_PARAM_READ_PUNCS:
         // TODO
@@ -250,7 +204,10 @@ bool CEngine::GetParam(TIHU_PARAM param, int &value) {
     return true;
 }
 
-void CEngine::EnableDebugMode(bool enable) { Settings->SetIsDebugMode(enable); }
+void CEngine::EnableDebugMode(bool enable) {
+    //
+    Settings.SetIsDebugMode(enable);
+}
 
 void CEngine::LogText(const std::string &text) const {
     const std::locale utf8_locale =

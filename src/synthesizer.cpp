@@ -26,8 +26,6 @@
 
 ISynthesizer::ISynthesizer() {
     SampleCounter = 0;
-    IsStop = false;
-
     int error = 0;
     SRCState = src_new(SRC_SINC_BEST_QUALITY, 1, &error);
 	if(SRCState == nullptr) {

@@ -27,6 +27,7 @@
 IParser::IParser() {
     Callback = nullptr;
     Settings = nullptr;
+    IsStopped = false;
 }
 
 IParser::~IParser() {}
@@ -35,7 +36,14 @@ void IParser::SetCallback(const callback_t& cb) {
     Callback = cb;
 }
 
-void IParser::SetSettings(CSettings *settings) { Settings = settings; }
+void IParser::SetSettings(CSettings *settings) {
+    //
+    Settings = settings;
+}
+
+void IParser::Stop() {
+    IsStopped = true;
+}
 
 void IParser::Message(const char *message) const {
     if (Callback) {

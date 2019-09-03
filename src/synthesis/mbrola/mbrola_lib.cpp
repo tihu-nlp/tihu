@@ -110,7 +110,7 @@ int CMbrolaLib::Read(short *samples, int length) {
 void CMbrolaLib::Flush() { mbr.flush_MBR(); }
 
 void CMbrolaLib::Clear() {
-    /// Flush();
+    Flush();
 }
 
 void CMbrolaLib::Reset() { mbr.reset_MBR(); }

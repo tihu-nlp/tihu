@@ -30,7 +30,7 @@ class CTokenizer : public IParser {
   public:
     CTokenizer();
 
-    bool Load(std::string param = "");
+    bool Load();
     void ParsText(CCorpus *corpus) override;
 
   private:

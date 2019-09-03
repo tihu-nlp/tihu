@@ -29,13 +29,11 @@
 
 class CMbrolaSyn : public ISynthesizer {
   public:
-    CMbrolaSyn();
+    CMbrolaSyn(std::string voice_param);
     virtual ~CMbrolaSyn();
 
-    bool Load(std::string param = "") override;
+    bool Load() override;
     void ParsText(CCorpus *corpus) override;
-
-    void Stop() override;
 
     int GetFrequency() const override;
     void ApplyChanges() override;

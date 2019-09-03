@@ -25,11 +25,12 @@
 
 #include "helper.h"
 #include "tihu.h"
+#include "settings.h"
+
+#include <map>
 
 class IParser;
-class ISynthesizer;
 class CCorpus;
-class CSettings;
 
 class CEngine {
   public:
@@ -50,7 +51,6 @@ class CEngine {
     void EnableDebugMode(bool enable);
 
   private:
-    int LoadSynthesizers();
     void ParsText(const std::string &text, std::list<IParser *> parsers,
                   bool report_tags);
     void LogText(const std::string &text) const;
@@ -58,14 +58,11 @@ class CEngine {
     std::string GetCurrentModulePath() const;
 
   private:
-    IParser *Hazm;
-    IParser *TihuDict;
-    IParser *Phonetics;
-    IParser *Tokenizer;
-    ISynthesizer *Synthesizers[TIHU_VOICE_COUNT];
-    CSettings *Settings;
+    std::map<int, IParser*> Parsers;
+    CSettings Settings;
     TIHU_CALLBACK Callback;
     void *UserData;
+    bool IsStopped;
 };
 
 #endif

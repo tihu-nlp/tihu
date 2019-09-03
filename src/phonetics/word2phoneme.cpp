@@ -102,6 +102,7 @@ std::string CWord2Phoneme::Convert(std::string word) {
     ++WordFrequency[word];
 #endif
 
+    return "";
     std::string pron;
     std::string delimiter = "_";
     size_t pos = 0;

@@ -156,7 +156,6 @@ void CeSpeakLib::Stop() {
     }
 }
 
-int CeSpeakLib::GetFrequency() const
-{
+int CeSpeakLib::GetFrequency() const {
     return Frequency;
 }

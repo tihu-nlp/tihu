@@ -24,7 +24,7 @@
 
 CTokenizer::CTokenizer() { Offset = 0; }
 
-bool CTokenizer::Load(std::string param) {
+bool CTokenizer::Load() {
     CFileManager file_manager;
 
     if (file_manager.OpenFile("./data/tokens.txt")) {
@@ -68,6 +68,10 @@ void CTokenizer::ParsText(CCorpus *corpus) {
     Offset = corpus->GetOffset();
 
     while (1) {
+        if (IsStopped) {
+            break;
+        }
+
         CCharMap char_map = CharMapper.GetCharMap(*text);
 
         ///
@@ -209,13 +213,13 @@ int CTokenizer::ParsEvents(const CWordPtr &word, const char16_t *text) {
 
         const char16_t *colon = u16chr(start_tag + 1, ':');
         if (!colon) {
-            TIHU_WARNING(stderr, "Wrong event at offset %d", Offset);
+            TIHU_WARNING(stderr, "Wrong event at offset %d\n", Offset);
             break;
         }
 
         const char16_t *end_tag = u16chr(colon + 1, '/');
         if (!end_tag) {
-            TIHU_WARNING(stderr, "Wrong event at offset %d", Offset);
+            TIHU_WARNING(stderr, "Wrong event at offset %d\n", Offset);
             break;
         }
 

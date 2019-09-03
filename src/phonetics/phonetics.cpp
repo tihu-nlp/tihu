@@ -24,7 +24,7 @@ CPhonetics::CPhonetics() {}
 
 CPhonetics::~CPhonetics() {}
 
-bool CPhonetics::Load(std::string param) {
+bool CPhonetics::Load() {
     if (!Word2Phoneme.LoadModel("./data/g2p-seq2seq-tihudict")) {
         return false;
     }
@@ -39,6 +39,10 @@ bool CPhonetics::Load(std::string param) {
 void CPhonetics::ParsText(CCorpus *corpus) {
     CWordList &word_list = corpus->GetWordList();
     for (auto &word : word_list) {
+        if (IsStopped) {
+            break;
+        }
+        
         auto &entry = word->GetBestEntry();
 
         if (entry->GetPron().empty()) {

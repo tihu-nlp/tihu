@@ -33,7 +33,7 @@ class CPhonetics : public IParser {
     CPhonetics();
     ~CPhonetics();
 
-    bool Load(std::string param = "") override;
+    bool Load() override;
 
     void ParsText(CCorpus *corpus) override;
 

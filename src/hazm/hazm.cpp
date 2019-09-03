@@ -46,7 +46,7 @@ CHazm::~CHazm() {
         Py_DecRef(TagFunc);
 }
 
-bool CHazm::Load(std::string param) {
+bool CHazm::Load() {
     PyObject *hazm_name = PyUnicode_FromString("hazm");
     HazmObj = PyImport_Import(hazm_name);
     Py_DECREF(hazm_name);
@@ -141,6 +141,9 @@ void CHazm::ParsText(CCorpus *corpus) {
 
     index = 0;
     for (auto &word : word_list) {
+        if (IsStopped) {
+            break;
+        }
 
         PyObject *item = PyList_GetItem(tags, index++);
 
@@ -166,7 +169,7 @@ void CHazm::ParsText(CCorpus *corpus) {
                 if (entry_list.size() > 1) {
                     entry_list.erase(it++);
                 } else {
-                    TIHU_WARNING(stderr, "Mismatched tags %s, %s\n", pos1.c_str(), pos2.c_str());
+                    //TIHU_WARNING(stderr, "Mismatched tags %s, %s\n", pos1.c_str(), pos2.c_str());
                     (*it)->SetPOS(tag);
                 }
             } else {
