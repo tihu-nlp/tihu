@@ -1,0 +1,300 @@
+1	PUNC	 yek
+2	PUNC	 do
+3	PUNC	 se
+4	PUNC	 CAhAr
+5	PUNC	 panj
+6	PUNC	 SeS
+7	PUNC	 haft
+8	PUNC	 haSt
+9	PUNC	 noh
+0	PUNC	 sefr_
+1	PUNC	 yek
+2	PUNC	 do
+3	PUNC	 se
+4	PUNC	 CAhAr
+5	PUNC	 panj
+6	PUNC	 SeS
+7	PUNC	 haft
+8	PUNC	 haSt
+9	PUNC	 noh
+0	PUNC	 sefr_
+1	PUNC	 yek
+2	PUNC	 do
+3	PUNC	 se
+4	PUNC	 CAhAr
+5	PUNC	 panj
+6	PUNC	 SeS
+7	PUNC	 haft
+8	PUNC	 haSt
+9	PUNC	 noh
+A	RES
+B	RES
+C	RES
+D	RES
+E	RES
+F	RES
+G	RES
+H	RES
+I	RES
+J	RES
+K	RES
+L	RES
+m	RES
+N	RES
+O	RES
+P	RES
+Q	RES
+R	RES
+S	RES
+T	RES
+U	RES
+V	RES
+W	RES
+X	RES
+Y	RES
+Z	RES
+a	RES
+b	RES
+c	RES
+d	RES
+e	RES
+f	RES
+g	RES
+h	RES
+i	RES
+j	PUNC
+k	RES
+l	N
+m	RES
+n	RES
+o	RES
+p	RES
+q	RES
+r	RES
+s	RES
+t	RES
+u	RES
+v	PUNC
+w	RES
+x	RES
+y	RES
+z	RES
+آ	N	*A
+ا	RES	*e
+و	CONJ	 va
+ا	RES	*e
+ی	RES	*y
+ا	RES	*e
+ب	N	*b
+ت	RES	*t
+ت	RES	*t
+ث	RES	*se
+ج	N	*j
+ح	RES	*h
+خ	RES	*x
+د	RES	*de
+ذ	RES	*ze
+ر	N	*re
+ز	RES	 ze
+س	N	*se
+ش	N	*S
+ص	N	*se
+ض	N	*ze
+ط	RES	*te
+ظ	RES	*ze
+ع	N	*e
+غ	N	*qa
+ف	N	*f
+ق	N	*qe
+ک	N	*k
+ل	N	*l
+م	N	*m
+ن	N	*n
+ه	RES	*h
+و	CONJ	 va
+ی	RES	*y
+ی	RES	*y
+ً	ADV	*an
+ٌ	PUNC	*on
+ٍ	PUNC	*en
+َ	PUNC	*a
+ُ	PUNC	*o
+ِ	PUNC	*e
+ّ	N	*
+ْ	PUNC	*
+ٓ	PUNC	*
+ٔ	PUNC	*e
+ٕ	PUNC	*
+آ	N	*A
+ا	RES	*e
+ا	RES	*e
+ٴ	N	*S
+ا	RES	*e
+و	CONJ	 va
+و	CONJ	 va
+ی	RES	*y
+ت	RES	*t
+پ	RES	*p
+چ	RES	*C
+د	RES	*de
+ژ	RES	*Z
+ک	N	*k
+ک	N	*k
+ک	N	*k
+گ	N	*gag
+ه	RES	*h
+هٔ	N	*he
+ه	RES	*h
+هٔ	N	*he
+ه	RES	*h
+ی	RES	*y
+ی	RES	*y
+ی	RES	*y
+ه	RES	*h
+الله	N	 allAh
+لا	N	 lA
+لا	N	 lA
+لا	N	 lA
+لا	N	 lA
+لا	N	 lA
+لا	N	 lA
+لا	N	 lA
+لا	N	 lA
+!	PUNC	 alAmateta?ajjob
+"	PUNC	 ko?ot
+$	PUNC	 dolAr
+%	PUNC	 darsad
+&	PUNC	 and
+'	PUNC	 Apostorof
+(	PUNC	 parAntezbAz
+)	PUNC	 parAntezbaste
+*	PUNC	 setAre
++	PUNC	 be?alAveye
+,	PUNC	 kAmA
+-	PUNC	 xatetire
+.	PUNC	 noqte
+/	PUNC	 eslaS
+:	PUNC	 donoqte
+;	PUNC	 _
+<	PUNC	 kuCektaraz
+=	RES	 mosAviye
+>	PUNC	 bozorgtaraz
+?	PUNC	 alAmateso?Al
+@	PUNC	 atsAyn
+[	PUNC	 koruSebAz
+\	PUNC	 bakeslaS
+]	PUNC	 koruSebaste
+^	PUNC	 betavAne
+_	PUNC	 zirxat
+`	PUNC	 _
+{	PUNC	 AkolAdbAz
+|	PUNC	 xate?amodi
+}	PUNC	 AkolAdbaste
+~	PUNC	 mad
+¡	PUNC	 virgol
+¢	PUNC	 sent
+£	PUNC	 p?ond
+¤	PUNC	 _
+¥	PUNC	 yen
+¦	PUNC	 _
+§	PUNC	 _
+¨	PUNC	 _
+©	PUNC	 _
+ª	PUNC	 _
+«	PUNC	 giyumebAz
+­	PUNC	 _
+®	PUNC	 _
+¯	PUNC	 _
+°	PUNC	 _
+±	PUNC	 mosbatmanfiye
+²	PUNC	 _
+³	PUNC	 _
+´	PUNC	 _
+µ	PUNC	 _
+¶	PUNC	 _
+·	PUNC	 boledekuCak
+¸	PUNC	 _
+¹	PUNC	 _
+º	PUNC	 _
+»	PUNC	 giyumebaste
+¼	PUNC	 yekCAhArom
+½	PUNC	 yekdovvom
+¾	PUNC	 seCAhArom
+¿	PUNC	 alAmateso?Al
+×	RES	 zarbdar
+÷	NUM	 taqsimbar
+ƒ	PUNC	 _
+ˆ	N
+،	PUNC	 virgol
+٪	RES	 darsad
+٫	PUNC	 _
+٬	N	 _
+؛	PUNC	 noqtevirgol
+?	PUNC	 alAmateso?Al
+٭	N
+–	PUNC	 xattekutAh
+—	PUNC	 xatteboland
+―	PUNC
+‗	PUNC
+‘	PUNC
+’	PUNC	 _
+‚	PUNC
+‛	PUNC
+“	PUNC
+”	PUNC
+„	PUNC
+†	PUNC	 _
+‡	PUNC	 _
+•	PUNC	 boled
+…	PUNC	 senoqte
+‰	PUNC
+′	PUNC
+″	PUNC
+‹	PUNC
+›	PUNC
+‼	PUNC
+‾	PUNC
+⁄	PUNC	 eslaS
+ⁿ	PUNC
+₣	PUNC
+₤	PUNC
+₧	PUNC
+₪	PUNC
+₫	PUNC
+€	PUNC	 yoro
+℅	PUNC
+ℓ	PUNC
+№	PUNC
+™	PUNC	 _
+Ω	PUNC
+℮	PUNC
+⅓	PUNC
+⅔	PUNC
+⅛	PUNC
+⅜	PUNC
+⅝	PUNC
+⅞	PUNC
+←	PUNC
+↑	PUNC
+→	PUNC
+↓	PUNC
+↔	PUNC
+↕	PUNC
+↨	PUNC
+∂	PUNC
+∆	PUNC
+∏	PUNC
+∑	PUNC
+−	PUNC
+∕	PUNC
+∙	PUNC
+√	PUNC
+∞	PUNC
+∟	PUNC
+∩	PUNC
+∫	PUNC
+≈	PUNC
+≠	PUNC
+≡	PUNC
+≤	PUNC
+≥	PUNC

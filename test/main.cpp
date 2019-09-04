@@ -33,23 +33,27 @@ namespace fs = std::experimental::filesystem;
 #include "../src/tihu.h"
 
 bool compareFiles(const std::string &p1, const std::string &p2) {
-    std::ifstream f1(p1, std::ifstream::binary | std::ifstream::ate);
-    std::ifstream f2(p2, std::ifstream::binary | std::ifstream::ate);
+    std::ifstream f1(p1, std::ifstream::binary);
+    std::ifstream f2(p2, std::ifstream::binary);
 
     if (f1.fail() || f2.fail()) {
         return false; // file problem
     }
 
-    if (f1.tellg() != f2.tellg()) {
-        return false; // size mismatch
-    }
+    std::string content1((std::istreambuf_iterator<char>(f1)),
+                         (std::istreambuf_iterator<char>()));
 
-    // seek back to beginning and use std::equal to compare contents
-    f1.seekg(0, std::ifstream::beg);
-    f2.seekg(0, std::ifstream::beg);
-    return std::equal(std::istreambuf_iterator<char>(f1.rdbuf()),
-                      std::istreambuf_iterator<char>(),
-                      std::istreambuf_iterator<char>(f2.rdbuf()));
+    std::string content2((std::istreambuf_iterator<char>(f2)),
+                         (std::istreambuf_iterator<char>()));
+
+
+    content1.erase(std::remove_if(content1.begin(), content1.end(), isspace), content1.end());
+    content2.erase(std::remove_if(content2.begin(), content2.end(), isspace), content2.end());
+
+    fprintf(stderr, content1.c_str());
+    fprintf(stderr, content2.c_str());
+
+    return content1 == content2;
 }
 
 std::string read_file(std::string fname) {
@@ -71,12 +75,13 @@ TIHU_CALLBACK_RETURN cb(TIHU_CALLBACK_MESSAGE message, long l_param,
     FILE *fp = (FILE *)data;
 
     fwrite(str, 1, strlen(str), fp);
+    return TIHU_DATA_PROCESSED;
 }
 
 int main(int argc, char **argv) {
     if (argc < 3) {
         printf("Error: Not enough arguments.\nex: ./tihu_test ./libtihu.so "
-               "../test/res\n");
+           "../test/res\n");
         return 1;
     }
 
