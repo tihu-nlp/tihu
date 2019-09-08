@@ -4,11 +4,11 @@ CC = g++
 OBJSDIR = obj/
 SRCS = $(wildcard src/*.cpp) $(wildcard src/*/*.cpp) $(wildcard src/*/*/*.cpp)
 OBJS = $(addprefix $(OBJSDIR),$(patsubst %.cpp,%.o,$(SRCS)))
-INC = `python-config --includes` -Xlinker -export-dynamic
+INC = `python2-config --includes` -Xlinker -export-dynamic
 ## for debugging
 CXXFLAGS = -c -Wall -std=c++14 $(INC) -DDEBUG -g -fPIC
 ##CXXFLAGS = -c -fPIC -Wall -std=c++14 $(INC) -O3
-LDFLAGS = `python-config --ldflags` -lsamplerate -shared -Wl,-soname,$(TARGET)
+LDFLAGS = `python2-config --ldflags` -lsamplerate -shared -Wl,-soname,$(TARGET)
 
 
 all: deps build
@@ -20,16 +20,16 @@ deps:
 	cd /tmp/MBROLA && make
 	cp /tmp/MBROLA/Bin/mbrola ./build/
 	@echo === Installing g2p-seq2seq
-	pip install tensorflow==1.9.0 --user
-	pip install tensor2tensor==1.7.0 --user
+	pip2 install tensorflow==1.9.0 --user
+	pip2 install tensor2tensor==1.7.0 --user
 	rm -rf /tmp/g2p-seq2seq
 	git clone https://github.com/tihu-nlp/g2p-seq2seq.git /tmp/g2p-seq2seq
-	cd /tmp/g2p-seq2seq && python setup.py install --user
+	cd /tmp/g2p-seq2seq && python2 setup.py install --user
 	@echo === Installing Hazm
-	pip install --upgrade --user pip
-	pip install six --upgrade --user
-	pip install pip --upgrade --user
-	pip install hazm --user
+	pip2 install --upgrade --user pip
+	pip2 install six --upgrade --user
+	pip2 install pip --upgrade --user
+	pip2 install hazm --user
 	@echo === Downloading Tihudict
 	wget -O /tmp/g2p-seq2seq-tihudict.tar.gz https://github.com/tihu-nlp/tihudict/releases/download/v2.0/g2p-seq2seq-tihudict-model-2.0.tar.gz
 	cd ./build/data && tar xf /tmp/g2p-seq2seq-tihudict.tar.gz
