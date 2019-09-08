@@ -30,6 +30,7 @@ script:
   - make
   #- make test
   - make play
+  - build/tihu_play build/libtihu.so "سلام" /tmp/raw1
   # - make console
 
   ## tihu console => appimage
