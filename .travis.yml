@@ -13,6 +13,8 @@ before_install:
   - sudo pip install six --upgrade
   - sudo pip install pip --upgrade
   - sudo pip install hazm
+  - sudo apt-get install libespeak-ng-dev -y
+	- sudo apt-get install libsamplerate0-dev -y
 
 install:
   - sudo apt-get install openssl -y

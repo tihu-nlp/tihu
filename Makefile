@@ -14,10 +14,6 @@ LDFLAGS = `python-config --ldflags` -lsamplerate -shared -Wl,-soname,$(TARGET)
 all: deps build
 
 deps:
-	@echo === Installing espeak-ng
-	sudo apt-get install libespeak-ng-dev -y
-	@echo === Downloading libsamplerate
-	sudo apt-get install libsamplerate0-dev -y
 	@echo === Installing Mbrola
 	rm -rf /tmp/MBROLA
 	git clone https://github.com/numediart/MBROLA /tmp/MBROLA
@@ -30,7 +26,7 @@ deps:
 	git clone https://github.com/tihu-nlp/g2p-seq2seq.git /tmp/g2p-seq2seq
 	cd /tmp/g2p-seq2seq && python setup.py install --user
 	@echo === Installing Hazm
-	sudo pip install --upgrade pip
+	pip install --upgrade --user pip
 	pip install six --upgrade --user
 	pip install pip --upgrade --user
 	pip install hazm --user
