@@ -25,46 +25,9 @@ install:
   - source /opt/qt510/bin/qt510-env.sh
   - pip install --upgrade pip
   - pip --version
-  # As I checked g2p-seq2seq interactive mode works on tensorflow 1.14 on python 3.7 (training doesn't work!)
-  - pip install tensorflow==1.14.0
-  - pip install tensor2tensor==1.7.6
-  - sudo pip install six --upgrade
-  - sudo pip install pip --upgrade
-  - sudo pip install hazm
 
 # Build steps
-script:
-  ## MBROLA
-  - git clone https://github.com/numediart/MBROLA
-  - cd MBROLA
-  - make
-  - cp Bin/mbrola ../build/
-  - cd ..
-
-  ## espeak data
-  # NOTE: libespeak.so in build folder is compiled manualy (without portaudio).
-  - curl -sLO http://sourceforge.net/projects/espeak/files/espeak/espeak-1.48/espeak-1.48.04-source.zip
-  - unzip -qq espeak-1.48.04-source.zip
-  - cp -r espeak-1.48.04-source/espeak-data ./build/data/
-
-  ## g2p-seq2seq-tihudict
-  - curl -sLO https://github.com/tihu-nlp/tihudict/releases/download/v1.0/g2p-seq2seq-tihudict-model-1.0.tar.gz
-  - tar zxf g2p-seq2seq-tihudict-model-1.0.tar.gz
-  - mkdir ./build/data/g2p-seq2seq-tihudict
-  - cp -r g2p-seq2seq-tihudict/* ./build/data/g2p-seq2seq-tihudict
-
-  ## download and install lame
-  #- curl -sLO https://downloads.sourceforge.net/project/lame/lame/3.100/lame-3.100.tar.gz
-  #- tar zxf lame-3.100.tar.gz
-  #- cd lame-3.100
-  #- ./configure
-  #- make
-  #- cd -
-
-  #installing g2p-seq2seq 6.2
-  - git clone https://github.com/cmusphinx/g2p-seq2seq.git
-  - cd g2p-seq2seq
-  - python3 setup.py install
+script:mak
 
   ## build Tihu
   - make

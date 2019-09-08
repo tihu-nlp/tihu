@@ -152,7 +152,7 @@ const CEntryPtr &CWord::GetBestEntry() const {
         return *entry;
     }
 
-    TIHU_WARNING(stderr, "no entry for %s.\n", Text.c_str());
+    TIHU_WARNING(stderr, "no entry for '%s'.\n", Text.c_str());
     return nop_entry;
 }
 

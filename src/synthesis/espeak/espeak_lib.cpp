@@ -61,7 +61,7 @@ CeSpeakLib::~CeSpeakLib() {
 bool CeSpeakLib::Initialize(const char* data_path) {
     Finalize();
 
-    Module = dlopen("./libespeak.so", RTLD_LAZY);
+    Module = dlopen("libespeak-ng.so", RTLD_LAZY);
 
     if(!Module) {
         fputs(dlerror(), stderr);
