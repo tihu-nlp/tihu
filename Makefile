@@ -16,23 +16,27 @@ all: deps build
 deps:
 	@echo === Installing espeak-ng
 	sudo apt-get install libespeak-ng-dev -y
+	@echo === Downloading libsamplerate
+	sudo apt-get install libsamplerate0-dev -y
 	@echo === Installing Mbrola
 	rm -rf /tmp/MBROLA
 	git clone https://github.com/numediart/MBROLA /tmp/MBROLA
 	cd /tmp/MBROLA && make
 	cp /tmp/MBROLA/Bin/mbrola ./build/
 	@echo === Installing g2p-seq2seq
-	sudo pip install tensorflow==1.9.0 --user
-	sudo pip install tensor2tensor==1.7.0 --user
+	pip install tensorflow==1.9.0 --user
+	pip install tensor2tensor==1.7.0 --user
 	rm -rf /tmp/g2p-seq2seq
 	git clone https://github.com/tihu-nlp/g2p-seq2seq.git /tmp/g2p-seq2seq
 	cd /tmp/g2p-seq2seq && python setup.py install --user
 	@echo === Installing Hazm
-	sudo pip install hazm --user
+	sudo pip install --upgrade pip
+	pip install six --upgrade --user
+	pip install pip --upgrade --user
+	pip install hazm --user
 	@echo === Downloading Tihudict
 	wget -O /tmp/g2p-seq2seq-tihudict.tar.gz https://github.com/tihu-nlp/tihudict/releases/download/v2.0/g2p-seq2seq-tihudict-model-2.0.tar.gz
 	cd ./build/data && tar xf /tmp/g2p-seq2seq-tihudict.tar.gz
-
 
 build: $(TARGET)
 
