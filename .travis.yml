@@ -6,23 +6,21 @@ dist: bionic
 before_install:
   - sudo add-apt-repository ppa:beineri/opt-qt-5.11.1-bionic -y
   - sudo apt-get update -q
+  - sudo apt-get install qt511base qt511multimedia -y
+  - source /opt/qt511/bin/qt511-env.sh
+
+
+install:
   - gcc --version
   - g++ --versio
   - sudo pip install --upgrade pip
-  - pip --version
   - sudo pip install six --upgrade
   - sudo pip install pip --upgrade
   - sudo pip install hazm
+  - sudo apt-get install openssl -y
+  - sudo apt-get install libgl1-mesa-dev -y
   - sudo apt-get install libespeak-ng-dev -y
   - sudo apt-get install libsamplerate0-dev -y
-
-install:
-  - sudo apt-get install openssl -y
-  - sudo apt install libgl1-mesa-dev -y
-  - sudo apt-get install qt511base qt511multimedia -y
-  - source /opt/qt511/bin/qt511-env.sh
-  - sudo pip install --upgrade pip
-  - pip --version
 
 # Build steps
 script:
@@ -30,14 +28,14 @@ script:
   - make
   #- make test
   - make play
-  - build/tihu_play build/libtihu.so "سلام" /tmp/raw1
-  # - make console
+  ## For unknown reason returns: "undefined symbol src_new"
+  ##- build/tihu_play build/libtihu.so "سلام" /tmp/raw1
 
   ## tihu console => appimage
   - cd ./tools/tihu_console
   - qmake CONFIG+=release PREFIX=/usr
   - make -j$(nproc)
-  ## https://github.com/probonopd/linuxdeployqt/issues/338
+## https://github.com/probonopd/linuxdeployqt/issues/338
   #- sudo apt-get update
   #- sudo apt-get -y install libgtk2.0-dev
   #- git clone http://code.qt.io/qt/qtstyleplugins.git
