@@ -33,7 +33,7 @@ tihu_cpp:
 	$(PROTOC) -I $(PROTOS_PATH) --grpc_out=./cpp --cpp_out=./cpp --plugin=protoc-gen-grpc=$(GRPC_CPP_PLUGIN_PATH) tihu.proto
 
 tihu_server: tihu.pb.o tihu.grpc.pb.o tihu_server.o
-	$(CXX) $^ $(LDFLAGS) -o $@
+	$(CXX) $^ $(LDFLAGS) -o ../../build/$@
 
 .PRECIOUS: %.grpc.pb.cc
 %.grpc.pb.cc: %.proto

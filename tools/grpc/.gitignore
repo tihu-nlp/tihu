@@ -1,4 +1,4 @@
 *.pb.cc
 *.pb.h
-tihu_server
 php
+cpp

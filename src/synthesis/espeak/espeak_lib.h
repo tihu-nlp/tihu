@@ -57,7 +57,7 @@ public:
     CeSpeakLib();
     virtual ~CeSpeakLib();
 
-    bool Initialize(const char* data_path);
+    bool Initialize();
     void Finalize();
 
     void SetCallback(t_espeak_callback callback);

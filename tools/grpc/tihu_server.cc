@@ -27,18 +27,21 @@ TIHU_CALLBACK_RETURN tihu_cb(TIHU_CALLBACK_MESSAGE message, long l_param,
         reply.set_tags((char *)l_param);
         writer->Write(reply);
     }
+
+    return TIHU_DATA_PROCESSED;
 }
 
 // Logic and data behind the server's behavior.
 class TihuServiceImpl final : public tihu::Tihu::Service {
   public:
-    TihuServiceImpl(std::string _lib, std::string _log)
-        : lib(_lib.c_str()), handle(nullptr), tihu_Init(nullptr),
+    TihuServiceImpl(const std::string lib, const std::string log)
+        : handle(nullptr), tihu_Init(nullptr),
           tihu_Close(nullptr), tihu_Callback(nullptr), tihu_Speak(nullptr) {
 
-        fs.open(_log, std::fstream::out | std::fstream::app);
-
-        InitTihu();
+        if (!log.empty()) {
+            fs.open(log, std::fstream::out | std::fstream::app);
+        }
+        InitTihu(lib);
     }
 
     ~TihuServiceImpl() { CloseTihu(); }
@@ -53,10 +56,10 @@ class TihuServiceImpl final : public tihu::Tihu::Service {
         }
     }
 
-    void InitTihu() {
+    void InitTihu(const std::string lib) {
         char *error;
 
-        handle = dlopen(lib, RTLD_LAZY);
+        handle = dlopen(lib.c_str(), RTLD_LAZY);
         if (!handle) {
             log("Error: Tihu module cannot open.");
             return;
@@ -102,6 +105,10 @@ class TihuServiceImpl final : public tihu::Tihu::Service {
     }
 
     void log(std::string message, const char *reason = "") {
+        if (!fs.is_open()) {
+            return;
+        }
+
         time_t t = time(NULL);
         struct tm *tm = localtime(&t);
         char s[64];
@@ -111,7 +118,6 @@ class TihuServiceImpl final : public tihu::Tihu::Service {
     }
 
   private:
-    const char *lib;
     void *handle;
     TIHU_PROC_INIT tihu_Init;
     TIHU_PROC_CLOSE tihu_Close;
@@ -121,7 +127,7 @@ class TihuServiceImpl final : public tihu::Tihu::Service {
     std::fstream fs;
 };
 
-void RunServer(std::string addr, std::string lib, std::string log) {
+void RunServer(const std::string addr, const std::string lib, const std::string log) {
     std::string server_address(addr);
     TihuServiceImpl service(lib, log);
 

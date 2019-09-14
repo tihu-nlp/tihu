@@ -20,5 +20,6 @@ tihu_play/tihu_play
 build/data/g2p*
 build/log/*
 build/tihu_play
+build/tihu_server
 build/tihu_test
 build/mbrola

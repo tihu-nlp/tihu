@@ -36,7 +36,7 @@ CeSpeakSyn::~CeSpeakSyn() {
 }
 
 bool CeSpeakSyn::Load() {
-    if (!eSpeakLib.Initialize("/usr/lib/x86_64-linux-gnu/espeak-ng-data")) {
+    if (!eSpeakLib.Initialize()) {
         return false;
     }
 

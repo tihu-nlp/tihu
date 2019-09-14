@@ -58,7 +58,7 @@ CeSpeakLib::~CeSpeakLib() {
     Finalize();
 }
 
-bool CeSpeakLib::Initialize(const char* data_path) {
+bool CeSpeakLib::Initialize() {
     Finalize();
 
     Module = dlopen("libespeak-ng.so", RTLD_LAZY);
@@ -116,7 +116,7 @@ bool CeSpeakLib::Initialize(const char* data_path) {
         return false;
     }
 
-    Frequency = procInitialize(AUDIO_OUTPUT_SYNCHRONOUS, 0, data_path, 0);
+    Frequency = procInitialize(AUDIO_OUTPUT_SYNCHRONOUS, 0, NULL, 0);
 
     if(Frequency == -1) {
         return false;
@@ -127,7 +127,8 @@ bool CeSpeakLib::Initialize(const char* data_path) {
 
 void CeSpeakLib::Finalize() {
     if(Module) {
-        procTerminate();
+        /// TODO: Program not exit. stuck here
+        //procTerminate();
         dlclose(Module);
         Module = nullptr;
     }

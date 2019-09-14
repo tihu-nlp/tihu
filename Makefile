@@ -11,7 +11,7 @@ CXXFLAGS = -c -fPIC -Wall -Wextra -Wno-unused-parameter -Wno-unused -std=c++14 $
 LDFLAGS = `python2-config --ldflags` -lsamplerate -shared -Wl,-soname,$(TARGET)
 
 
-all: deps build clean
+all: deps build
 
 deps:
 	mkdir ./deps
@@ -48,6 +48,7 @@ $(OBJSDIR)%.o: %.cpp
 
 clean:
 	rm -rf $(OBJSDIR)
+	cd tools/grpc && make clean
 
 console:
 	cd tools/tihu_console && qmake && make
