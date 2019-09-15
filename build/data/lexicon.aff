@@ -55,36 +55,36 @@ SFX sc      _شان           .            eSAn
 
 
 SFX sd      3
-SFX sd      ها             .            ha
-SFX sd      های            .            hay
-SFX sd      هایی           .            haie
+SFX sd      ها             .            hA
+SFX sd      های            .            hAy
+SFX sd      هایی           .            hAyi
 
 
 SFX se      6
-SFX se      هایم           .            hayam
-SFX se      هایت           .            hayat
-SFX se      هایش           .            hayaS
-SFX se      هایمان         .            hayemAn
-SFX se      هایتان         .            hayetAn
-SFX se      هایشان         .            hayeSAn
+SFX se      هایم           .            hAyam
+SFX se      هایت           .            hAyat
+SFX se      هایش           .            hAyaS
+SFX se      هایمان         .            hAyemAn
+SFX se      هایتان         .            hAyetAn
+SFX se      هایشان         .            hAyeSAn
 
 SFX sf      1
 SFX sf      هاست           .            hAst
 
 
 SFX sg      3
-SFX sg      _ها            .            ha
-SFX sg      _های           .            hay
-SFX sg      _هایی          .            haie
+SFX sg      _ها            .            hA
+SFX sg      _های           .            hAy
+SFX sg      _هایی          .            hAyi
 
 
 SFX sh      6
-SFX sh      _هایم          .            hayam
-SFX sh      _هایت          .            hayat
-SFX sh      _هایش          .            hayaS
-SFX sh      _هایمان        .            hayemAn
-SFX sh      _هایتان        .            hayetAn
-SFX sh      _هایشان        .            hayeSAn
+SFX sh      _هایم          .            hAyam
+SFX sh      _هایت          .            hAyat
+SFX sh      _هایش          .            hAyaS
+SFX sh      _هایمان        .            hAyemAn
+SFX sh      _هایتان        .            hAyetAn
+SFX sh      _هایشان        .            hAyeSAn
 
 
 SFX si      1
