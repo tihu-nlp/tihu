@@ -78,7 +78,7 @@ script:
   - cd ../../..
   - cd tools/grpc
   - make tihu_server
-  - cp tihu_server ../../build
+
   # to solve undefined_symbols (Unknown reason)
   - cp /usr/local/lib/libgrpc++.so.1 ../../build
   - cp /usr/local/lib/libgrpc++_reflection.so.1 ../../build
