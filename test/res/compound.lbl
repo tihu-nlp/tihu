@@ -13,7 +13,7 @@
 ...	PUNC	 senoqte
 حرفه‌ای	AJ	 herfeie
 -	PUNC	 xatetire
-حرفهای	Ne	 harfhay
+حرفهای	Ne	 harfhAy
 -	PUNC	 xatetire
 حرفه‌ای	RES	 herfeie
 ها	RES	*hA
@@ -28,12 +28,12 @@
 وا	N	 vA
 مور	Ne	 mur
 اجتماعی	AJ	 ejtemA?i
-بن‌بست‌های	Ne	 bonbasthay
+بن‌بست‌های	Ne	 bonbasthAy
 پیش‌آمده	AJ	 piShAmade
 با	P	 bA
 کره‌شمالی	N_PR	 koreyeSomAli
 به‌دنبال	Pe	 bedonbA^le
-آزمایش‌های	Ne	 AzmAyeShay
+آزمایش‌های	Ne	 AzmAyeShAy
 موشکی	AJ	 muSaki
 بن	Ne	 bon
 بستهای	Ne	*basthAye
@@ -41,7 +41,7 @@
 با	P	 bA
 کره‌شمالی	N_PR	 koreyeSomAli
 به‌دنبال	Pe	 bedonbA^le
-آزمایش‌های	Ne	 AzmAyeShay
+آزمایش‌های	Ne	 AzmAyeShAy
 موشکی	AJ	 muSaki
 گفت	V_PA	 goft
 و	CONJ	 va
