@@ -28,12 +28,12 @@
 class CAfxManager;
 class CHashManager;
 
-class CTihuDict
+class CLexicon
     : public IParser
 {
 public:
-    CTihuDict();
-    ~CTihuDict();
+    CLexicon();
+    ~CLexicon();
 
     bool Load() override;
 

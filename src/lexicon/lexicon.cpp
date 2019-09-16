@@ -24,17 +24,17 @@
 
 #define MAX_COMPOUND 4
 
-CTihuDict::CTihuDict() {
+CLexicon::CLexicon() {
     HashManager = new CHashManager();
     AfxManager = new CAfxManager(HashManager);
 }
 
-CTihuDict::~CTihuDict() {
+CLexicon::~CLexicon() {
     delete AfxManager;
     delete HashManager;
 }
 
-bool CTihuDict::Load() {
+bool CLexicon::Load() {
     if (!AfxManager->Load("./data/lexicon.aff")) {
         return false;
     }
@@ -46,7 +46,7 @@ bool CTihuDict::Load() {
     return true;
 }
 
-bool CTihuDict::CheckWord(const std::string &_text) const {
+bool CLexicon::CheckWord(const std::string &_text) const {
     const char *text = _text.c_str();
     int len = _text.size();
 
@@ -64,7 +64,7 @@ bool CTihuDict::CheckWord(const std::string &_text) const {
     return false;
 }
 
-bool CTihuDict::TagWord(CWordPtr &word, const std::string &_text) const {
+bool CLexicon::TagWord(CWordPtr &word, const std::string &_text) const {
     const char *text = _text.c_str();
     int len = _text.size();
 
@@ -86,7 +86,7 @@ bool CTihuDict::TagWord(CWordPtr &word, const std::string &_text) const {
     return !word->IsEmpty();
 }
 
-void CTihuDict::ParsText(CCorpus *corpus) {
+void CLexicon::ParsText(CCorpus *corpus) {
     CWordList &word_list = corpus->GetWordList();
     for (auto itr = word_list.begin(); itr != word_list.end();) {
         if (IsStopped) {
@@ -111,7 +111,7 @@ void CTihuDict::ParsText(CCorpus *corpus) {
     corpus->Dump("dict.xml");
 }
 
-bool CTihuDict::TagCompound(CWordList &word_list,
+bool CLexicon::TagCompound(CWordList &word_list,
                             CWordList::iterator &word_itr) {
     int compound_count = MAX_COMPOUND;
 
@@ -148,7 +148,7 @@ bool CTihuDict::TagCompound(CWordList &word_list,
 }
 
 std::string
-CTihuDict::GetCompoundText(const std::vector<std::string> &compound) {
+CLexicon::GetCompoundText(const std::vector<std::string> &compound) {
     std::string text;
     auto iter = compound.cbegin();
 
@@ -163,7 +163,7 @@ CTihuDict::GetCompoundText(const std::vector<std::string> &compound) {
 }
 
 std::vector<std::string>
-CTihuDict::MakeCompound(const CWordList &word_list,
+CLexicon::MakeCompound(const CWordList &word_list,
                         CWordList::const_iterator word_itr,
                         int compound_count) {
     std::vector<std::string> compound;
@@ -199,7 +199,7 @@ CTihuDict::MakeCompound(const CWordList &word_list,
     return compound;
 }
 
-bool CTihuDict::CanBeCompoundWord(
+bool CLexicon::CanBeCompoundWord(
     const std::vector<std::string> &compound) const {
     if (compound.size() == 1) {
         return true;
@@ -219,7 +219,7 @@ bool CTihuDict::CanBeCompoundWord(
 /// try to decompose the word
 /// وزیرکارواموراجتماعی --> وزیر + کار + و + امور + اجتماعی
 ///
-bool CTihuDict::Breakdown(CWordList &word_list,
+bool CLexicon::Breakdown(CWordList &word_list,
                           CWordList::iterator &word_itr) const {
     std::string text = (*word_itr)->GetText();
     std::u16string text_16 = UTF8ToUTF16(text);
@@ -291,7 +291,7 @@ bool CTihuDict::Breakdown(CWordList &word_list,
     return true;
 }
 
-bool CTihuDict::CanBeDetached(std::u16string str) const {
+bool CLexicon::CanBeDetached(std::u16string str) const {
     char16_t last = str.back();
 
     switch (last) {

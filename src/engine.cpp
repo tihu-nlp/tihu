@@ -36,7 +36,7 @@
 
 enum parseIds{
     ID_PARSER_TOKENIZER = 0,
-    ID_PARSER_TIHUDICT,
+    ID_PARSER_LEXICON,
     ID_PARSER_HAZM,
     ID_PARSER_PHONETICS,
     ID_PARSER_MBROLA_MALE,
@@ -65,7 +65,7 @@ int CEngine::LoadModules() {
     }
 
     Parsers[ID_PARSER_TOKENIZER] = new CTokenizer();
-    Parsers[ID_PARSER_TIHUDICT] = new CTihuDict();
+    Parsers[ID_PARSER_LEXICON] = new CLexicon();
     Parsers[ID_PARSER_HAZM] = new CHazm();
     Parsers[ID_PARSER_PHONETICS] = new CPhonetics();
     Parsers[ID_PARSER_MBROLA_MALE] = new CMbrolaSyn("mbrola/ir1");
@@ -105,7 +105,7 @@ void CEngine::Stop() {
 void CEngine::Tag(const std::string &text) {
     std::list<IParser *> parsers;
     parsers.push_back(Parsers[ID_PARSER_TOKENIZER]);
-    parsers.push_back(Parsers[ID_PARSER_TIHUDICT]);
+    parsers.push_back(Parsers[ID_PARSER_LEXICON]);
     parsers.push_back(Parsers[ID_PARSER_HAZM]);
     parsers.push_back(Parsers[ID_PARSER_PHONETICS]);
 
@@ -115,7 +115,7 @@ void CEngine::Tag(const std::string &text) {
 void CEngine::Speak(const std::string &text, TIHU_VOICE voice) {
     std::list<IParser *> parsers;
     parsers.push_back(Parsers[ID_PARSER_TOKENIZER]);
-    parsers.push_back(Parsers[ID_PARSER_TIHUDICT]);
+    parsers.push_back(Parsers[ID_PARSER_LEXICON]);
     parsers.push_back(Parsers[ID_PARSER_HAZM]);
     parsers.push_back(Parsers[ID_PARSER_PHONETICS]);
     parsers.push_back(Parsers[voice+ID_PARSER_MBROLA_MALE]);
