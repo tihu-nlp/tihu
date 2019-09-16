@@ -25,7 +25,7 @@
 #include "synthesis/espeak/espeak_syn.h"
 #include "synthesis/mbrola/mbrola_syn.h"
 #include "tihu.h"
-#include "tihu_dict/tihu_dict.h"
+#include "lexicon/lexicon.h"
 #include "tokenizer/tokenizer.h"
 
 #include <dlfcn.h>

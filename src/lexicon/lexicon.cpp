@@ -18,7 +18,7 @@
  *    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
  *
  *******************************************************************************/
-#include "tihu_dict.h"
+#include "lexicon.h"
 #include "afx_manager.h"
 #include "hash_manager.h"
 
