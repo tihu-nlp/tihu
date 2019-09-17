@@ -106,7 +106,7 @@ SFX sl      ی              .            i
 
 
 SFX sm      1
-SFX sm      _ای            .            ie
+SFX sm      _ای            .            ?i
 
 
 SFX sn      1
@@ -124,9 +124,9 @@ SFX so      ند             V_PRS        and
 
 SFX sp      5
 SFX sp      _ام            V_PRS        am
-SFX sp      _ای            V_PRS        i
-SFX sp      _ایم           V_PRS        im
-SFX sp      _اید           V_PRS        id
+SFX sp      _ای            V_PRS        ?i
+SFX sp      _ایم           V_PRS        ?im
+SFX sp      _اید           V_PRS        ?id
 SFX sp      _اند           V_PRS        and
 
 
