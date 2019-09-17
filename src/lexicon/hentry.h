@@ -51,7 +51,7 @@ struct hentry {
     struct hentry* next; // next word with same hash code
     struct hentry* next_homonym;
     int freq;
-    char text[1];  // variable-length word (8-bit or UTF-8 encoding)
+    char data[1];  // variable-length data (8-bit or UTF-8 encoding)
 };
 
 #endif

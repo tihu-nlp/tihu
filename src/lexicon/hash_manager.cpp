@@ -40,7 +40,7 @@ struct hentry* CHashManager::Lookup(const char* text) const {
             return NULL;
         }
         for(; dp != NULL; dp = dp->next) {
-            if(strcmp(text, dp->text) == 0) {
+            if(strcmp(text, dp->data) == 0) {
                 return dp;
             }
         }
@@ -94,8 +94,6 @@ bool CHashManager::LoadTable(const std::string  &filename, const std::string  &k
             stderr, "error: line 1: missing or bad word count in the dic file\n");
         return false;
     }
-
-
 
     // allocate the hash table
     TablePtr = (struct hentry**)calloc(TableSize, sizeof(struct hentry*));
@@ -179,18 +177,19 @@ int CHashManager::AddWord(
     int pron_len = pron.size();
 
     // variable-length hash record with word and optional fields
+    int data_length = word_len + pos_len + pron_len + lemma_len + 4;
     struct hentry* hp =
-        (struct hentry*)malloc(sizeof(struct hentry) + word_len + pos_len + pron_len + lemma_len + 4);
+        (struct hentry*)malloc(sizeof(struct hentry) + data_length);
     if(!hp) {
         return 1;
     }
 
-    strcpy(hp->text, word.c_str());
-    strcpy(hp->text + word_len + 1, pos.c_str());
-    strcpy(hp->text + word_len + pos_len + 2, pron.c_str());
-    strcpy(hp->text + word_len + pos_len + pron_len + 3, lemma.c_str());
+    strcpy(hp->data, word.c_str());
+    strcpy(hp->data + word_len + 1, pos.c_str());
+    strcpy(hp->data + word_len + pos_len + 2, pron.c_str());
+    strcpy(hp->data + word_len + pos_len + pron_len + 3, lemma.c_str());
 
-    int hash = Hash(hp->text);
+    int hash = Hash(hp->data);
 
     hp->word_len = word_len;
     hp->pos_len = pos_len;
@@ -206,13 +205,22 @@ int CHashManager::AddWord(
         TablePtr[hash] = hp;
     } else {
         while(dp->next != NULL &&
-              strcmp(hp->text, dp->text) != 0) {
+              strcmp(hp->data, dp->data) != 0) {
 
             dp = dp->next;
         }
 
-        if(strcmp(hp->text, dp->text) == 0) {
-            while(dp->next_homonym != NULL) {
+        if(strcmp(hp->data, dp->data) == 0) {
+            for (;;) {
+                ///
+                if (memcmp(hp->data, dp->data, data_length) == 0) {
+                    TIHU_WARNING(stderr, "duplicated entry: %s\n", hp->data);
+                    free(hp);
+                    return 0;
+                }
+                if(dp->next_homonym == NULL) {
+                    break;
+                }
                 dp = dp->next_homonym;
             }
             dp->next_homonym = hp;
