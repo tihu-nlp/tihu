@@ -42,7 +42,7 @@ private:
 
     int AddWord(const std::string &word, const std::string &lemma,
                 const std::string &pos, const std::string &pron,
-                unsigned short* flags, short flags_len, int freq);
+                unsigned short* flags, short flags_len, int weight);
 
 private:
     struct hentry** TablePtr;

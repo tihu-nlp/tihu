@@ -101,13 +101,13 @@ bool CHashManager::LoadTable(const std::string  &filename, const std::string  &k
         return false;
     }
 
-    std::string word, pos, pron, freq, lemma;
+    std::string word, pos, pron, weight, lemma;
 
     while(file_manager.ReadLine()) {
         word  = file_manager.NextPiece();
         pos   = file_manager.NextPiece();
         pron  = file_manager.NextPiece();
-        freq  = file_manager.NextPiece();
+        weight  = file_manager.NextPiece();
         lemma = file_manager.NextPiece();
 
         // split each token into word and affix char strings
@@ -130,7 +130,7 @@ bool CHashManager::LoadTable(const std::string  &filename, const std::string  &k
             flags = NULL;
         }
 
-        if(AddWord(word, lemma, pos, pron, flags, al, std::stoi(freq))) {
+        if(AddWord(word, lemma, pos, pron, flags, al, std::stoi(weight))) {
             return false;
         }
     }
@@ -170,7 +170,7 @@ int CHashManager::AddWord(
     const std::string &pron,
     unsigned short* flags,
     short flags_len,
-    int freq) {
+    int weight) {
     int word_len = word.size();
     int lemma_len = lemma.size();
     int pos_len = pos.size();
@@ -195,7 +195,7 @@ int CHashManager::AddWord(
     hp->pos_len = pos_len;
     hp->pron_len = pron_len;
     hp->alen = flags_len;
-    hp->freq = freq;
+    hp->weight = weight;
     hp->astr = flags;
     hp->next = NULL;
     hp->next_homonym = NULL;
@@ -214,7 +214,7 @@ int CHashManager::AddWord(
             for (;;) {
                 ///
                 if (memcmp(hp->data, dp->data, data_length) == 0) {
-                    TIHU_WARNING(stderr, "duplicated entry: %s\n", hp->data);
+                    TIHU_WARNING(stderr, "duplicated entry: %s, flags: %s, %s\n", hp->data, hp->astr, dp->astr);
                     free(hp);
                     return 0;
                 }

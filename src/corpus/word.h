@@ -37,7 +37,7 @@ class CWord {
     void SetType(TIHU_TOKEN_TYPE type);
     void SetLength(size_t length);
     void SetOffset(size_t offset);
-    void SetFrequency(size_t frequency);
+    void SetWeight(size_t weight);
     void SetIsEndOfParagraph(bool is_end_of_paragraph);
     void SetIsEndOfSentence(bool is_end_of_sentence);
     void SetIsAutoPhonetics(bool lts);
@@ -48,7 +48,7 @@ class CWord {
     TIHU_TOKEN_TYPE GetType() const;
     size_t GetLength() const;
     size_t GetOffset() const;
-    size_t GetFrequency() const;
+    size_t GetWeight() const;
     bool IsEndOfParagraph() const;
     bool IsEndOfSentence() const;
     bool IsPersianWord() const;
@@ -76,7 +76,7 @@ class CWord {
     TIHU_TOKEN_TYPE Type; // Type of the the word(word)
     size_t Length;        // Length of the current word inside of input text
     size_t Offset;        // offset of the current word inside of input text
-    size_t Frequency;     // Frequency
+    size_t Weight;     // Weight
     uint32_t Flags;       // Extra information
 
     CEventList EventList;

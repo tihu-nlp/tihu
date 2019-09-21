@@ -482,7 +482,7 @@ void CAfxManager::ParsEntry(struct hentry* he, CPfxEntry* pfx, CSfxEntry* sfx, C
     std::string pos  = he->data + he->word_len + 1;
     std::string pron = he->data + he->word_len + he->pos_len + 2;
     std::string stem = he->data + he->word_len + he->pos_len +  + he->pron_len + 3;
-    int frequency = he->freq;
+    int weight = he->weight;
 
     if(pfx) {
         text = pfx->Appnd + text;
@@ -516,7 +516,6 @@ void CAfxManager::ParsEntry(struct hentry* he, CPfxEntry* pfx, CSfxEntry* sfx, C
     entry->SetPron(pron);
 
     word->AddEntry(entry);
-    word->SetFrequency(frequency);
-    word->SetFrequency(frequency);
+    word->SetWeight(weight);
 }
 

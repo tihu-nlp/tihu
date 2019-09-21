@@ -27,12 +27,12 @@
 #define WORD_FLAG_AUTO_PHONETICS 0x0008
 
 CWord::CWord()
-    : Type(TIHU_TOKEN_TYPE::UNKNOWN), Length(0), Offset(0), Frequency(0),
+    : Type(TIHU_TOKEN_TYPE::UNKNOWN), Length(0), Offset(0), Weight(0),
       Flags(0) {}
 
 CWord::CWord(CWord &word)
     : Text(word.Text), Type(word.Type), Length(word.Length),
-      Offset(word.Offset), Frequency(word.Frequency), Flags(word.Flags) {}
+      Offset(word.Offset), Weight(word.Weight), Flags(word.Flags) {}
 
 CWord::~CWord() {}
 
@@ -52,8 +52,8 @@ void CWord::SetOffset(size_t offset) {
     Offset = offset; //
 }
 
-void CWord::SetFrequency(size_t frequency) {
-    Frequency = frequency; //
+void CWord::SetWeight(size_t weight) {
+    Weight = weight; //
 }
 
 std::string CWord::GetText() const {
@@ -77,8 +77,8 @@ size_t CWord::GetOffset() const {
     return Offset; //
 }
 
-size_t CWord::GetFrequency() const {
-    return Frequency;
+size_t CWord::GetWeight() const {
+    return Weight;
 }
 
 bool CWord::IsPersianWord() const {

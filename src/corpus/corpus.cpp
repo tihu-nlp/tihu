@@ -85,9 +85,9 @@ std::string CCorpus::ToXml() const {
     char buffer[1024];
     for (auto &word : WordList) {
         snprintf(buffer, 1024,
-                 "\t<word offset=\"%zd\" length=\"%zd\" frequency=\"%zd\" "
+                 "\t<word offset=\"%zd\" length=\"%zd\" weight=\"%zd\" "
                  "text=\"%s\"%s%s%s>",
-                 word->GetOffset(), word->GetLength(), word->GetFrequency(),
+                 word->GetOffset(), word->GetLength(), word->GetWeight(),
                  word->GetText().c_str(),
                  word->IsAutoPhonetics() ? " g2p=\"1\"" : "",
                  word->IsEndOfParagraph() ? " eop=\"1\"" : "",
