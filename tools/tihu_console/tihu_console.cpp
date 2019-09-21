@@ -181,7 +181,7 @@ bool TihuConsole::LoadTihu(const QString& library) {
     int frequency = -1;
     procGetParam(TIHU_PARAM_FREQUENCY, frequency);
 
-    m_format.setSampleRate( frequency );
+    m_format.setSampleRate(frequency);
     m_format.setChannelCount(1);
     m_format.setSampleSize(16);
     m_format.setCodec("audio/pcm");

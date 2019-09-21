@@ -38,11 +38,11 @@ public:
     std::string Convert(std::string word);
 
 private:
-    void LoadWordFrequency();
-    void SaveWordFrequency();
+    void LoadUnknownWords();
+    void SaveUnknownWords();
 
 private:
-    std::map<std::string, int> WordFrequency;
+    std::map<std::string, int> UnknownWords;
     Cg2pSeq2Seq g2p;
 };
 

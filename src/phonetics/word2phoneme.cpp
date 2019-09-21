@@ -22,17 +22,17 @@
 
 #include <algorithm>
 
-#define LTS_LOG_WORDS
+#define LOG_UNKNOWN_WORDS
 
 CWord2Phoneme::CWord2Phoneme() {
-#ifdef LTS_LOG_WORDS
-    LoadWordFrequency();
+#ifdef LOG_UNKNOWN_WORDS
+    LoadUnknownWords();
 #endif
 }
 
 CWord2Phoneme::~CWord2Phoneme() {
-#ifdef LTS_LOG_WORDS
-    SaveWordFrequency();
+#ifdef LOG_UNKNOWN_WORDS
+    SaveUnknownWords();
 #endif
 }
 
@@ -40,7 +40,7 @@ bool CWord2Phoneme::LoadModel(const std::string &model) {
     return g2p.LoadModel(model);
 }
 
-void CWord2Phoneme::LoadWordFrequency() {
+void CWord2Phoneme::LoadUnknownWords() {
     std::string log_file = "./log/unknown_word_freqeuncy.txt";
     FILE *file = fopen(log_file.c_str(), "r");
 
@@ -52,9 +52,9 @@ void CWord2Phoneme::LoadWordFrequency() {
     while (fgets(buf, 1024, file)) {
         try {
             std::string word = strtok(buf, "\t");
-            int freq = std::stoi(strtok(NULL, "\t"));
+            int weight = std::stoi(strtok(NULL, "\t"));
 
-            WordFrequency[word] = freq;
+            UnknownWords[word] = weight;
         } catch (...) {
         }
     }
@@ -62,7 +62,7 @@ void CWord2Phoneme::LoadWordFrequency() {
     fclose(file);
 }
 
-void CWord2Phoneme::SaveWordFrequency() {
+void CWord2Phoneme::SaveUnknownWords() {
     std::string log_file = "./log/unknown_word_freqeuncy.txt";
     FILE *file = fopen(log_file.c_str(), "w");
 
@@ -72,7 +72,7 @@ void CWord2Phoneme::SaveWordFrequency() {
 
     /// make it sorted
     std::vector<std::pair<std::string, int>> sorted;
-    for (auto const &i : WordFrequency) {
+    for (auto const &i : UnknownWords) {
         sorted.push_back(std::pair<std::string, int>(i.first, i.second));
     }
 
@@ -81,16 +81,16 @@ void CWord2Phoneme::SaveWordFrequency() {
                         const std::pair<std::string, int> &b) {
             return a.second > b.second;
         }
-    } sort_by_frequency;
+    } sort_by_weight;
 
-    std::sort(sorted.begin(), sorted.end(), sort_by_frequency);
+    std::sort(sorted.begin(), sorted.end(), sort_by_weight);
 
     char buf[1024];
     for (auto const &i : sorted) {
         std::string word = i.first;
-        int freq = i.second;
+        int weight = i.second;
 
-        sprintf(buf, "%s\t%d\n", word.c_str(), freq);
+        sprintf(buf, "%s\t%d\n", word.c_str(), weight);
         fwrite(buf, 1, strlen(buf), file);
     }
 
@@ -98,8 +98,8 @@ void CWord2Phoneme::SaveWordFrequency() {
 }
 
 std::string CWord2Phoneme::Convert(std::string word) {
-#ifdef LTS_LOG_WORDS
-    ++WordFrequency[word];
+#ifdef LOG_UNKNOWN_WORDS
+    ++UnknownWords[word];
 #endif
 
     std::string pron;
