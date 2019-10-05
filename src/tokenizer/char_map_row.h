@@ -26,14 +26,14 @@
 #include "char_map.h"
 
 class CCharMapRow {
-  public:
-    CCharMapRow();
+public:
+  CCharMapRow();
 
-    void SetCharMap(uint8_t col_no, const CCharMap &char_map);
-    CCharMap GetCharMap(uint8_t col_no) const;
+  void SetCharMap(uint8_t col_no, const CCharMap &char_map);
+  CCharMap GetCharMap(uint8_t col_no) const;
 
-  private:
-    CCharMap CharMapRow[256];
+private:
+  CCharMap CharMapRow[256];
 };
 
 #endif

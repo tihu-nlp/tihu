@@ -26,26 +26,26 @@
 #include "../helper.h"
 
 class CCharMap {
-  public:
-    CCharMap();
-    CCharMap(const CCharMap &char_map);
-    CCharMap(std::string normed, uint16_t code, TIHU_TOKEN_TYPE type);
+public:
+  CCharMap();
+  CCharMap(const CCharMap &char_map);
+  CCharMap(std::string normed, uint16_t code, TIHU_TOKEN_TYPE type);
 
-    void Fill(std::string normed, uint16_t code, TIHU_TOKEN_TYPE type);
-    CCharMap &operator=(const CCharMap &right);
+  void Fill(std::string normed, uint16_t code, TIHU_TOKEN_TYPE type);
+  CCharMap &operator=(const CCharMap &right);
 
-    std::string GetNormed() const;
-    TIHU_TOKEN_TYPE GetType() const;
-    uint16_t GetCode() const;
+  std::string GetNormed() const;
+  TIHU_TOKEN_TYPE GetType() const;
+  uint16_t GetCode() const;
 
-    bool IsDiacritic() const;
-    bool IsLineBreak() const;
-    /// bool         IsNullTerminated() const;
+  bool IsDiacritic() const;
+  bool IsLineBreak() const;
+  /// bool         IsNullTerminated() const;
 
-  private:
-    std::string Normed; // Standard Form of the letter
-    uint16_t Code;
-    TIHU_TOKEN_TYPE Type; // Type of the letter
+private:
+  std::string Normed; // Standard Form of the letter
+  uint16_t Code;
+  TIHU_TOKEN_TYPE Type; // Type of the letter
 };
 
 #endif

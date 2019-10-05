@@ -26,94 +26,83 @@
 
 CWord2Phoneme::CWord2Phoneme() {
 #ifdef LOG_UNKNOWN_WORDS
-    LoadUnknownWords();
+  LoadUnknownWords();
 #endif
 }
 
 CWord2Phoneme::~CWord2Phoneme() {
 #ifdef LOG_UNKNOWN_WORDS
-    SaveUnknownWords();
+  SaveUnknownWords();
 #endif
 }
 
 bool CWord2Phoneme::LoadModel(const std::string &model) {
-    return g2p.LoadModel(model);
+  return g2p.LoadModel(model);
 }
 
 void CWord2Phoneme::LoadUnknownWords() {
-    std::string log_file = "./log/unknown_word_freqeuncy.txt";
-    FILE *file = fopen(log_file.c_str(), "r");
+  std::string log_file = "./log/unknown_words.txt";
+  FILE *file = fopen(log_file.c_str(), "r");
 
-    if (!file) {
-        return;
+  if (!file) {
+    return;
+  }
+
+  char buf[1024];
+  while (fgets(buf, 1024, file)) {
+    try {
+      std::string word = strtok(buf, "\t");
+      int weight = std::stoi(strtok(NULL, "\t"));
+
+      UnknownWords[word] = weight;
+    } catch (...) {
     }
+  }
 
-    char buf[1024];
-    while (fgets(buf, 1024, file)) {
-        try {
-            std::string word = strtok(buf, "\t");
-            int weight = std::stoi(strtok(NULL, "\t"));
-
-            UnknownWords[word] = weight;
-        } catch (...) {
-        }
-    }
-
-    fclose(file);
+  fclose(file);
 }
 
 void CWord2Phoneme::SaveUnknownWords() {
-    std::string log_file = "./log/unknown_word_freqeuncy.txt";
-    FILE *file = fopen(log_file.c_str(), "w");
+  std::string log_file = "./log/unknown_word.txt";
+  FILE *file = fopen(log_file.c_str(), "w");
 
-    if (!file) {
-        return;
+  if (!file) {
+    return;
+  }
+
+  /// make it sorted
+  std::vector<std::pair<std::string, int>> sorted;
+  for (auto const &i : UnknownWords) {
+    sorted.push_back(std::pair<std::string, int>(i.first, i.second));
+  }
+
+  struct {
+    bool operator()(const std::pair<std::string, int> &a,
+                    const std::pair<std::string, int> &b) {
+      return a.second > b.second;
     }
+  } sort_by_weight;
 
-    /// make it sorted
-    std::vector<std::pair<std::string, int>> sorted;
-    for (auto const &i : UnknownWords) {
-        sorted.push_back(std::pair<std::string, int>(i.first, i.second));
-    }
+  std::sort(sorted.begin(), sorted.end(), sort_by_weight);
 
-    struct {
-        bool operator()(const std::pair<std::string, int> &a,
-                        const std::pair<std::string, int> &b) {
-            return a.second > b.second;
-        }
-    } sort_by_weight;
+  char buf[1024];
+  for (auto const &i : sorted) {
+    std::string word = i.first;
+    int weight = i.second;
 
-    std::sort(sorted.begin(), sorted.end(), sort_by_weight);
+    sprintf(buf, "%s\t%d\n", word.c_str(), weight);
+    fwrite(buf, 1, strlen(buf), file);
+  }
 
-    char buf[1024];
-    for (auto const &i : sorted) {
-        std::string word = i.first;
-        int weight = i.second;
-
-        sprintf(buf, "%s\t%d\n", word.c_str(), weight);
-        fwrite(buf, 1, strlen(buf), file);
-    }
-
-    fclose(file);
+  fclose(file);
 }
 
 std::string CWord2Phoneme::Convert(std::string word) {
 #ifdef LOG_UNKNOWN_WORDS
-    ++UnknownWords[word];
+  ++UnknownWords[word];
 #endif
 
-    std::string pron;
-    std::string delimiter = "_";
-    size_t pos = 0;
-    std::string token;
+  std::string pron = g2p.Convert(word);
 
-    while ((pos = word.find(delimiter)) != std::string::npos) {
-        token = word.substr(0, pos);
-        pron = ConcatPronunciations(pron, g2p.Convert(token));
-        word.erase(0, pos + delimiter.length());
-    }
-
-    pron = ConcatPronunciations(pron, g2p.Convert(word));
-
-    return pron;
+  return pron;
 }

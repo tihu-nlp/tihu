@@ -25,104 +25,101 @@
 #define CHANGE_PITCH_RANGE(pitch) (pitch)    //  Do not change pitch range
 #define CHANGE_VOLUME_RANGE(volume) (volume) // Do not change volume range
 
-CMbrolaSyn::CMbrolaSyn(std::string voice_param) {
-    VoiceParam = voice_param;
-}
+CMbrolaSyn::CMbrolaSyn(std::string voice_param) { VoiceParam = voice_param; }
 
 CMbrolaSyn::~CMbrolaSyn() {
-    MbrolaLib.Finalize(); //
+  MbrolaLib.Finalize(); //
 }
 
 bool CMbrolaSyn::Load() {
-    std::string data_path = "./data/" + VoiceParam;
-    if (!MbrolaLib.Initialize(data_path)) {
-        return false;
-    }
+  std::string data_path = "./data/" + VoiceParam;
+  if (!MbrolaLib.Initialize(data_path)) {
+    return false;
+  }
 
-    return true;
+  return true;
 }
 
 int CMbrolaSyn::GetFrequency() const {
-    return MbrolaLib.GetFrequency(); //
+  return MbrolaLib.GetFrequency(); //
 }
 
 void CMbrolaSyn::ParsText(CCorpus *corpus) {
-    if (corpus->IsEmpty()) {
-        return;
+  if (corpus->IsEmpty()) {
+    return;
+  }
+
+  std::string non_persian;
+  std::string phoneme_line;
+  const CWordList &token_list = corpus->GetWordList();
+  for (auto itt = token_list.begin(); itt != token_list.end(); ++itt) {
+    if (IsStopped) {
+      MbrolaLib.Clear();
+      break; /// External stop
     }
 
-    std::string non_persian;
-    std::string phoneme_line;
-    const CWordList &token_list = corpus->GetWordList();
-    for (auto itt = token_list.begin(); itt != token_list.end(); ++itt) {
-        if (IsStopped) {
-            MbrolaLib.Clear();
-            break; /// External stop
-        }
+    const CWordPtr &word = *itt;
 
-        const CWordPtr &word = *itt;
+    FireEvents(word);
 
-        FireEvents(word);
-
-        if (word->IsNonPersianWord()) {
-            continue;
-        }
-
-        phoneme_line.clear();
-
-        word->ParsPron();
-
-        CPhonemeList &phoneme_list = word->GetPhonemeList();
-        for (auto itp = phoneme_list.begin(); itp != phoneme_list.end();
-             ++itp) {
-            CPhonemePtr &phoneme = *itp;
-
-            std::string mbr = phoneme->GetMbrolString();
-
-            phoneme_line.append(mbr);
-        }
-
-        if (!Synthesize((char *)phoneme_line.c_str())) {
-            break;
-        }
-        /// -------------------------
+    if (word->IsNonPersianWord()) {
+      continue;
     }
+
+    phoneme_line.clear();
+
+    word->ParsPron();
+
+    CPhonemeList &phoneme_list = word->GetPhonemeList();
+    for (auto itp = phoneme_list.begin(); itp != phoneme_list.end(); ++itp) {
+      CPhonemePtr &phoneme = *itp;
+
+      std::string mbr = phoneme->GetMbrolString();
+
+      phoneme_line.append(mbr);
+    }
+
+    if (!Synthesize((char *)phoneme_line.c_str())) {
+      break;
+    }
+    /// -------------------------
+  }
 }
 
 bool CMbrolaSyn::Synthesize(char *line) {
-    static const int sample_length = 2048;
-    static short samples[sample_length];
-    int length = 0;
+  static const int sample_length = 2048;
+  static short samples[sample_length];
+  int length = 0;
 
-    MbrolaLib.Write(line);
+  MbrolaLib.Write(line);
 
-    if (MbrolaLib.GetLastError() != 0) {
-        char bufa[255];
-        MbrolaLib.GetLastErrorStr(bufa, 255);
+  if (MbrolaLib.GetLastError() != 0) {
+    char bufa[255];
+    MbrolaLib.GetLastErrorStr(bufa, 255);
 
-        MessageF("Synthesizer Error: %s", bufa);
+    MessageF("Synthesizer Error: %s", bufa);
+  }
+
+  MbrolaLib.Flush();
+
+  while ((length = MbrolaLib.Read(samples, sample_length)) > 0) {
+
+    if (!PlaySamples(samples, length)) {
+      MbrolaLib.Clear();
+
+      return false;
     }
+  }
 
-    MbrolaLib.Flush();
-
-    while ((length = MbrolaLib.Read(samples, sample_length)) > 0) {
-
-        if (!PlaySamples(samples, length)) {
-            MbrolaLib.Clear();
-
-            return false;
-        }
-    }
-
-    return true;
+  return true;
 }
 
 void CMbrolaSyn::ApplyChanges() {
-    int volume = Settings->GetVolume();
-    int rate = Settings->GetRate();
-    int pitch = Settings->GetPitch();
+  int volume = Settings->GetVolume();
+  int rate = Settings->GetRate();
+  int pitch = Settings->GetPitch();
 
-    MbrolaLib.ApplyVolume(volume);
-    MbrolaLib.ApplyRate(rate);
-    MbrolaLib.ApplyPitch(pitch);
+  MbrolaLib.ApplyVolume(volume);
+  MbrolaLib.ApplyRate(rate);
+  MbrolaLib.ApplyPitch(pitch);
 }

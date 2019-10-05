@@ -22,32 +22,30 @@
 #define __TIHU__FILE_MANAGER_H
 
 #include "helper.h"
-#include "hunzip.h"
 
 #define BUFSIZE 65536
 
 class CFileManager {
-  public:
-    CFileManager();
-    ~CFileManager();
+public:
+  CFileManager();
+  ~CFileManager();
 
-    int OpenFile(const std::string &filename,
-                 const std::string &key = std::string());
+  int OpenFile(const std::string &filename,
+               const std::string &key = std::string());
 
-    bool ReadLine();
+  bool ReadLine();
 
-    int GetLineNum() const;
-    std::string GetLine() const;
-    std::string NextPiece();
+  int GetLineNum() const;
+  std::string GetLine() const;
+  std::string NextPiece();
 
-  protected:
-    int fail(const char *err, const char *par);
+protected:
+  int fail(const char *err, const char *par);
 
-  protected:
-    std::ifstream fin;
-    Hunzip *hin;
-    int LineNum;
-    std::string Line;
-    std::string::const_iterator Iter;
+protected:
+  std::ifstream fin;
+  int LineNum;
+  std::string Line;
+  std::string::const_iterator Iter;
 };
 #endif

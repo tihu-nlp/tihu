@@ -25,44 +25,45 @@ CPhonetics::CPhonetics() {}
 CPhonetics::~CPhonetics() {}
 
 bool CPhonetics::Load() {
-    if (!Word2Phoneme.LoadModel("./data/g2p-seq2seq-tihudict")) {
-        return false;
-    }
+  if (!Word2Phoneme.LoadModel("./data/g2p-seq2seq-tihudict")) {
+    return false;
+  }
 
-    if (!Punctuation2Phoneme.Load("data/punctuations.txt")) {
-        return false;
-    }
+  if (!Punctuation2Phoneme.Load("data/punctuations.txt")) {
+    return false;
+  }
 
-    return true;
+  return true;
 }
 
 void CPhonetics::ParsText(CCorpus *corpus) {
-    CWordList &word_list = corpus->GetWordList();
-    for (auto &word : word_list) {
-        if (IsStopped) {
-            break;
-        }
-        
-        auto &entry = word->GetBestEntry();
-
-        if (entry->GetPron().empty()) {
-            std::string pron;
-
-            if (word->IsPersianWord()) {
-                ///
-                pron = Word2Phoneme.Convert(word->GetText());
-                word->SetIsAutoPhonetics(true);
-            } else if (word->IsNumber()) {
-                ///
-                pron = Number2Phoneme.Convert(word->GetText());
-            } else if (word->IsPunctuation()) {
-                ///
-                pron = Punctuation2Phoneme.Convert(word->GetText());
-            }
-
-            entry->SetPron(pron);
-        }
+  CWordList &word_list = corpus->GetWordList();
+  for (auto &word : word_list) {
+    if (IsStopped) {
+      break;
     }
 
-    corpus->Dump("w2p.xml");
+    if (word->IsEmpty()) {
+      std::string pron;
+
+      if (word->IsPersianWord()) {
+        ///
+        pron = Word2Phoneme.Convert(word->GetText());
+        word->SetIsAutoPhonetics(true);
+      } else if (word->IsNumber()) {
+        ///
+        pron = Number2Phoneme.Convert(word->GetText());
+      } else if (word->IsPunctuation()) {
+        ///
+        pron = Punctuation2Phoneme.Convert(word->GetText());
+      }
+
+      CEntryPtr entry = std::make_unique<CEntry>();
+      entry->SetPOS(".");
+      entry->SetPron(pron);
+      word->AddEntry(entry);
+    }
+  }
+
+  corpus->Dump("g2p.xml");
 }

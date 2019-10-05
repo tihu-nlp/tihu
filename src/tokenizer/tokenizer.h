@@ -27,18 +27,18 @@
 #include "char_mapper.h"
 
 class CTokenizer : public IParser {
-  public:
-    CTokenizer();
+public:
+  CTokenizer();
 
-    bool Load();
-    void ParsText(CCorpus *corpus) override;
+  bool Load();
+  void ParsText(CCorpus *corpus) override;
 
-  private:
-    int ParsEvents(const CWordPtr &word, const char16_t *events);
+private:
+  int ParsEvents(const CWordPtr &word, const char16_t *events);
 
-  private:
-    CCharMapper CharMapper;
-    int Offset;
+private:
+  CCharMapper CharMapper;
+  int Offset;
 };
 
 #endif

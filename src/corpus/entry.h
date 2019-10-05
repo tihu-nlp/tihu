@@ -27,42 +27,44 @@
 
 //
 class CEntry {
-  public:
-    CEntry();
-    CEntry(CEntry &entry);
+public:
+  CEntry();
+  CEntry(CEntry &entry);
 
-    void SetLemma(const std::string &lemma);
-    void SetStem(const std::string &stem);
-    void SetPron(const std::string &pron);
-    void SetPOS(const std::string &pos);
+  void SetLemma(const std::string &lemma);
+  void SetStem(const std::string &stem);
+  void SetPron(const std::string &pron);
+  void SetPOS(const std::string &pos);
+  void SetWeight(int weight);
 
-    std::string GetLemma() const;
-    std::string GetStem() const;
-    std::string GetPron() const;
-    std::string GetPOS() const;
+  std::string GetLemma() const;
+  std::string GetStem() const;
+  std::string GetPron() const;
+  std::string GetPOS() const;
+  int GetWeight() const;
 
-    bool IsVerb() const;
-    bool IsNoun() const;
-    bool IsNounCommon() const;
-    bool IsNounProper() const;
-    bool IsPronoun() const;
-    bool IsAdjective() const;
-    bool IsDeterminer() const;
-    bool IsAdverb() const;
-    bool IsAdposition() const;
-    bool IsConjunction() const;
-    bool IsNumeral() const;
-    bool IsInterjection() const;
+  bool IsVerb() const;
+  bool IsNoun() const;
+  bool IsNounCommon() const;
+  bool IsNounProper() const;
+  bool IsPronoun() const;
+  bool IsAdjective() const;
+  bool IsDeterminer() const;
+  bool IsAdverb() const;
+  bool IsAdposition() const;
+  bool IsConjunction() const;
+  bool IsNumeral() const;
+  bool IsInterjection() const;
 
-    void SetIsGenitive(bool is_genitive);
-    bool HasGenitive() const;
-    void AddGenitive();
+  void AddGenitive();
+  bool HasGenitive() const;
 
-  private:
-    std::string Stem;  // Stem of the word
-    std::string Lemma; //
-    std::string Pron;  // Pronunciation
-    std::string POS;   // Part-Of-Speech tag
+private:
+  std::string Stem;  // Stem of the word
+  std::string Lemma; //
+  std::string Pron;  // Pronunciation
+  std::string POS;   // Part-Of-Speech tag
+  int Weight;        // Weight
 };
 
 typedef std::unique_ptr<CEntry> CEntryPtr;

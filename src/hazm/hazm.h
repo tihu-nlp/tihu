@@ -31,20 +31,20 @@ typedef _object PyObject;
 #endif
 
 class CHazm : public IParser {
-  public:
-    CHazm();
-    ~CHazm();
+public:
+  CHazm();
+  ~CHazm();
 
-    bool Load() override;
-    void ParsText(CCorpus *corpus) override;
+  bool Load() override;
+  void ParsText(CCorpus *corpus) override;
 
-  private:
-    PyObject *HazmObj;
-    PyObject *TaggerObj;
-    PyObject *NormalizerObj;
-    PyObject *TokenizerFunc;
-    PyObject *NormalizeFunc;
-    PyObject *TagFunc;
+private:
+  PyObject *HazmObj;
+  PyObject *TaggerObj;
+  PyObject *NormalizerObj;
+  PyObject *TokenizerFunc;
+  PyObject *NormalizeFunc;
+  PyObject *TagFunc;
 };
 
 #endif

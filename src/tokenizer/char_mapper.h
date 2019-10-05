@@ -26,14 +26,14 @@
 #include "char_map_row.h"
 
 class CCharMapper {
-  public:
-    CCharMapper();
+public:
+  CCharMapper();
 
-    void SetCharMap(uint16_t letter, const CCharMap &char_map);
-    CCharMap GetCharMap(uint16_t letter) const;
+  void SetCharMap(uint16_t letter, const CCharMap &char_map);
+  CCharMap GetCharMap(uint16_t letter) const;
 
-  protected:
-    std::unique_ptr<CCharMapRow> CharMapTable[256];
+protected:
+  std::unique_ptr<CCharMapRow> CharMapTable[256];
 };
 
 #endif

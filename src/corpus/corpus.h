@@ -26,34 +26,34 @@
 #include "word.h"
 
 class CCorpus {
-  public:
-    CCorpus();
-    CCorpus(const std::string &text, int offset);
+public:
+  CCorpus();
+  CCorpus(const std::string &text, int offset);
 
-    void SetText(const std::string &text, int offset);
-    const std::string &GetText() const;
-    int GetOffset() const;
+  void SetText(const std::string &text, int offset);
+  const std::string &GetText() const;
+  int GetOffset() const;
 
-    void AddWord(CWordPtr &word);
+  void AddWord(CWordPtr &word);
 
-    const CWordPtr &GetLastWord() const; //// todo: can remove them?
-    const CWordPtr &GetFirstWord() const;
+  const CWordPtr &GetLastWord() const; //// todo: can remove them?
+  const CWordPtr &GetFirstWord() const;
 
-    CWordList &GetWordList();
+  CWordList &GetWordList();
 
-    size_t Size() const;
-    bool IsEmpty() const;
-    void Clear();
+  size_t Size() const;
+  bool IsEmpty() const;
+  void Clear();
 
-    std::string ToXml() const;
-    std::string ToTxt() const;
+  std::string ToXml() const;
+  std::string ToTxt() const;
 
-    void Dump(const std::string &filename) const;
+  void Dump(const std::string &filename) const;
 
-  protected:
-    std::string Text;
-    int Offset;
-    CWordList WordList;
+protected:
+  std::string Text;
+  int Offset;
+  CWordList WordList;
 };
 
 #endif

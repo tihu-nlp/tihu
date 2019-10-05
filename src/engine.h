@@ -24,8 +24,8 @@
 #pragma once
 
 #include "helper.h"
-#include "tihu.h"
 #include "settings.h"
+#include "tihu.h"
 
 #include <map>
 
@@ -33,36 +33,36 @@ class IParser;
 class CCorpus;
 
 class CEngine {
-  public:
-    CEngine();
-    ~CEngine();
+public:
+  CEngine();
+  ~CEngine();
 
-    int LoadModules();
-    void SetCallback(TIHU_CALLBACK callback, void *userData);
+  int LoadModules();
+  void SetCallback(TIHU_CALLBACK callback, void *userData);
 
-    void Tag(const std::string &text);
-    void Speak(const std::string &text, TIHU_VOICE voice);
-    void Diacritize(const std::string &text); // TODO:
-    void Stop();
+  void Tag(const std::string &text);
+  void Speak(const std::string &text, TIHU_VOICE voice);
+  void Diacritize(const std::string &text); // TODO:
+  void Stop();
 
-    bool SetParam(TIHU_PARAM param, int value);
-    bool GetParam(TIHU_PARAM param, int &value);
+  bool SetParam(TIHU_PARAM param, int value);
+  bool GetParam(TIHU_PARAM param, int &value);
 
-    void EnableDebugMode(bool enable);
+  void EnableDebugMode(bool enable);
 
-  private:
-    void ParsText(const std::string &text, std::list<IParser *> parsers,
-                  bool report_tags);
-    void LogText(const std::string &text) const;
+private:
+  void ParsText(const std::string &text, std::list<IParser *> parsers,
+                bool report_tags);
+  void LogText(const std::string &text) const;
 
-    std::string GetCurrentModulePath() const;
+  std::string GetCurrentModulePath() const;
 
-  private:
-    std::map<int, IParser*> Parsers;
-    CSettings Settings;
-    TIHU_CALLBACK Callback;
-    void *UserData;
-    bool IsStopped;
+private:
+  std::map<int, IParser *> Parsers;
+  CSettings Settings;
+  TIHU_CALLBACK Callback;
+  void *UserData;
+  bool IsStopped;
 };
 
 #endif

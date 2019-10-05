@@ -23,38 +23,37 @@
 CCharMap::CCharMap() : Code(0), Type(TIHU_TOKEN_TYPE::UNKNOWN) {}
 
 CCharMap::CCharMap(const CCharMap &char_map)
-    : Normed(char_map.Normed), Code(char_map.Code), Type(char_map.Type)
-{}
+    : Normed(char_map.Normed), Code(char_map.Code), Type(char_map.Type) {}
 
 CCharMap::CCharMap(std::string normed, uint16_t code, TIHU_TOKEN_TYPE type)
     : Normed(normed), Code(code), Type(type) {}
 
 void CCharMap::Fill(std::string normed, uint16_t code, TIHU_TOKEN_TYPE type) {
-    Normed = normed;
-    Type = type;
-    Code = code;
+  Normed = normed;
+  Type = type;
+  Code = code;
 }
 
 CCharMap &CCharMap::operator=(const CCharMap &right) {
-    Fill(right.Normed, right.Code, right.Type);
+  Fill(right.Normed, right.Code, right.Type);
 
-    return *this;
+  return *this;
 }
 
 std::string CCharMap::GetNormed() const {
-    return Normed; //
+  return Normed; //
 }
 
 TIHU_TOKEN_TYPE CCharMap::GetType() const {
-    return Type; //
+  return Type; //
 }
 
 uint16_t CCharMap::GetCode() const {
-    return Code; //
+  return Code; //
 }
 
 bool CCharMap::IsDiacritic() const {
-    return (Code >= 0x064B && Code <= 0x0652);
+  return (Code >= 0x064B && Code <= 0x0652);
 }
 
 bool CCharMap::IsLineBreak() const { return (Code == '\n' || Code == '\r'); }

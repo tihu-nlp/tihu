@@ -25,42 +25,37 @@
 #include <stdarg.h>
 
 IParser::IParser() {
-    Callback = nullptr;
-    Settings = nullptr;
-    IsStopped = false;
+  Callback = nullptr;
+  Settings = nullptr;
+  IsStopped = false;
 }
 
 IParser::~IParser() {}
 
-void IParser::SetCallback(const callback_t& cb) {
-    Callback = cb;
-}
+void IParser::SetCallback(const callback_t &cb) { Callback = cb; }
 
 void IParser::SetSettings(CSettings *settings) {
-    //
-    Settings = settings;
+  //
+  Settings = settings;
 }
 
-void IParser::Stop() {
-    IsStopped = true;
-}
+void IParser::Stop() { IsStopped = true; }
 
 void IParser::Message(const char *message) const {
-    if (Callback) {
-        (Callback)(
-            TIHU_TEXT_MESSAGE, (long)message, strlen(message) - 1);
-    }
+  if (Callback) {
+    (Callback)(TIHU_TEXT_MESSAGE, (long)message, strlen(message) - 1);
+  }
 }
 
 void IParser::MessageF(const char *message, ...) const {
-    char temp[1024 * 4];
+  char temp[1024 * 4];
 
-    va_list arglist;
-    va_start(arglist, message);
-    if (arglist)
-        vsnprintf(temp, 1024 * 4, message, arglist);
-    va_end(arglist);
+  va_list arglist;
+  va_start(arglist, message);
+  if (arglist)
+    vsnprintf(temp, 1024 * 4, message, arglist);
+  va_end(arglist);
 
-    ////wcscat(temp, L"\r\n");
-    Message(temp);
+  ////wcscat(temp, L"\r\n");
+  Message(temp);
 }

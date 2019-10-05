@@ -26,16 +26,16 @@
 #include "../helper.h"
 
 class CEvent {
-  public:
-    CEvent();
-    CEvent(TIHU_EVENT_TYPE type, TIHU_EVENT_VALUE value);
+public:
+  CEvent();
+  CEvent(TIHU_EVENT_TYPE type, TIHU_EVENT_VALUE value);
 
-    TIHU_EVENT_TYPE GetType() const;
-    TIHU_EVENT_VALUE GetValue() const;
+  TIHU_EVENT_TYPE GetType() const;
+  TIHU_EVENT_VALUE GetValue() const;
 
-  public:
-    TIHU_EVENT_TYPE Type;
-    TIHU_EVENT_VALUE Value;
+public:
+  TIHU_EVENT_TYPE Type;
+  TIHU_EVENT_VALUE Value;
 };
 
 typedef std::unique_ptr<CEvent> CEventPtr;

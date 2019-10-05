@@ -26,91 +26,84 @@
 #define DEFAULT_MBR_PITCH 1.0F
 #define DEFAULT_MBR_SPEED 1.0F
 
-
 #include "mbrowrap.h"
 
 CMbrolaLib::CMbrolaLib() {}
 
 CMbrolaLib::~CMbrolaLib() {
-    // Release();
+  // Release();
 }
 
 bool CMbrolaLib::Initialize(const std::string &data_path) {
+  Finalize();
+
+  // --- Load DataBase ---
+  if (mbr.init_MBR((char *)data_path.c_str()) < 0) {
     Finalize();
+    return false;
+  }
+  // ---------------------
 
-    // --- Load DataBase ---
-    if (mbr.init_MBR((char *)data_path.c_str()) < 0) {
-        Finalize();
-        return false;
-    }
-    // ---------------------
+  mbr.setNoError_MBR(1);
 
-    mbr.setNoError_MBR(1);
-
-    return true;
+  return true;
 }
 
-void CMbrolaLib::Finalize() {
-    mbr.close_MBR();
-}
+void CMbrolaLib::Finalize() { mbr.close_MBR(); }
 
 int CMbrolaLib::GetLastError() const {
-    return 0; ///
+  return 0; ///
 }
 
 void CMbrolaLib::GetLastErrorStr(char *buf, int length) {
-    mbr.lastErrorStr_MBR(buf, length);
+  mbr.lastErrorStr_MBR(buf, length);
 }
 
 void CMbrolaLib::ApplyPitch(int pitch_adjust) {
-    float fPitch = ((pitch_adjust + 10) * 1.6F / 20) + 0.2F;
+  float fPitch = ((pitch_adjust + 10) * 1.6F / 20) + 0.2F;
 
-    char buf[64];
-    sprintf(buf, ";; F = %f\r\n", fPitch);
+  char buf[64];
+  sprintf(buf, ";; F = %f\r\n", fPitch);
 
-    Write(buf);
+  Write(buf);
 }
 
 void CMbrolaLib::ApplyRate(int rate_adjust) {
-    float fRate = 0.0F;
+  float fRate = 0.0F;
 
-    if (rate_adjust >= 0) {
-        fRate = (abs(rate_adjust - 10) * 0.06F) +
-                0.2F; // Mbrola speed range must be between 2.2 and 0.2
-                      // (reversed value)
-    } else {
-        fRate = (abs(rate_adjust) * 0.5F) +
-                0.2F; // Mbrola speed range must be between 2.2 and 0.2
-                      // (reversed value)
-    }
+  if (rate_adjust >= 0) {
+    fRate = (abs(rate_adjust - 10) * 0.06F) +
+            0.2F; // Mbrola speed range must be between 2.2 and 0.2
+                  // (reversed value)
+  } else {
+    fRate = (abs(rate_adjust) * 0.5F) +
+            0.2F; // Mbrola speed range must be between 2.2 and 0.2
+                  // (reversed value)
+  }
 
-    char buf[64];
-    sprintf(buf, ";; T = %f\r\n", fRate);
+  char buf[64];
+  sprintf(buf, ";; T = %f\r\n", fRate);
 
-    Write(buf);
+  Write(buf);
 }
 
 void CMbrolaLib::ApplyVolume(int volume_adjust) {
-    // The volume range must be between 0.2 and 3.0
-    float fVolume = (volume_adjust * 2.8F / 100) + 0.2F; //
+  // The volume range must be between 0.2 and 3.0
+  float fVolume = (volume_adjust * 2.8F / 100) + 0.2F; //
 
-    mbr.setVolumeRatio_MBR(fVolume);
+  mbr.setVolumeRatio_MBR(fVolume);
 }
 
 int CMbrolaLib::GetFrequency() const { return mbr.getFreq_MBR(); }
 
-void CMbrolaLib::Write(const std::string &t) {
-    mbr.write_MBR(t.c_str());
-}
+void CMbrolaLib::Write(const std::string &t) { mbr.write_MBR(t.c_str()); }
 
 int CMbrolaLib::Read(short *samples, int length) {
-    return mbr.read_MBR(samples, length);
+  return mbr.read_MBR(samples, length);
 }
 
 void CMbrolaLib::Flush() { mbr.flush_MBR(); }
 
-void CMbrolaLib::Clear() {
-    Flush();
-}
+void CMbrolaLib::Clear() { Flush(); }
 
 void CMbrolaLib::Reset() { mbr.reset_MBR(); }

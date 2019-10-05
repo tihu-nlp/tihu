@@ -26,12 +26,12 @@
 #include "../helper.h"
 
 class CPitchRange {
-  public:
-    CPitchRange(int f_value = 0, int l_value = 0);
+public:
+  CPitchRange(int f_value = 0, int l_value = 0);
 
-  private:
-    int FValue; /// First value (apply this pitch at 1% of duration)
-    int LValue; /// Last value (apply this pitch at 100% of duration)
+private:
+  int FValue; /// First value (apply this pitch at 1% of duration)
+  int LValue; /// Last value (apply this pitch at 100% of duration)
 };
 
 #endif

@@ -23,9 +23,9 @@
 CCharMapRow::CCharMapRow() {}
 
 void CCharMapRow::SetCharMap(uint8_t col_no, const CCharMap &char_map) {
-    CharMapRow[col_no] = char_map;
+  CharMapRow[col_no] = char_map;
 }
 
 CCharMap CCharMapRow::GetCharMap(uint8_t col_no) const {
-    return CharMapRow[col_no];
+  return CharMapRow[col_no];
 }

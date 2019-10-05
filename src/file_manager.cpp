@@ -22,66 +22,59 @@
 
 #include "helper.h"
 
+#define MSG_OPEN "error: %s: cannot open\n"
+
 int CFileManager::fail(const char *err, const char *par) {
-    fprintf(stderr, err, par);
-    return -1;
+  fprintf(stderr, err, par);
+  return -1;
 }
 
-CFileManager::CFileManager() : hin(NULL), LineNum(0) {}
+CFileManager::CFileManager() : LineNum(0) {}
 
 int CFileManager::OpenFile(const std::string &filename,
                            const std::string &key) {
-    fin.open(filename, std::ios_base::in);
-    if (!fin.is_open()) {
-        // check hzipped file
-        std::string st(filename);
-        st.append(HZIP_EXTENSION);
-        hin = new Hunzip(st.c_str(), key.c_str());
-    }
-    if (!fin.is_open() && !hin->is_open()) {
-        fail(MSG_OPEN, filename.c_str());
-        return 1;
-    }
+  fin.open(filename, std::ios_base::in);
+  if (!fin.is_open()) {
+    fail(MSG_OPEN, filename.c_str());
+    return 1;
+  }
 
-    return 0;
+  return 0;
 }
 
-CFileManager::~CFileManager() { delete hin; }
+CFileManager::~CFileManager() { }
 
 bool CFileManager::ReadLine() {
-    bool ret = false;
-    Line.clear();
+  bool ret = false;
+  Line.clear();
 
-    if (fin.is_open()) {
-        ret = static_cast<bool>(std::getline(fin, Line));
-    } else if (hin->is_open()) {
-        ret = hin->getline(Line);
+  if (fin.is_open()) {
+    ret = static_cast<bool>(std::getline(fin, Line));
+  }
+  if (ret) {
+    if (LineNum == 0) {
+      if (Line.compare(0, 3, "\xEF\xBB\xBF", 3) == 0) {
+        Line.erase(0, 3);
+      }
+    }
+    ++LineNum;
+
+    mychomp(Line);
+
+    // ignore blanks
+    if (Line.length() == 0) {
+      return ReadLine();
     }
 
-    if (ret) {
-        if (LineNum == 0) {
-            if (Line.compare(0, 3, "\xEF\xBB\xBF", 3) == 0) {
-                Line.erase(0, 3);
-            }
-        }
-        ++LineNum;
-
-        mychomp(Line);
-
-        // ignore blanks
-        if (Line.length() == 0) {
-            return ReadLine();
-        }
-
-        // ignore comment lines
-        if (Line.compare(0, 1, "#") == 0) {
-            return ReadLine();
-        }
+    // ignore comment lines
+    if (Line.compare(0, 1, "#") == 0) {
+      return ReadLine();
     }
+  }
 
-    Iter = Line.begin();
+  Iter = Line.begin();
 
-    return ret;
+  return ret;
 }
 
 int CFileManager::GetLineNum() const { return LineNum; }
@@ -89,11 +82,11 @@ int CFileManager::GetLineNum() const { return LineNum; }
 std::string CFileManager::GetLine() const { return Line; }
 
 std::string CFileManager::NextPiece() {
-    std::string piece;
-    std::string::const_iterator start_piece = mystrsep(Line, Iter);
-    if (start_piece != Line.end()) {
-        piece = std::string(start_piece, Iter);
-    }
+  std::string piece;
+  std::string::const_iterator start_piece = mystrsep(Line, Iter);
+  if (start_piece != Line.end()) {
+    piece = std::string(start_piece, Iter);
+  }
 
-    return piece;
+  return piece;
 }

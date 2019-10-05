@@ -20,100 +20,105 @@
  *******************************************************************************/
 #include "entry.h"
 
-CEntry::CEntry() {}
+CEntry::CEntry() : Weight(0) {}
 
 CEntry::CEntry(CEntry &entry) {}
 
+void CEntry::SetLemma(const std::string &lemma) {
+  Lemma = lemma; //
+}
+
 void CEntry::SetStem(const std::string &stem) {
-    Stem = stem; //
+  Stem = stem; //
 }
 
 void CEntry::SetPron(const std::string &pron) {
-    Pron = pron; //
+  Pron = pron; //
 }
 
 void CEntry::SetPOS(const std::string &pos) {
-    POS = pos; //
+  POS = pos; //
+}
+
+void CEntry::SetWeight(int weight) {
+  Weight = weight; //
 }
 
 std::string CEntry::GetStem() const {
-    return Stem; //
+  return Stem; //
 }
 
 std::string CEntry::GetPron() const {
-    return Pron; //
+  return Pron; //
 }
 
 std::string CEntry::GetPOS() const {
-    return POS; //
+  return POS; //
 }
 
 std::string CEntry::GetLemma() const {
-    return Lemma; //
+  return Lemma; //
 }
 
+int CEntry::GetWeight() const { return Weight; }
+
 bool CEntry::IsVerb() const {
-    return StartsWith(POS, "V"); //
+  return StartsWith(POS, "V"); //
 }
 
 bool CEntry::IsNoun() const {
-    return StartsWith(POS, "N"); //
+  return StartsWith(POS, "N"); //
 }
 
 bool CEntry::IsPronoun() const {
-    return StartsWith(POS, "P"); //
+  return StartsWith(POS, "P"); //
 }
 
 bool CEntry::IsAdjective() const {
-    return StartsWith(POS, "AJ"); //
+  return StartsWith(POS, "AJ"); //
 }
 
 bool CEntry::IsDeterminer() const {
-    return StartsWith(POS, "DET"); //
+  return StartsWith(POS, "DET"); //
 }
 
 bool CEntry::IsAdverb() const {
-    return StartsWith(POS, "ADV"); //
+  return StartsWith(POS, "ADV"); //
 }
 
 bool CEntry::IsAdposition() const {
-    return StartsWith(POS, "POS"); //
+  return StartsWith(POS, "POS"); //
 }
 
 bool CEntry::IsConjunction() const {
-    return false; //
+  return false; //
 }
 
 bool CEntry::IsNumeral() const {
-    return StartsWith(POS, "NUM"); //
+  return StartsWith(POS, "NUM"); //
 }
 
 bool CEntry::IsInterjection() const {
-    return false; //
+  return false; //
 }
 
 bool CEntry::IsNounCommon() const {
-    assert(IsNoun());
+  assert(IsNoun());
 
-    return false;
+  return false;
 }
 
 bool CEntry::IsNounProper() const {
-    assert(IsNoun());
+  assert(IsNoun());
 
-    return false;
-}
-
-void CEntry::SetIsGenitive(bool is_genitive) {
-    if (is_genitive) {
-        POS += "e";
-    }
-}
-
-bool CEntry::HasGenitive() const {
-    return POS.back() == 'e'; //
+  return false;
 }
 
 void CEntry::AddGenitive() {
-    Pron = ConcatPronunciations(Pron, "e"); //
+  POS += "_GEN";
+  Pron = ConcatPronunciations(Pron, "e");
+}
+
+bool CEntry::HasGenitive() const {
+  return POS.find("_GEN") != std::string::npos; //
 }

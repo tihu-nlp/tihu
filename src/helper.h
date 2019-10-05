@@ -73,7 +73,6 @@ static inline void TIHU_WARNING(FILE *, const char *, ...) {}
 #define CHR_U8_ZHE          "\xda\x98"
 #define CHR_U8_MIM          "\xd9\x85"
 #define CHR_U8_NON          "\xd9\x86"
-
 #define STR_U8_MI           "\xd9\x85\xdb\x8c"
 #define STR_U8_NEMI         "\xd9\x86\xd9\x85\xdb\x8c"
 
@@ -112,12 +111,6 @@ enum class TIHU_EVENT_TYPE {
 
 #define ARRAY_LENGTH(x) (sizeof(x) / sizeof(x[0]))
 
-#define SafeFree(x)                                                            \
-    if (x) {                                                                   \
-        free(x);                                                               \
-        x = 0;                                                                 \
-    }
-
 #ifndef assert
 #include <cassert>
 
@@ -143,6 +136,9 @@ bool IsLeadingByte(char c);
 bool EndsWithDetached(const std::string &value);
 bool EndsWith(const std::string &value, std::string ending);
 bool StartsWith(const std::string &value, std::string starting);
+bool Replace(std::string &str, const std::string &search,
+             const std::string &replace);
+std::string Substr(const std::string &str, const std::string &search);
 std::string &RemoveLast(std::string &value);
 std::string &RemoveFirst(std::string &value);
 std::string &ReplaceSubstring(std::string &value, const std::string &search,

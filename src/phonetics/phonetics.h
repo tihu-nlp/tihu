@@ -25,22 +25,22 @@
 
 #include "../parser.h"
 #include "number2phoneme.h"
-#include "word2phoneme.h"
 #include "punctuation2phoneme.h"
+#include "word2phoneme.h"
 
 class CPhonetics : public IParser {
-  public:
-    CPhonetics();
-    ~CPhonetics();
+public:
+  CPhonetics();
+  ~CPhonetics();
 
-    bool Load() override;
+  bool Load() override;
 
-    void ParsText(CCorpus *corpus) override;
+  void ParsText(CCorpus *corpus) override;
 
-  private:
-    CWord2Phoneme Word2Phoneme;
-    CNumber2Phoneme Number2Phoneme;
-    CPunctuation2Phoneme Punctuation2Phoneme;
+private:
+  CWord2Phoneme Word2Phoneme;
+  CNumber2Phoneme Number2Phoneme;
+  CPunctuation2Phoneme Punctuation2Phoneme;
 };
 
 #endif

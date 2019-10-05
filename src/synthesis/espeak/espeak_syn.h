@@ -27,21 +27,21 @@
 #include "espeak_lib.h"
 
 class CeSpeakSyn : public ISynthesizer {
-  public:
-    CeSpeakSyn(std::string voice_param);
-    virtual ~CeSpeakSyn();
+public:
+  CeSpeakSyn(std::string voice_param);
+  virtual ~CeSpeakSyn();
 
-    bool Load() override;
+  bool Load() override;
 
-    void ParsText(CCorpus *corpus) override;
+  void ParsText(CCorpus *corpus) override;
 
-    int GetFrequency() const override;
-    void ApplyChanges() override;
+  int GetFrequency() const override;
+  void ApplyChanges() override;
 
-    int ParsEvent(short *samples, int length, espeak_EVENT *espeak_event);
+  int ParsEvent(short *samples, int length, espeak_EVENT *espeak_event);
 
-  private:
-    CeSpeakLib eSpeakLib;
+private:
+  CeSpeakLib eSpeakLib;
 };
 
 #endif

@@ -26,31 +26,31 @@
 #include "pitch_range.h"
 
 class CPhoneme {
-  public:
-    CPhoneme();
-    CPhoneme(char prev_phoneme, char phoneme, char next_phoneme);
+public:
+  CPhoneme();
+  CPhoneme(char prev_phoneme, char phoneme, char next_phoneme);
 
-    void SetPhonetic(char prev_phoneme, char phoneme, char next_phoneme);
+  void SetPhonetic(char prev_phoneme, char phoneme, char next_phoneme);
 
-    bool IsStop() const;
-    bool IsFricative() const;
-    bool IsAffricative() const;
-    bool IsNasal() const;
-    bool IsLiquid() const;
-    bool IsApproximant() const;
+  bool IsStop() const;
+  bool IsFricative() const;
+  bool IsAffricative() const;
+  bool IsNasal() const;
+  bool IsLiquid() const;
+  bool IsApproximant() const;
 
-    // void  SetPitch(int pitch_pos, int pitch_val,...);
+  // void  SetPitch(int pitch_pos, int pitch_val,...);
 
-    std::string GetMbrName();
-    std::string GetIPAName();
+  std::string GetMbrName();
+  std::string GetIPAName();
 
-    std::string GetMbrolString();
+  std::string GetMbrolString();
 
-  public:
-    int PhonemeIndex; // The index of the current phoneme in phonemes table
-    CPitchRange PitchRange; // this is a data that keep range of pitch
-    int Duration;           // duration of the phoneme in milli_seconds
-    bool PrevVoweled;
+public:
+  CPitchRange PitchRange; // this is a data that keep range of pitch
+  int PhonemeIndex;       // The index of the current phoneme in phonemes table
+  int Duration;           // duration of the phoneme in milli_seconds
+  bool PrevVoweled;
 };
 
 typedef std::unique_ptr<CPhoneme> CPhonemePtr;

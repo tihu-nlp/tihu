@@ -56,9 +56,8 @@ SFX sc      _شان           .            eSAn
 
 SFX sd      3
 SFX sd      ها             .            hA
-SFX sd      های            .            hAy
+SFX sd      های            *GEN         hAye
 SFX sd      هایی           .            hAyi
-
 
 SFX se      6
 SFX se      هایم           .            hAyam
@@ -74,7 +73,7 @@ SFX sf      هاست           .            hAst
 
 SFX sg      3
 SFX sg      _ها            .            hA
-SFX sg      _های           .            hAy
+SFX sg      _های           *GEN         hAye
 SFX sg      _هایی          .            hAyi
 
 
@@ -101,57 +100,60 @@ SFX sk      _ی             *GEN         ye
 SFX sk      ٔ               *GEN         ye
 
 
-SFX sl      1
+SFX sl      2
 SFX sl      ی              .            i
+SFX sl      ی              AJ           i
 
 
-SFX sm      1
+SFX sm      2
 SFX sm      _ای            .            ?i
+SFX sm      _ای            AJ           ?i
 
 
-SFX sn      1
+SFX sn      2
 SFX sn      یی             .            yi
+SFX sn      یی             AJ           yi
 
 
 SFX so      6
-SFX so      م              V_PRS        am
-SFX so      ی              V_PRS        i
-SFX so      ست             V_PRS        ast
-SFX so      یم             V_PRS        im
-SFX so      ید             V_PRS        id
-SFX so      ند             V_PRS        and
+SFX so      م              V            am
+SFX so      ی              V            i
+SFX so      ست             V            ast
+SFX so      یم             V            im
+SFX so      ید             V            id
+SFX so      ند             V            and
 
 
 SFX sp      5
-SFX sp      _ام            V_PRS        am
-SFX sp      _ای            V_PRS        ?i
-SFX sp      _ایم           V_PRS        ?im
-SFX sp      _اید           V_PRS        ?id
-SFX sp      _اند           V_PRS        and
+SFX sp      _ام            V            am
+SFX sp      _ای            V            ?i
+SFX sp      _ایم           V            ?im
+SFX sp      _اید           V            ?id
+SFX sp      _اند           V            and
 
 
 SFX sq      6
-SFX sq      یم             V_PRS        yam
-SFX sq      یی             V_PRS        yi
-SFX sq      ست             V_PRS        st
-SFX sq      ییم            V_PRS        yim
-SFX sq      یید            V_PRS        yid
-SFX sq      یند            V_PRS        yand
+SFX sq      یم             V            yam
+SFX sq      یی             V            yi
+SFX sq      ست             V            st
+SFX sq      ییم            V            yim
+SFX sq      یید            V            yid
+SFX sq      یند            V            yand
 
 
 SFX sr      5
-SFX sr      م              V_PRS        am
-SFX sr      ی              V_PRS        ie
-SFX sr      یم             V_PRS        im
-SFX sr      ید             V_PRS        id
-SFX sr      ند             V_PRS        and
+SFX sr      م              V            am
+SFX sr      ی              V            ie
+SFX sr      یم             V            im
+SFX sr      ید             V            id
+SFX sr      ند             V            and
 
 
 SFX st      2
-SFX st      تر             *CMPR        tar
-SFX st      ترین           *SUP         tarin
+SFX st      تر             .            tar
+SFX st      ترین           .            tarin
 
 
 SFX su      2
-SFX su      _تر            *CMPR        tar
-SFX su      _ترین          *SUP         tarin
+SFX su      _تر            .            tar
+SFX su      _ترین          .            tarin

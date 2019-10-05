@@ -28,60 +28,59 @@
 #include "phoneme.h"
 
 class CWord {
-  public:
-    CWord();
-    CWord(CWord &word);
-    ~CWord();
+public:
+  CWord();
+  CWord(CWord &word);
+  ~CWord();
 
-    void SetText(const std::string &text);
-    void SetType(TIHU_TOKEN_TYPE type);
-    void SetLength(size_t length);
-    void SetOffset(size_t offset);
-    void SetWeight(size_t weight);
-    void SetIsEndOfParagraph(bool is_end_of_paragraph);
-    void SetIsEndOfSentence(bool is_end_of_sentence);
-    void SetIsAutoPhonetics(bool lts);
-    void SetHasDiacritic(bool has_diacritic);
+  void SetText(const std::string &text);
+  void SetType(TIHU_TOKEN_TYPE type);
+  void SetLength(size_t length);
+  void SetOffset(size_t offset);
+  void SetIsEndOfParagraph(bool is_end_of_paragraph);
+  void SetIsEndOfSentence(bool is_end_of_sentence);
+  void SetIsAutoPhonetics(bool lts);
+  void SetHasDiacritic(bool has_diacritic);
 
-    std::string GetText() const;
-    std::string GetTextWithoutDiacritics() const;
-    TIHU_TOKEN_TYPE GetType() const;
-    size_t GetLength() const;
-    size_t GetOffset() const;
-    size_t GetWeight() const;
-    bool IsEndOfParagraph() const;
-    bool IsEndOfSentence() const;
-    bool IsPersianWord() const;
-    bool IsNonPersianWord() const;
-    bool IsPunctuation() const;
-    bool IsNumber() const;
-    bool IsEmpty() const;
-    bool IsAutoPhonetics() const; /// g2p has assigned the pronunciation to this word
-    bool HasDiacritic() const;
+  std::string GetText() const;
+  std::string GetTextWithoutDiacritics() const;
+  TIHU_TOKEN_TYPE GetType() const;
+  size_t GetLength() const;
+  size_t GetOffset() const;
+  bool IsEndOfParagraph() const;
+  bool IsEndOfSentence() const;
+  bool IsPersianWord() const;
+  bool IsNonPersianWord() const;
+  bool IsPunctuation() const;
+  bool IsNumber() const;
+  bool IsEmpty() const;
+  bool
+  IsAutoPhonetics() const; /// g2p has assigned the pronunciation to this word
+  bool HasDiacritic() const;
+  bool EndsWithKasre() const;
 
-    CPhonemeList &GetPhonemeList();
-    CEventList &GetEventList();
-    CEntryList &GetEntryList();
+  CPhonemeList &GetPhonemeList();
+  CEventList &GetEventList();
+  CEntryList &GetEntryList();
 
-    const CEntryPtr &GetBestEntry() const;
+  const CEntryPtr &GetFirstEntry() const;
 
-    void ParsPron(std::string pron = std::string());
+  void ParsPron();
 
-    void AddEntry(CEntryPtr &entry);
-    void AddEvent(CEventPtr &event);
-    void AddEvent(TIHU_EVENT_TYPE event_type, TIHU_EVENT_VALUE &event_value);
+  void AddEntry(CEntryPtr &entry);
+  void AddEvent(CEventPtr &event);
+  void AddEvent(TIHU_EVENT_TYPE event_type, TIHU_EVENT_VALUE &event_value);
 
-  protected:
-    std::string Text;     // Text
-    TIHU_TOKEN_TYPE Type; // Type of the the word(word)
-    size_t Length;        // Length of the current word inside of input text
-    size_t Offset;        // offset of the current word inside of input text
-    size_t Weight;     // Weight
-    uint32_t Flags;       // Extra information
+protected:
+  std::string Text;     // Text
+  TIHU_TOKEN_TYPE Type; // Type of the the word(word)
+  size_t Length;        // Length of the current word inside of input text
+  size_t Offset;        // offset of the current word inside of input text
+  uint32_t Flags;       // Extra information
 
-    CEventList EventList;
-    CPhonemeList PhonemeList;
-    CEntryList EntryList;
+  CEventList EventList;
+  CPhonemeList PhonemeList;
+  CEntryList EntryList;
 };
 
 typedef std::unique_ptr<CWord> CWordPtr;

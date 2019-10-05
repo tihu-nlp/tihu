@@ -24,131 +24,131 @@
 #include <fstream>
 #include <sstream>
 
-CCorpus::CCorpus(const std::string &text, int offset) : Text(text), Offset(offset) {}
+CCorpus::CCorpus(const std::string &text, int offset)
+    : Text(text), Offset(offset) {}
 
 CCorpus::CCorpus() {}
 
 void CCorpus::SetText(const std::string &text, int offset) {
-    Text = text;
-    Offset = offset;
+  Text = text;
+  Offset = offset;
 }
 
 const std::string &CCorpus::GetText() const {
-    return Text; //
+  return Text; //
 }
 
 int CCorpus::GetOffset() const {
-    return Offset; //
+  return Offset; //
 }
 
 CWordList &CCorpus::GetWordList() {
-    return WordList; //
+  return WordList; //
 }
 
 bool CCorpus::IsEmpty() const {
-    return WordList.empty(); //
+  return WordList.empty(); //
 }
 
 size_t CCorpus::Size() const {
-    return WordList.size(); //
+  return WordList.size(); //
 }
 
 void CCorpus::Clear() {
-    Text.clear();
-    WordList.clear();
+  Text.clear();
+  WordList.clear();
 }
 
 void CCorpus::AddWord(CWordPtr &word) { WordList.push_back(std::move(word)); }
 
 const CWordPtr &CCorpus::GetLastWord() const {
-    if (WordList.empty()) {
-        return null_word;
-    }
+  if (WordList.empty()) {
+    return null_word;
+  }
 
-    return WordList.back();
+  return WordList.back();
 }
 
 const CWordPtr &CCorpus::GetFirstWord() const {
-    if (WordList.empty()) {
-        return null_word;
-    }
+  if (WordList.empty()) {
+    return null_word;
+  }
 
-    return WordList.front();
+  return WordList.front();
 }
 
 std::string CCorpus::ToXml() const {
-    std::ostringstream writer;
+  std::ostringstream writer;
 
-    writer << "<?xml version=\"1.0\" encoding=\"utf-8\" ?>" << std::endl;
-    writer << "<corpus>" << std::endl;
+  writer << "<?xml version=\"1.0\" encoding=\"utf-8\" ?>" << std::endl;
+  writer << "<corpus>" << std::endl;
 
-    char buffer[1024];
-    for (auto &word : WordList) {
-        snprintf(buffer, 1024,
-                 "\t<word offset=\"%zd\" length=\"%zd\" weight=\"%zd\" "
-                 "text=\"%s\"%s%s%s>",
-                 word->GetOffset(), word->GetLength(), word->GetWeight(),
-                 word->GetText().c_str(),
-                 word->IsAutoPhonetics() ? " g2p=\"1\"" : "",
-                 word->IsEndOfParagraph() ? " eop=\"1\"" : "",
-                 word->IsEndOfSentence() ? " eos=\"1\"" : "");
+  char buffer[1024];
+  for (auto &word : WordList) {
+    snprintf(buffer, 1024,
+             "\t<word offset=\"%zd\" length=\"%zd\" "
+             "text=\"%s\"%s%s%s>",
+             word->GetOffset(), word->GetLength(), word->GetText().c_str(),
+             word->IsAutoPhonetics() ? " g2p=\"1\"" : "",
+             word->IsEndOfParagraph() ? " eop=\"1\"" : "",
+             word->IsEndOfSentence() ? " eos=\"1\"" : "");
 
-        writer << buffer << std::endl;
+    writer << buffer << std::endl;
 
-        for (auto &entry : word->GetEntryList()) {
+    for (auto &entry : word->GetEntryList()) {
+      snprintf(buffer, 1024,
+               "\t\t<entry pron=\"%s\" pos=\"%s\" stem=\"%s\" lemma=\"%s\" "
+               "weight=\"%d\" />",
+               entry->GetPron().c_str(), entry->GetPOS().c_str(),
+               entry->GetStem().c_str(), entry->GetLemma().c_str(),
+               entry->GetWeight());
 
-            snprintf(
-                buffer, 1024,
-                "\t\t<entry pron=\"%s\" pos=\"%s\" stem=\"%s\" lemma=\"%s\" />",
-                entry->GetPron().c_str(), entry->GetPOS().c_str(),
-                entry->GetStem().c_str(), entry->GetLemma().c_str());
-
-            writer << buffer << std::endl;
-        }
-
-        writer << "\t</word>" << std::endl;
+      writer << buffer << std::endl;
     }
 
-    writer << "</corpus>";
-    writer.flush();
+    writer << "\t</word>" << std::endl;
+  }
 
-    return writer.str();
+  writer << "</corpus>";
+  writer.flush();
+
+  return writer.str();
 }
 
 std::string CCorpus::ToTxt() const {
-    std::ostringstream writer;
+  std::ostringstream writer;
 
-    char buffer[1024];
-    for (auto &word : WordList) {
+  char buffer[1024];
+  for (auto &word : WordList) {
 
-        snprintf(buffer, 1024, "%s\t%s\t%c%s", word->GetText().c_str(),
-                 word->GetBestEntry()->GetPOS().c_str(),
-                 word->IsAutoPhonetics() ? '*' : ' ',
-                 word->GetBestEntry()->GetPron().c_str());
+    snprintf(buffer, 1024, "%s\t%s\t%c%s", word->GetText().c_str(),
+             word->GetFirstEntry()->GetPOS().c_str(),
+             word->IsAutoPhonetics() ? '*' : ' ',
+             word->GetFirstEntry()->GetPron().c_str());
 
-        writer << buffer << std::endl;
-    }
+    writer << buffer << std::endl;
+  }
 
-    writer.flush();
+  writer.flush();
 
-    return writer.str();
+  return writer.str();
 }
 
 void CCorpus::Dump(const std::string &filename) const {
-    std::string extention;
-    size_t pos = filename.rfind('.');
-    if (pos != std::string::npos) {
-        extention = filename.substr(pos + 1);
-    }
-    std::string content;
-    if (extention == "xml") {
-        content = ToXml();
-    } else {
-        content = ToTxt();
-    }
+  std::string extention;
+  size_t pos = filename.rfind('.');
+  if (pos != std::string::npos) {
+    extention = filename.substr(pos + 1);
+  }
+  std::string content;
+  if (extention == "xml") {
+    content = ToXml();
+  } else {
+    content = ToTxt();
+  }
 
-    std::ofstream f;
-    f.open("log/" + filename);
-    f << content;
-    f.close();
+  std::ofstream f;
+  f.open("log/" + filename);
+  f << content;
+  f.close();
 }

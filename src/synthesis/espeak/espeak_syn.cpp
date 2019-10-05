@@ -22,93 +22,90 @@
 #include "../../tihu.h"
 
 int espeak_callback(short *samples, int length, espeak_EVENT *espeak_event) {
-    CeSpeakSyn *synth = (CeSpeakSyn *)espeak_event->user_data;
+  CeSpeakSyn *synth = (CeSpeakSyn *)espeak_event->user_data;
 
-    return synth->ParsEvent(samples, length, espeak_event);
+  return synth->ParsEvent(samples, length, espeak_event);
 }
 
-CeSpeakSyn::CeSpeakSyn(std::string voice_param) {
-    VoiceParam = voice_param;
-}
+CeSpeakSyn::CeSpeakSyn(std::string voice_param) { VoiceParam = voice_param; }
 
 CeSpeakSyn::~CeSpeakSyn() {
-    eSpeakLib.Finalize(); //
+  eSpeakLib.Finalize(); //
 }
 
 bool CeSpeakSyn::Load() {
-    if (!eSpeakLib.Initialize()) {
-        return false;
-    }
+  if (!eSpeakLib.Initialize()) {
+    return false;
+  }
 
-    eSpeakLib.SetCallback(espeak_callback);
+  eSpeakLib.SetCallback(espeak_callback);
 
-    return true;
+  return true;
 }
 
 void CeSpeakSyn::ParsText(CCorpus *corpus) {
-    if (corpus->IsEmpty()) {
-        return;
+  if (corpus->IsEmpty()) {
+    return;
+  }
+
+  std::string phonetic;
+  const CWordList &token_list = corpus->GetWordList();
+  for (auto itt = token_list.begin(); itt != token_list.end(); ++itt) {
+    if (IsStopped) {
+      eSpeakLib.Stop();
+      break; /// External stop
     }
 
-    std::string phonetic;
-    const CWordList &token_list = corpus->GetWordList();
-    for (auto itt = token_list.begin(); itt != token_list.end(); ++itt) {
-        if (IsStopped) {
-            eSpeakLib.Stop();
-            break; /// External stop
-        }
+    const CWordPtr &word = *itt;
 
-        const CWordPtr &word = *itt;
+    FireEvents(word);
 
-        FireEvents(word);
+    phonetic.clear();
 
-        phonetic.clear();
+    if (word->IsNonPersianWord()) {
+      phonetic.append(word->GetText());
+    } else {
+      word->ParsPron();
 
-        if (word->IsNonPersianWord()) {
-            phonetic.append(word->GetText());
-        } else {
-            word->ParsPron();
+      phonetic.append("[[");
 
-            phonetic.append("[[");
+      CPhonemeList &phoneme_list = word->GetPhonemeList();
+      for (auto itp = phoneme_list.begin(); itp != phoneme_list.end(); ++itp) {
+        CPhonemePtr &phoneme = *itp;
+        // if(phoneme->GetIPAName() != "?")
+        { phonetic.append(phoneme->GetIPAName()); }
+      }
 
-            CPhonemeList &phoneme_list = word->GetPhonemeList();
-            for (auto itp = phoneme_list.begin(); itp != phoneme_list.end();
-                 ++itp) {
-                CPhonemePtr &phoneme = *itp;
-                // if(phoneme->GetIPAName() != "?")
-                { phonetic.append(phoneme->GetIPAName()); }
-            }
-
-            phonetic.append("]]");
-        }
-
-        eSpeakLib.Synthesize(phonetic.c_str(), this);
+      phonetic.append("]]");
     }
+
+    eSpeakLib.Synthesize(phonetic.c_str(), this);
+  }
 }
 
 void CeSpeakSyn::ApplyChanges() {
-    /// TODO
+  /// TODO
 }
 
 int CeSpeakSyn::GetFrequency() const {
-    return eSpeakLib.GetFrequency(); //
+  return eSpeakLib.GetFrequency(); //
 }
 
 int CeSpeakSyn::ParsEvent(short *samples, int length,
                           espeak_EVENT *espeak_event) {
 
-    if (espeak_event->type != espeakEVENT_MSG_TERMINATED) {
-        PlaySamples(samples, length);
+  if (espeak_event->type != espeakEVENT_MSG_TERMINATED) {
+    PlaySamples(samples, length);
 
-        switch (espeak_event->type) {
-        case espeakEVENT_PLAY: {
+    switch (espeak_event->type) {
+    case espeakEVENT_PLAY: {
 
-        } break;
+    } break;
 
-        default:
-            break;
-        }
+    default:
+      break;
     }
+  }
 
-    return 0;
+  return 0;
 }

@@ -26,9 +26,9 @@ CEvent::CEvent(TIHU_EVENT_TYPE type, TIHU_EVENT_VALUE value)
     : Type(type), Value(value) {}
 
 TIHU_EVENT_TYPE CEvent::GetType() const {
-    return Type; //
+  return Type; //
 }
 
 TIHU_EVENT_VALUE CEvent::GetValue() const {
-    return Value; //
+  return Value; //
 }

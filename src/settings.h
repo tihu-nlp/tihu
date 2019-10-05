@@ -26,27 +26,27 @@
 #include "helper.h"
 
 class CSettings {
-  public:
-    CSettings();
+public:
+  CSettings();
 
-    int GetPitch() const;
-    int GetRate() const;
-    int GetVolume() const;
-    int GetFrequency() const;
-    bool IsDebugMode() const;
+  int GetPitch() const;
+  int GetRate() const;
+  int GetVolume() const;
+  int GetFrequency() const;
+  bool IsDebugMode() const;
 
-    void SetPitch(int pitch_adjust);
-    void SetRate(int rate_adjust);
-    void SetVolume(int volume_adjust);
-    void SetFrequency(int frequency);
-    void SetIsDebugMode(bool enable);
+  void SetPitch(int pitch_adjust);
+  void SetRate(int rate_adjust);
+  void SetVolume(int volume_adjust);
+  void SetFrequency(int frequency);
+  void SetIsDebugMode(bool enable);
 
-  private:
-    int Pitch;
-    int Rate;
-    int Volume;
-    int Frequency;
-    bool DebugMode;
+private:
+  int Pitch;
+  int Rate;
+  int Volume;
+  int Frequency;
+  bool DebugMode;
 };
 
 #endif

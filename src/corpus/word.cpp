@@ -27,181 +27,172 @@
 #define WORD_FLAG_AUTO_PHONETICS 0x0008
 
 CWord::CWord()
-    : Type(TIHU_TOKEN_TYPE::UNKNOWN), Length(0), Offset(0), Weight(0),
-      Flags(0) {}
+    : Type(TIHU_TOKEN_TYPE::UNKNOWN), Length(0), Offset(0), Flags(0) {}
 
 CWord::CWord(CWord &word)
     : Text(word.Text), Type(word.Type), Length(word.Length),
-      Offset(word.Offset), Weight(word.Weight), Flags(word.Flags) {}
+      Offset(word.Offset), Flags(word.Flags) {}
 
 CWord::~CWord() {}
 
 void CWord::SetText(const std::string &text) {
-    Text = text; //
+  Text = text; //
 }
 
 void CWord::SetType(TIHU_TOKEN_TYPE type) {
-    Type = type; //
+  Type = type; //
 }
 
 void CWord::SetLength(size_t length) {
-    Length = length; //
+  Length = length; //
 }
 
 void CWord::SetOffset(size_t offset) {
-    Offset = offset; //
-}
-
-void CWord::SetWeight(size_t weight) {
-    Weight = weight; //
+  Offset = offset; //
 }
 
 std::string CWord::GetText() const {
-    return Text; //
+  return Text; //
 }
 
 std::string CWord::GetTextWithoutDiacritics() const {
-    // TODO
-    return Text; //
+  // TODO
+  return Text; //
 }
 
 TIHU_TOKEN_TYPE CWord::GetType() const {
-    return Type; //
+  return Type; //
 }
 
 size_t CWord::GetLength() const {
-    return Length; //
+  return Length; //
 }
 
 size_t CWord::GetOffset() const {
-    return Offset; //
-}
-
-size_t CWord::GetWeight() const {
-    return Weight;
+  return Offset; //
 }
 
 bool CWord::IsPersianWord() const {
-    return (Type == TIHU_TOKEN_TYPE::PERSIAN); //
+  return (Type == TIHU_TOKEN_TYPE::PERSIAN); //
 }
 
 bool CWord::IsNonPersianWord() const {
-    return (Type == TIHU_TOKEN_TYPE::NON_PERSIAN); //
+  return (Type == TIHU_TOKEN_TYPE::NON_PERSIAN); //
 }
 
 bool CWord::IsPunctuation() const {
-    return (Type == TIHU_TOKEN_TYPE::PUNCTUATION); //
+  return (Type == TIHU_TOKEN_TYPE::PUNCTUATION); //
 }
 
 bool CWord::IsNumber() const {
-    return (Type == TIHU_TOKEN_TYPE::NUMBER); //
+  return (Type == TIHU_TOKEN_TYPE::NUMBER); //
 }
 
 void CWord::SetIsEndOfParagraph(bool is_end_of_paragraph) {
-    if (is_end_of_paragraph) {
-        SET_FLAG(Flags, WORD_FLAG_END_OF_PARAGRAPH);
-    } else {
-        UNSET_FLAG(Flags, WORD_FLAG_END_OF_PARAGRAPH);
-    }
+  if (is_end_of_paragraph) {
+    SET_FLAG(Flags, WORD_FLAG_END_OF_PARAGRAPH);
+  } else {
+    UNSET_FLAG(Flags, WORD_FLAG_END_OF_PARAGRAPH);
+  }
 }
 
 void CWord::SetIsEndOfSentence(bool is_end_of_sentence) {
-    if (is_end_of_sentence) {
-        SET_FLAG(Flags, WORD_FLAG_END_OF_SENTENCE);
-    } else {
-        UNSET_FLAG(Flags, WORD_FLAG_END_OF_SENTENCE);
-    }
+  if (is_end_of_sentence) {
+    SET_FLAG(Flags, WORD_FLAG_END_OF_SENTENCE);
+  } else {
+    UNSET_FLAG(Flags, WORD_FLAG_END_OF_SENTENCE);
+  }
 }
 
 void CWord::SetHasDiacritic(bool has_diacritic) {
-    if (has_diacritic) {
-        SET_FLAG(Flags, WORD_FLAG_HAS_DIACRITIC);
-    } else {
-        UNSET_FLAG(Flags, WORD_FLAG_HAS_DIACRITIC);
-    }
+  if (has_diacritic) {
+    SET_FLAG(Flags, WORD_FLAG_HAS_DIACRITIC);
+  } else {
+    UNSET_FLAG(Flags, WORD_FLAG_HAS_DIACRITIC);
+  }
 }
 
 bool CWord::IsEndOfParagraph() const {
-    return IS_FLAG_SET(Flags, WORD_FLAG_END_OF_PARAGRAPH); //
+  return IS_FLAG_SET(Flags, WORD_FLAG_END_OF_PARAGRAPH); //
 }
 
 bool CWord::IsEndOfSentence() const {
-    return IS_FLAG_SET(Flags, WORD_FLAG_END_OF_SENTENCE); //
+  return IS_FLAG_SET(Flags, WORD_FLAG_END_OF_SENTENCE); //
 }
 
 bool CWord::HasDiacritic() const {
-    return IS_FLAG_SET(Flags, WORD_FLAG_HAS_DIACRITIC); //
+  return IS_FLAG_SET(Flags, WORD_FLAG_HAS_DIACRITIC); //
 }
 
 CPhonemeList &CWord::GetPhonemeList() {
-    return PhonemeList; //
+  return PhonemeList; //
 }
 
 CEventList &CWord::GetEventList() {
-    return EventList; //
+  return EventList; //
 }
 
 CEntryList &CWord::GetEntryList() {
-    return EntryList; //
+  return EntryList; //
 }
 
-const CEntryPtr &CWord::GetBestEntry() const {
-    auto entry = EntryList.begin();
+const CEntryPtr &CWord::GetFirstEntry() const {
+  auto entry = EntryList.begin();
 
-    if (entry != EntryList.end()) {
-        return *entry;
-    }
+  if (entry != EntryList.end()) {
+    return *entry;
+  }
 
-    TIHU_WARNING(stderr, "no entry for '%s'.\n", Text.c_str());
-    return nop_entry;
+  TIHU_WARNING(stderr, "no entry for '%s'.\n", Text.c_str());
+  return nop_entry;
 }
 
-void CWord::ParsPron(std::string pron) {
-    if (pron.empty()) {
-        const CEntryPtr &entry = GetBestEntry();
-        if (entry) {
-            pron = entry->GetPron();
-        }
+void CWord::ParsPron() {
+  std::string pron = GetFirstEntry()->GetPron();
+
+  for (size_t index = 0; index < pron.length(); index++) {
+    CPhonemePtr phoneme = std::make_unique<CPhoneme>();
+
+    char prv_pho = (index > 0) ? pron[index - 1] : 0;
+    char cur_pho = pron[index];
+    char nxt_pho = pron[index + 1];
+
+    if (cur_pho == '^') {
+      continue;
     }
 
-    for (size_t index = 0; index < pron.length(); index++) {
-        CPhonemePtr phoneme = std::make_unique<CPhoneme>();
+    phoneme->SetPhonetic(prv_pho, cur_pho, nxt_pho);
 
-        char prv_pho = (index > 0) ? pron[index - 1] : 0;
-        char cur_pho = pron[index];
-        char nxt_pho = pron[index + 1];
-
-        if (cur_pho == '^') {
-            continue;
-        }
-
-        phoneme->SetPhonetic(prv_pho, cur_pho, nxt_pho);
-
-        PhonemeList.push_back(std::move(phoneme));
-    }
+    PhonemeList.push_back(std::move(phoneme));
+  }
 }
 
 void CWord::AddEvent(CEventPtr &event) {
-    EventList.push_back(std::move(event)); //
+  EventList.push_back(std::move(event)); //
 }
 
 void CWord::AddEntry(CEntryPtr &entry) {
-    EntryList.push_back(std::move(entry)); //
+  EntryList.push_back(std::move(entry)); //
 }
 
 void CWord::AddEvent(TIHU_EVENT_TYPE event_type,
                      TIHU_EVENT_VALUE &event_value) {
-    EventList.push_back(std::make_unique<CEvent>(event_type, event_value));
+  EventList.push_back(std::make_unique<CEvent>(event_type, event_value));
 }
 
 bool CWord::IsEmpty() const {
-    return EntryList.empty(); //
+  return EntryList.empty(); //
 }
 
 void CWord::SetIsAutoPhonetics(bool lts) {
-    SET_FLAG(Flags, WORD_FLAG_AUTO_PHONETICS); //
+  SET_FLAG(Flags, WORD_FLAG_AUTO_PHONETICS); //
 }
 
 bool CWord::IsAutoPhonetics() const {
-    return IS_FLAG_SET(Flags, WORD_FLAG_AUTO_PHONETICS); //
+  return IS_FLAG_SET(Flags, WORD_FLAG_AUTO_PHONETICS); //
+}
+
+
+bool CWord::EndsWithKasre() const {
+    return EndsWith(Text, CHR_U8_KASRE);
 }

@@ -27,31 +27,31 @@
 #include <string>
 
 class CMbrolaLib {
-  public:
-    CMbrolaLib();
-    virtual ~CMbrolaLib();
+public:
+  CMbrolaLib();
+  virtual ~CMbrolaLib();
 
-    bool Initialize(const std::string &data_path);
-    void Finalize();
+  bool Initialize(const std::string &data_path);
+  void Finalize();
 
-    void Write(const std::string &mbr);
-    int Read(short *samples, int length);
+  void Write(const std::string &mbr);
+  int Read(short *samples, int length);
 
-    int GetLastError() const;
-    void GetLastErrorStr(char *buffer, int length);
+  int GetLastError() const;
+  void GetLastErrorStr(char *buffer, int length);
 
-    void ApplyPitch(int pitch);
-    void ApplyRate(int rate);
-    void ApplyVolume(int volume);
+  void ApplyPitch(int pitch);
+  void ApplyRate(int rate);
+  void ApplyVolume(int volume);
 
-    int GetFrequency() const;
+  int GetFrequency() const;
 
-    void Flush();
-    void Clear();
-    void Reset();
+  void Flush();
+  void Clear();
+  void Reset();
 
-  private:
-    mbrowrap mbr;
+private:
+  mbrowrap mbr;
 };
 
 #endif

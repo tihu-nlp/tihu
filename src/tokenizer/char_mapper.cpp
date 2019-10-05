@@ -24,28 +24,27 @@
 CCharMapper::CCharMapper() {}
 
 void CCharMapper::SetCharMap(uint16_t letter, const CCharMap &char_map) {
-    uint8_t row_no = GET_HIBYTE(letter); // Row number in the char mapper table
-    uint8_t col_no =
-        GET_LOBYTE(letter); // Column number in the char mapper table
+  uint8_t row_no = GET_HIBYTE(letter); // Row number in the char mapper table
+  uint8_t col_no = GET_LOBYTE(letter); // Column number in the char mapper table
 
-    if (CharMapTable[row_no] ==
-        nullptr) { // If this row is not existed, create a new one.
-        CharMapTable[row_no] = std::make_unique<CCharMapRow>();
-    }
+  if (CharMapTable[row_no] ==
+      nullptr) { // If this row is not existed, create a new one.
+    CharMapTable[row_no] = std::make_unique<CCharMapRow>();
+  }
 
-    CharMapTable[row_no]->SetCharMap(col_no, char_map);
+  CharMapTable[row_no]->SetCharMap(col_no, char_map);
 }
 
 CCharMap CCharMapper::GetCharMap(uint16_t letter) const {
-    uint8_t row_no = GET_HIBYTE(letter); // Row number in the char mapper table
-    uint8_t col_no = GET_LOBYTE(letter); // Column number in the char mapper table
+  uint8_t row_no = GET_HIBYTE(letter); // Row number in the char mapper table
+  uint8_t col_no = GET_LOBYTE(letter); // Column number in the char mapper table
 
-    if (CharMapTable[row_no] != nullptr) {
-        return CharMapTable[row_no]->GetCharMap(col_no);
-    }
+  if (CharMapTable[row_no] != nullptr) {
+    return CharMapTable[row_no]->GetCharMap(col_no);
+  }
 
-    std::u16string str = std::u16string(1, letter);
-    std::string u8 = UTF16ToUTF8(str);
+  std::u16string str = std::u16string(1, letter);
+  std::string u8 = UTF16ToUTF8(str);
 
-    return CCharMap(u8, letter, TIHU_TOKEN_TYPE::UNKNOWN);
+  return CCharMap(u8, letter, TIHU_TOKEN_TYPE::UNKNOWN);
 }

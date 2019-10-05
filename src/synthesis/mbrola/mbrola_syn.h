@@ -28,21 +28,21 @@
 #include "../../synthesizer.h"
 
 class CMbrolaSyn : public ISynthesizer {
-  public:
-    CMbrolaSyn(std::string voice_param);
-    virtual ~CMbrolaSyn();
+public:
+  CMbrolaSyn(std::string voice_param);
+  virtual ~CMbrolaSyn();
 
-    bool Load() override;
-    void ParsText(CCorpus *corpus) override;
+  bool Load() override;
+  void ParsText(CCorpus *corpus) override;
 
-    int GetFrequency() const override;
-    void ApplyChanges() override;
+  int GetFrequency() const override;
+  void ApplyChanges() override;
 
-  private:
-    bool Synthesize(char *line);
+private:
+  bool Synthesize(char *line);
 
-  private:
-    CMbrolaLib MbrolaLib;
+private:
+  CMbrolaLib MbrolaLib;
 };
 
 #endif
