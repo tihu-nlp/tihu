@@ -22,7 +22,7 @@
 #include "afx_manager.h"
 #include "hash_manager.h"
 
-#define MAX_COMPOUND 4
+#define MAX_COMPOUND 3
 
 CLexicon::CLexicon() {
   HashManager = new CHashManager();
