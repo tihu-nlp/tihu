@@ -25,6 +25,7 @@ install:
 # Build steps
 script:
   ## build Tihu
+  - make ready
   - make
   #- make test
   - make play

@@ -11,9 +11,9 @@ CXXFLAGS = -c -fPIC -Wall -Wextra -Wno-unused-parameter -Wno-unused -std=c++14 $
 LDFLAGS = `python2-config --ldflags` -lsamplerate -shared -Wl,-soname,$(TARGET)
 
 
-all: deps build
+all: build test
 
-deps:
+ready:
 	mkdir ./deps
 	@echo === Installing Mbrola
 	git clone https://github.com/numediart/MBROLA ./deps/MBROLA
