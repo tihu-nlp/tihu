@@ -23,12 +23,12 @@
 
 #pragma once
 
-#include "../../synthesizer.h"
+#include "../synthesizer.h"
 #include "espeak_lib.h"
 
 class CeSpeakSyn : public ISynthesizer {
 public:
-  CeSpeakSyn(std::string voice_param);
+  CeSpeakSyn(CeSpeakLib *lib, std::string gender);
   virtual ~CeSpeakSyn();
 
   bool Load() override;
@@ -41,7 +41,7 @@ public:
   int ParsEvent(short *samples, int length, espeak_EVENT *espeak_event);
 
 private:
-  CeSpeakLib eSpeakLib;
+  CeSpeakLib *eSpeakLib;
 };
 
 #endif

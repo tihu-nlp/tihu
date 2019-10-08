@@ -25,6 +25,7 @@
 #include "phonetics/phonetics.h"
 #include "synthesis/espeak/espeak_syn.h"
 #include "synthesis/mbrola/mbrola_syn.h"
+#include "tagger/tagger.h"
 #include "tihu.h"
 #include "tokenizer/tokenizer.h"
 
@@ -38,18 +39,25 @@ enum parseIds {
   ID_PARSER_LEXICON,
   ID_PARSER_HAZM,
   ID_PARSER_PHONETICS,
+  ID_PARSER_TAGGER,
   ID_PARSER_MBROLA_MALE,
   ID_PARSER_MBROLA_FEMALE,
   ID_PARSER_ESPEAK_MALE,
   ID_PARSER_ESPEAK_FEMALE,
 };
 
-CEngine::CEngine() { IsStopped = false; }
+CEngine::CEngine() {
+  IsStopped = false;
+  eSpeakLib = nullptr;
+}
 
 CEngine::~CEngine() {
   for (auto const &p : Parsers) {
-    p.second->Stop();
+    p.second->Stop(true);
     delete p.second;
+  }
+  if (eSpeakLib != nullptr) {
+    delete eSpeakLib;
   }
 }
 
@@ -61,14 +69,20 @@ int CEngine::LoadModules() {
     std::cout << "Can not change current directory to " << dir << std::endl;
   }
 
+  CeSpeakLib *espeak_lib = new CeSpeakLib();
+  if (!espeak_lib->Initialize()) {
+    return TIHU_ERR_LOADING;
+  }
+
   Parsers[ID_PARSER_TOKENIZER] = new CTokenizer();
   Parsers[ID_PARSER_LEXICON] = new CLexicon();
   Parsers[ID_PARSER_HAZM] = new CHazm();
   Parsers[ID_PARSER_PHONETICS] = new CPhonetics();
+  Parsers[ID_PARSER_TAGGER] = new CTagger();
   Parsers[ID_PARSER_MBROLA_MALE] = new CMbrolaSyn("mbrola/ir1");
   Parsers[ID_PARSER_MBROLA_FEMALE] = new CMbrolaSyn("mbrola/ir2");
-  Parsers[ID_PARSER_ESPEAK_MALE] = new CeSpeakSyn("eSpeak/male");
-  Parsers[ID_PARSER_ESPEAK_FEMALE] = new CeSpeakSyn("eSpeak/female");
+  Parsers[ID_PARSER_ESPEAK_MALE] = new CeSpeakSyn(espeak_lib, "male");
+  Parsers[ID_PARSER_ESPEAK_FEMALE] = new CeSpeakSyn(espeak_lib, "female");
 
   for (auto const &p : Parsers) {
     p.second->SetSettings(&Settings);
@@ -94,7 +108,12 @@ void CEngine::SetCallback(TIHU_CALLBACK callback, void *userData) {
   }
 }
 
-void CEngine::Stop() { IsStopped = true; }
+void CEngine::Stop(bool stopped) {
+  IsStopped = stopped;
+  for (auto parser : Parsers) {
+    parser.second->Stop(stopped);
+  }
+}
 
 void CEngine::Tag(const std::string &text) {
   std::list<IParser *> parsers;
@@ -102,8 +121,9 @@ void CEngine::Tag(const std::string &text) {
   parsers.push_back(Parsers[ID_PARSER_LEXICON]);
   parsers.push_back(Parsers[ID_PARSER_PHONETICS]);
   parsers.push_back(Parsers[ID_PARSER_HAZM]);
+  parsers.push_back(Parsers[ID_PARSER_TAGGER]);
 
-  ParsText(text, parsers, true);
+  ParsText(text, parsers);
 }
 
 void CEngine::Speak(const std::string &text, TIHU_VOICE voice) {
@@ -113,17 +133,20 @@ void CEngine::Speak(const std::string &text, TIHU_VOICE voice) {
   parsers.push_back(Parsers[ID_PARSER_PHONETICS]);
   parsers.push_back(Parsers[ID_PARSER_HAZM]);
   parsers.push_back(Parsers[voice + ID_PARSER_MBROLA_MALE]);
+  if (Settings.IsDebugMode()) {
+    parsers.push_back(Parsers[ID_PARSER_TAGGER]);
+  }
 
-  ParsText(text, parsers, true);
+  ParsText(text, parsers);
 }
 
 void CEngine::Diacritize(const std::string &text) {
   /// TODO::::
 }
 
-void CEngine::ParsText(const std::string &text, std::list<IParser *> parsers,
-                       bool report_tags) {
-  IsStopped = false;
+void CEngine::ParsText(const std::string &text, std::list<IParser *> parsers) {
+  Stop(false);
+
   std::stringstream ss(text);
   std::string line;
   int offset = 0;
@@ -136,11 +159,6 @@ void CEngine::ParsText(const std::string &text, std::list<IParser *> parsers,
 
     for (auto parser : parsers) {
       parser->ParsText(&corpus);
-    }
-
-    if (report_tags) {
-      std::string tags = corpus.ToTxt();
-      Callback(TIHU_TEXT_TAGS, (long)tags.c_str(), tags.length(), UserData);
     }
 
     offset += line.length();

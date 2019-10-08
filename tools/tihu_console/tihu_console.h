@@ -78,6 +78,7 @@ private:
     TIHU_PROC_CALLBACK procCallback;
     TIHU_PROC_ERROR_STRING procErrorString;
     TIHU_PROC_LAST_ERROR procLastError;
+    TIHU_PROC_ENABLE_DEBUG_MODE procDebugMode;
 
     QFuture<void> SpeakFuture;
 

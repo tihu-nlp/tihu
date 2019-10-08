@@ -23,7 +23,7 @@
 
 #pragma once
 
-#include "speak_lib.h"
+#include <espeak-ng/espeak_ng.h>
 
 #include <string>
 
@@ -75,6 +75,7 @@ public:
   void Finalize();
 
   void SetCallback(t_espeak_callback callback);
+  void SetVoice(espeak_VOICE* voice);
 
   bool Synthesize(const char *text, void *user_data);
 

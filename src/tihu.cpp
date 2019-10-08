@@ -109,7 +109,7 @@ TIHU_FN_DECLARE void tihu_Stop() {
     return;
   }
 
-  g_engine->Stop();
+  g_engine->Stop(true);
 }
 
 TIHU_FN_DECLARE int tihu_LastError() { return g_errorcode; }

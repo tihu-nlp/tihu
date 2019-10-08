@@ -31,6 +31,7 @@
 
 class IParser;
 class CCorpus;
+class CeSpeakLib;
 
 class CEngine {
 public:
@@ -43,7 +44,7 @@ public:
   void Tag(const std::string &text);
   void Speak(const std::string &text, TIHU_VOICE voice);
   void Diacritize(const std::string &text); // TODO:
-  void Stop();
+  void Stop(bool stopped);
 
   bool SetParam(TIHU_PARAM param, int value);
   bool GetParam(TIHU_PARAM param, int &value);
@@ -51,8 +52,7 @@ public:
   void EnableDebugMode(bool enable);
 
 private:
-  void ParsText(const std::string &text, std::list<IParser *> parsers,
-                bool report_tags);
+  void ParsText(const std::string &text, std::list<IParser *> parsers);
   void LogText(const std::string &text) const;
 
   std::string GetCurrentModulePath() const;
@@ -63,6 +63,7 @@ private:
   TIHU_CALLBACK Callback;
   void *UserData;
   bool IsStopped;
+  CeSpeakLib *eSpeakLib;
 };
 
 #endif

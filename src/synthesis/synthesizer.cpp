@@ -19,7 +19,7 @@
  *
  *******************************************************************************/
 #include "synthesizer.h"
-#include "tihu.h"
+#include "../tihu.h"
 
 #include <stdarg.h>
 #include <math.h>

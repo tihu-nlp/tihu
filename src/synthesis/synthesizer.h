@@ -23,7 +23,7 @@
 
 #pragma once
 
-#include "parser.h"
+#include "../parser.h"
 
 #include <samplerate.h>
 

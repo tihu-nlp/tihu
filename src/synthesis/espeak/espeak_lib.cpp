@@ -55,8 +55,6 @@ CeSpeakLib::CeSpeakLib() {
 CeSpeakLib::~CeSpeakLib() { Finalize(); }
 
 bool CeSpeakLib::Initialize() {
-  Finalize();
-
   Module = dlopen("libespeak-ng.so", RTLD_LAZY);
 
   if (!Module) {
@@ -97,13 +95,13 @@ bool CeSpeakLib::Initialize() {
   procTerminate = (ESPEAK_PROC_TERMINATE)dlsym(Module, "espeak_Terminate");
   procInfo = (ESPEAK_PROC_INFO)dlsym(Module, "espeak_Info");
 
-  if (!procInitialize || !procInitialize || !procSetSynthCallback ||
-      !procSetUriCallback || !procSynth || !procSynth_Mark || !procKey ||
-      !procChar || !procSetParameter || !procGetParameter ||
-      !procSetPunctuationList || !procSetPhonemeTrace ||
-      !procCompileDictionary || !procListVoices || !procSetVoiceByName ||
-      !procSetVoiceByProperties || !procGetCurrentVoice || !procCancel ||
-      !procIsPlaying || !procSynchronize || !procTerminate || !procInfo) {
+  if (!procInitialize || !procSetSynthCallback || !procSetUriCallback ||
+      !procSynth || !procSynth_Mark || !procKey || !procChar ||
+      !procSetParameter || !procGetParameter || !procSetPunctuationList ||
+      !procSetPhonemeTrace || !procCompileDictionary || !procListVoices ||
+      !procSetVoiceByName || !procSetVoiceByProperties ||
+      !procGetCurrentVoice || !procCancel || !procIsPlaying ||
+      !procSynchronize || !procTerminate || !procInfo) {
     Finalize();
     return false;
   }
@@ -119,8 +117,7 @@ bool CeSpeakLib::Initialize() {
 
 void CeSpeakLib::Finalize() {
   if (Module) {
-    /// TODO: Program not exit. stuck here
-    // procTerminate();
+    procTerminate();
     dlclose(Module);
     Module = nullptr;
   }
@@ -130,12 +127,14 @@ void CeSpeakLib::SetCallback(t_espeak_callback callback) {
   procSetSynthCallback(callback);
 }
 
-bool CeSpeakLib::Synthesize(const char *text, void *user_data) {
-  if (!procSynth) {
-    TIHU_WARNING(stderr, "eSpeak hasn't' loaded properly.");
-    return false;
-  }
+void CeSpeakLib::SetVoice(espeak_VOICE *voice) {
+  procSetVoiceByProperties(voice);
+}
 
+bool CeSpeakLib::Synthesize(const char *text, void *user_data) {
+
+  // espeak_VOICE
+  // procSetVoiceByProperties()
   int error = procSynth(text, strlen(text), 0, POS_CHARACTER, 0, espeakPHONEMES,
                         0, user_data);
 

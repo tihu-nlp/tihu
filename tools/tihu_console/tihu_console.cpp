@@ -79,7 +79,7 @@ TihuConsole::TihuConsole(QWidget *parent, Qt::WindowFlags flags)
     ui.cbVoice->addItem("Mbrola Female", TIHU_VOICE_MBROLA_FEMALE);
     ui.cbVoice->addItem("Espeak Male", TIHU_VOICE_ESPEAK_MALE);
     ui.cbVoice->addItem("Espeak Female", TIHU_VOICE_ESPEAK_FEMALE);
-    ui.cbVoice->setCurrentIndex(0);
+    ui.cbVoice->setCurrentIndex(2);
 
     connect(ui.btnLoad, SIGNAL(clicked()), this, SLOT(onLoad()));
     connect(ui.btnUnload, SIGNAL(clicked()), this, SLOT(onUnload()));
@@ -143,6 +143,7 @@ bool TihuConsole::LoadTihu(const QString& library) {
     procCallback = (TIHU_PROC_CALLBACK)lib.resolve("tihu_Callback");
     procLastError = (TIHU_PROC_LAST_ERROR)lib.resolve("tihu_LastError");
     procErrorString = (TIHU_PROC_ERROR_STRING)lib.resolve("tihu_ErrorString");
+    procDebugMode = (TIHU_PROC_ENABLE_DEBUG_MODE)lib.resolve("tihu_EnableDebugMode");
 
 
     if( !procInit           ||
@@ -172,6 +173,7 @@ bool TihuConsole::LoadTihu(const QString& library) {
     settings.setValue("library_path", library);
 
     procCallback(callback, this);
+    procDebugMode(true);
 
     ///------------------------------------
     ui.btnLoad->setEnabled(false);

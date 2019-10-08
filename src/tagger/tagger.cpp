@@ -18,38 +18,16 @@
  *    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
  *
  *******************************************************************************/
-#ifndef __TIHU__PARSER_H
-#define __TIHU__PARSER_H
+#include "tagger.h"
+#include "../tihu.h"
 
-#pragma once
+CTagger::CTagger() {}
 
-#include "corpus/corpus.h"
-#include "helper.h"
-#include "settings.h"
+CTagger::~CTagger() {}
 
-#include <functional>
+bool CTagger::Load() { return true; }
 
-class IParser {
-public:
-  typedef std::function<int(int, long, long)> callback_t;
-
-  IParser();
-  virtual ~IParser();
-
-  virtual bool Load() = 0;
-  virtual void ParsText(CCorpus *corpus) = 0;
-  virtual void SetSettings(CSettings *settings);
-  virtual void SetCallback(const callback_t &cb);
-  virtual void Stop(bool stopped) final;
-
-protected:
-  void Message(const char *message) const;
-  void MessageF(const char *message, ...) const;
-
-protected:
-  CSettings *Settings;
-  callback_t Callback;
-  bool IsStopped;
-};
-
-#endif
+void CTagger::ParsText(CCorpus *corpus) {
+  std::string tags = corpus->ToTxt();
+  Callback(TIHU_TEXT_TAGS, (long)tags.c_str(), tags.length());
+}

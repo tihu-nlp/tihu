@@ -27,32 +27,31 @@ int espeak_callback(short *samples, int length, espeak_EVENT *espeak_event) {
   return synth->ParsEvent(samples, length, espeak_event);
 }
 
-CeSpeakSyn::CeSpeakSyn(std::string voice_param) { VoiceParam = voice_param; }
-
-CeSpeakSyn::~CeSpeakSyn() {
-  eSpeakLib.Finalize(); //
+CeSpeakSyn::CeSpeakSyn(CeSpeakLib *lib, std::string gender) : eSpeakLib(lib) {
+  VoiceParam = gender;
 }
 
-bool CeSpeakSyn::Load() {
-  if (!eSpeakLib.Initialize()) {
-    return false;
-  }
+CeSpeakSyn::~CeSpeakSyn() {}
 
-  eSpeakLib.SetCallback(espeak_callback);
-
-  return true;
-}
+bool CeSpeakSyn::Load() { return true; }
 
 void CeSpeakSyn::ParsText(CCorpus *corpus) {
   if (corpus->IsEmpty()) {
     return;
   }
 
+  espeak_VOICE voice;
+  voice.languages = "fa-ir";
+  voice.gender = (VoiceParam=="male")?1:2;
+
+  eSpeakLib->SetCallback(espeak_callback);
+  eSpeakLib->SetVoice(&voice);
+
   std::string phonetic;
   const CWordList &token_list = corpus->GetWordList();
   for (auto itt = token_list.begin(); itt != token_list.end(); ++itt) {
     if (IsStopped) {
-      eSpeakLib.Stop();
+      eSpeakLib->Stop();
       break; /// External stop
     }
 
@@ -79,7 +78,7 @@ void CeSpeakSyn::ParsText(CCorpus *corpus) {
       phonetic.append("]]");
     }
 
-    eSpeakLib.Synthesize(phonetic.c_str(), this);
+    eSpeakLib->Synthesize(phonetic.c_str(), this);
   }
 }
 
@@ -88,7 +87,7 @@ void CeSpeakSyn::ApplyChanges() {
 }
 
 int CeSpeakSyn::GetFrequency() const {
-  return eSpeakLib.GetFrequency(); //
+  return eSpeakLib->GetFrequency(); //
 }
 
 int CeSpeakSyn::ParsEvent(short *samples, int length,

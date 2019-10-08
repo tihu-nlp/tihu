@@ -18,38 +18,20 @@
  *    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
  *
  *******************************************************************************/
-#ifndef __TIHU__PARSER_H
-#define __TIHU__PARSER_H
+#ifndef __TIHU__TAGGER_H
+#define __TIHU__TAGGER_H
 
 #pragma once
 
-#include "corpus/corpus.h"
-#include "helper.h"
-#include "settings.h"
+#include "../parser.h"
 
-#include <functional>
-
-class IParser {
+class CTagger : public IParser {
 public:
-  typedef std::function<int(int, long, long)> callback_t;
+  CTagger();
+  ~CTagger();
 
-  IParser();
-  virtual ~IParser();
-
-  virtual bool Load() = 0;
-  virtual void ParsText(CCorpus *corpus) = 0;
-  virtual void SetSettings(CSettings *settings);
-  virtual void SetCallback(const callback_t &cb);
-  virtual void Stop(bool stopped) final;
-
-protected:
-  void Message(const char *message) const;
-  void MessageF(const char *message, ...) const;
-
-protected:
-  CSettings *Settings;
-  callback_t Callback;
-  bool IsStopped;
+  bool Load() override;
+  void ParsText(CCorpus *corpus) override;
 };
 
 #endif
