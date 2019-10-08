@@ -6,8 +6,8 @@ SRCS = $(wildcard src/*.cpp) $(wildcard src/*/*.cpp) $(wildcard src/*/*/*.cpp)
 OBJS = $(addprefix $(OBJSDIR),$(patsubst %.cpp,%.o,$(SRCS)))
 INC = `python2-config --includes` -Xlinker -export-dynamic
 ## for debugging
-#CXXFLAGS = -c -Wall -std=c++14 $(INC) -DDEBUG -g -fPIC
-CXXFLAGS = -c -fPIC -Wall -Wextra -Wno-unused-parameter -Wno-unused -std=c++14 $(INC) -O3
+CXXFLAGS = -c -Wall -std=c++14 $(INC) -DDEBUG -g -fPIC
+#CXXFLAGS = -c -fPIC -Wall -Wextra -Wno-unused-parameter -Wno-unused -std=c++14 $(INC) -O3
 LDFLAGS = `python2-config --ldflags` -lsamplerate -shared -Wl,-soname,$(TARGET)
 
 

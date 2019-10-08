@@ -50,8 +50,8 @@ bool compareFiles(const std::string &p1, const std::string &p2) {
     content1.erase(std::remove_if(content1.begin(), content1.end(), isspace), content1.end());
     content2.erase(std::remove_if(content2.begin(), content2.end(), isspace), content2.end());
 
-    fprintf(stderr, content1.c_str());
-    fprintf(stderr, content2.c_str());
+    fprintf(stderr, "%s", content1.c_str());
+    fprintf(stderr, "%s", content2.c_str());
 
     return content1 == content2;
 }
