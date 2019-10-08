@@ -99,11 +99,8 @@ void CLexicon::ParsText(CCorpus *corpus) {
     if (word->IsPersianWord()) {
       ///
       if (!TagCompound(word_list, it)) {
-        if (TryToBreak(word_list, it)) {
-          ///
-          continue;
-        }
 
+        /// check if it ends kasre ezafe
         if (word->EndsWithKasre()) {
           std::string t = word->GetText();
           RemoveLast(t);
@@ -113,6 +110,11 @@ void CLexicon::ParsText(CCorpus *corpus) {
               (*it)->AddGenitive();
             }
           }
+        }
+
+        if (TryToBreak(word_list, it)) {
+          ///
+          continue;
         }
       }
     }

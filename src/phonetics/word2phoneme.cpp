@@ -52,7 +52,7 @@ void CWord2Phoneme::LoadUnknownWords() {
   while (fgets(buf, 1024, file)) {
     try {
       std::string word = strtok(buf, "\t");
-      int weight = std::stoi(strtok(NULL, "\t"));
+      int weight = std::stoi(strtok(NULL, "\n"));
 
       UnknownWords[word] = weight;
     } catch (...) {
@@ -63,7 +63,7 @@ void CWord2Phoneme::LoadUnknownWords() {
 }
 
 void CWord2Phoneme::SaveUnknownWords() {
-  std::string log_file = "./log/unknown_word.txt";
+  std::string log_file = "./log/unknown_words.txt";
   FILE *file = fopen(log_file.c_str(), "w");
 
   if (!file) {

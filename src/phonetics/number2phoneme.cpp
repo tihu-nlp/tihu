@@ -37,7 +37,7 @@ const char SegSuffix[][16] = {"hezAr",   //
 const char YekanDigits[][16] = {
     "yek",     "do",      "se",     "CAhAr",  "panj",     "SeS",    "haft",
     "haSt",    "noh",     "dah",    "yAzdah", "davAzdah", "sizdah", "CAhArdah",
-    "pAnzdah", "SAnzdah", "hefdah", "heJdah", "nuzdah",
+    "pAnzdah", "SAnzdah", "hefdah", "hejdah", "nuzdah",
 };
 
 const char DahganDigits[][16] = {

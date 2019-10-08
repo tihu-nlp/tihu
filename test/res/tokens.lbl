@@ -83,7 +83,7 @@ z	RES
 ا	RES	*e
 و	CONJ	 va
 ا	RES	*e
-ی	RES	*y
+ئ	PUNC	*e
 ا	RES	*e
 ب	N	*b
 ة	N	*k
@@ -95,10 +95,10 @@ z	RES
 د	RES	*de
 ذ	RES	*ze
 ر	N	*re
-ز	RES	 ze
+ز	RES	*ze
 س	N	*se
 ش	N	*S
-ص	N	 sad
+ص	N	*se
 ض	N	*ze
 ط	RES	*te
 ظ	RES	*ze
@@ -298,3 +298,5 @@ _	PUNC	 zirxat
 ≡	PUNC	 
 ≤	PUNC	 
 ≥	PUNC	 
+سوئد	N	 so?ed
+سوئیس	N	 su?is

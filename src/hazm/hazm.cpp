@@ -199,6 +199,7 @@ void CHazm::ParsText(CCorpus *corpus) {
           }
         } else {
           if (pos_lexicon != "*") {
+            // ignore noun, adjective and verbs
             entry_list.erase(it--);
           } else if (entry_list.front()->GetWeight() > entry->GetWeight()) {
             it = entry_list.erase(it--);
