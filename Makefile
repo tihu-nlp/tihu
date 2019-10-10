@@ -5,13 +5,17 @@ OBJSDIR = obj/
 SRCS = $(wildcard src/*.cpp) $(wildcard src/*/*.cpp) $(wildcard src/*/*/*.cpp)
 OBJS = $(addprefix $(OBJSDIR),$(patsubst %.cpp,%.o,$(SRCS)))
 INC = `python2-config --includes` -Xlinker -export-dynamic
-## for debugging
-CXXFLAGS = -c -Wall -std=c++14 $(INC) -DDEBUG -g -fPIC
-#CXXFLAGS = -c -fPIC -Wall -Wextra -Wno-unused-parameter -Wno-unused -std=c++14 $(INC) -O3
+CXXFLAGS = -c -fPIC -Wall -std=c++14 $(INC)
 LDFLAGS = `python2-config --ldflags` -lsamplerate -shared -Wl,-soname,$(TARGET)
 
 
-all: build test
+all: release test
+
+debug: CXXFLAGS += -DDEBUG -g
+debug: build
+
+release: CXXFLAGS += -Wextra -Wno-unused-parameter -Wno-unused -O3
+release: build
 
 ready:
 	mkdir ./deps
@@ -37,6 +41,7 @@ ready:
 
 	rm -rf ./deps
 
+
 build: $(TARGET)
 
 $(TARGET): $(OBJS)
@@ -45,6 +50,8 @@ $(TARGET): $(OBJS)
 $(OBJSDIR)%.o: %.cpp
 	@mkdir -p $(@D)
 	$(CC) $(CXXFLAGS) -c $< -o $@
+
+$(OBJSDIR)%_debug.o: %.cu
 
 clean:
 	rm -rf $(OBJSDIR)
