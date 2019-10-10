@@ -34,7 +34,7 @@ RUN pip2 install --no-cache-dir tensorflow==1.9.0 --user
 RUN pip2 install --no-cache-dir tensor2tensor==1.7.0 --user
 
 RUN git clone https://github.com/tihu-nlp/tihu/ && \
-  cd tihu && make && make grpc && make clean
+  cd tihu && make release && make grpc && make clean
 
 EXPOSE 50051
 
