@@ -18,43 +18,20 @@
  *    Mostafa Sedaghat Joo (mostafa.sedaghat@gmail.com)
  *
  *******************************************************************************/
-#include "parser.h"
-#include "settings.h"
-#include "tihu.h"
 
-#include <stdarg.h>
+#ifndef __TIHU__VERSION_H
+#define __TIHU__VERSION_H
 
-IParser::IParser() {
-  Callback = nullptr;
-  Settings = nullptr;
-  IsStopped = false;
+#include <string>
+
+const int VersionMajor = 2;
+const int VersionMinor = 1;
+const int VersionPatch = 0;
+
+const std::string GetVersion() {
+    char buf[16];
+    sprintf(buf, "%d.%d.%d",VersionMajor, VersionMinor,VersionPatch);
+    return buf;
 }
 
-IParser::~IParser() {}
-
-void IParser::SetCallback(const callback_t &cb) { Callback = cb; }
-
-void IParser::SetSettings(CSettings *settings) {
-  //
-  Settings = settings;
-}
-
-void IParser::Stop(bool stopped) { IsStopped = stopped; }
-
-void IParser::Message(const char *message) const {
-  if (Callback) {
-    (Callback)(TIHU_TEXT_MESSAGE, (long)message, strlen(message) - 1);
-  }
-}
-
-void IParser::MessageF(const char *message, ...) const {
-  char temp[1024 * 4];
-
-  va_list arglist;
-  va_start(arglist, message);
-  vsnprintf(temp, 1024 * 4, message, arglist);
-  va_end(arglist);
-
-  ////wcscat(temp, L"\r\n");
-  Message(temp);
-}
+#endif

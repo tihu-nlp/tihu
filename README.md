@@ -6,29 +6,42 @@
 
 ## Compile the source
 
-Please make sure you have installed gcc (6.0 or higher). To check your gcc version run `gcc --version`.
+Make sure you have installed gcc (6.0 or higher). To check your gcc version run `gcc --version`. Also you need python2.7 to run Tihu.
 
 ### Compiling Tihu library
 
 You can compile Tihu library by following these steps:
-```
+```bash
 git clone https://github.com/tihu-nlp/tihu.git
 cd tihu
 
+apt install curl
+apt install python2-pip
+apt install libespeak-ng-dev
+apt install libsamplerate0-dev
+
 make ready
-make
+make release
 ```
 
 ### Tihu console
 
-*Tihu console* is a gui application that allows you to work with Tihu library. Before compiling *Tihu console* please make sure you have installed [qt](https://www.qt.io) framework. You can also find a pre-compiled version of *Tihu console* in release page for linux x64.
+*Tihu console* is a gui application that allows you to work with Tihu library. Before compiling *Tihu console* make sure you have installed [qt](https://www.qt.io) framework. You can also find a pre-compiled version of *Tihu console* in release page for linux x64.
+
+To compile Tihu console run:
+```
+qmake --version
+make console
+```
 
 
 ### Tihu gRPC
+
 Make sure you have installed [gRPC C++](https://github.com/grpc/grpc/tree/master/src/cpp). Then type: `make grpc`
 
 ### docekr
-To create Tihu docker with gRPC endpint: type `make docker`
+
+To create Tihu docker with gRPC endpoint: type `make docker`
 
 
 ## About the Name

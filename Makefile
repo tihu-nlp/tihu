@@ -18,7 +18,7 @@ release: CXXFLAGS += -Wextra -Wno-unused-parameter -Wno-unused -O3
 release: build
 
 ready:
-	mkdir ./deps
+	rm -rf ./deps && mkdir ./deps
 	@echo === Installing Mbrola
 	git clone https://github.com/numediart/MBROLA ./deps/MBROLA
 	cd ./deps/MBROLA && make && cp Bin/mbrola ../../build/
@@ -30,9 +30,7 @@ ready:
 	cd ./deps/g2p-seq2seq && python2 setup.py install --user
 
 	@echo === Installing Hazm
-	pip2 install --upgrade --user pip
 	pip2 install six --upgrade --user
-	pip2 install pip --upgrade --user
 	pip2 install hazm --user
 
 	@echo === Downloading Tihudict
