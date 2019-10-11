@@ -41,6 +41,7 @@ void CeSpeakSyn::ParsText(CCorpus *corpus) {
   }
 
   espeak_VOICE voice;
+  memset(&voice, 0, sizeof(voice));
   voice.languages = "fa-ir";
   voice.gender = (VoiceParam=="male")?1:2;
 
