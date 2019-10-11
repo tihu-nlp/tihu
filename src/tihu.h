@@ -29,7 +29,10 @@ enum TIHU_ERROR {
     TIHU_ERR_NONE                 = 0,
     TIHU_ERR_LOADING                 ,
     TIHU_ERR_LOAD_USER_DIC           ,
-    TIHU_ERR_NO_PYTHON               ,
+    TIHU_ERR_PYTHON_NOT_FOUND        ,
+    TIHU_ERR_SAMPLERATE_NOT_FOUND    ,
+    TIHU_ERR_ESPEAK_NOT_FOUND        ,
+    TIHU_ERR_HAZM_NOT_FOUND          ,
 };
 
 enum TIHU_PARAM {

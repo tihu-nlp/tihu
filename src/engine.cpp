@@ -133,9 +133,8 @@ void CEngine::Speak(const std::string &text, TIHU_VOICE voice) {
   parsers.push_back(Parsers[ID_PARSER_PHONETICS]);
   parsers.push_back(Parsers[ID_PARSER_HAZM]);
   parsers.push_back(Parsers[voice + ID_PARSER_MBROLA_MALE]);
-  if (Settings.IsDebugMode()) {
-    parsers.push_back(Parsers[ID_PARSER_TAGGER]);
-  }
+  // TODO: check flags to control tagging output
+  parsers.push_back(Parsers[ID_PARSER_TAGGER]);
 
   ParsText(text, parsers);
 }

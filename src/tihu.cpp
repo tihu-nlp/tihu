@@ -35,7 +35,10 @@ const char ERROR_STRING[][256] = {
     "No Error.",
     "Error loading loading failed",
     "Error loading user lexicon failed",
-    "Error loading python3.7",
+    "Python not found",
+    "Samplerate not found",
+    "eSpeak-ng not found",
+    "Hazm not found",
 };
 #define MUTEX_LOCK std::lock_guard<std::mutex> lk(io_mutex);
 
@@ -44,13 +47,36 @@ TIHU_FN_DECLARE bool tihu_Init() {
 
   if (g_refcount == 0) {
     /// fix crazy error: undefined symbol: PyFloat_Type
-    void *p = dlopen("libpython2.7.so", RTLD_LAZY | RTLD_GLOBAL);
-    if (p == nullptr) {
-      g_errorcode = TIHU_ERR_NO_PYTHON;
+    void *p0 = dlopen("libpython2.7.so", RTLD_LAZY | RTLD_GLOBAL);
+    if (p0 == nullptr) {
+      g_errorcode = TIHU_ERR_PYTHON_NOT_FOUND;
+      return false;
+    }
+
+    void *p1 = dlopen("libsamplerate.so", RTLD_LAZY | RTLD_GLOBAL);
+    if (p1 == nullptr) {
+      g_errorcode = TIHU_ERR_SAMPLERATE_NOT_FOUND;
+      return false;
+    }
+
+    void *p2 = dlopen("libespeak-ng.so", RTLD_LAZY | RTLD_GLOBAL);
+    if (p2 == nullptr) {
+      g_errorcode = TIHU_ERR_ESPEAK_NOT_FOUND;
       return false;
     }
 
     Py_Initialize();
+
+    PyObject *hazm_name = PyUnicode_FromString("hazm");
+    PyObject *hazm_obj = PyImport_Import(hazm_name);
+    Py_DECREF(hazm_name);
+    if (hazm_obj == NULL) {
+      g_errorcode = TIHU_ERR_HAZM_NOT_FOUND;
+      return false;
+    }
+    Py_DecRef(hazm_obj);
+
+    // TODO: Check g2p-seq2seq exist.
 
     g_engine = new CEngine();
     g_errorcode = g_engine->LoadModules();

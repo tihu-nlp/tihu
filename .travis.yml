@@ -29,8 +29,7 @@ script:
   - make release
   #- make test
   - make play
-  ## For unknown reason returns: "undefined symbol src_new"
-  ##- build/tihu_play build/libtihu.so "سلام" /tmp/raw1
+  - ./build/tihu_play build/libtihu.so "سلام" /tmp/1.wav
 
   ## tihu console => appimage
   - cd ./tools/tihu_console
