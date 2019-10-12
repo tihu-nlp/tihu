@@ -27,58 +27,58 @@
 7	PUNC	 haft
 8	PUNC	 haSt
 9	PUNC	 noh
-A	RES	 
-B	RES	 
-C	RES	 
-D	RES	 
-E	RES	 
-F	RES	 
-G	RES	 
-H	RES	 
-I	RES	 
-J	RES	 
-K	RES	 
-L	RES	 
-m	RES	 
-N	RES	 
-O	RES	 
-P	RES	 
-Q	RES	 
-R	RES	 
-S	RES	 
-T	RES	 
-U	RES	 
-V	RES	 
-W	RES	 
-X	RES	 
-Y	RES	 
-Z	RES	 
-a	RES	 
-b	RES	 
-c	RES	 
-d	RES	 
-e	RES	 
-f	RES	 
-g	RES	 
-h	RES	 
-i	RES	 
-j	PUNC	 
-k	RES	 
-l	N	 
-m	RES	 
-n	RES	 
-o	RES	 
-p	RES	 
-q	RES	 
-r	RES	 
-s	RES	 
-t	RES	 
-u	RES	 
-v	PUNC	 
-w	RES	 
-x	RES	 
-y	RES	 
-z	RES	 
+A	RES
+B	RES
+C	RES
+D	RES
+E	RES
+F	RES
+G	RES
+H	RES
+I	RES
+J	RES
+K	RES
+L	RES
+m	RES
+N	RES
+O	RES
+P	RES
+Q	RES
+R	RES
+S	RES
+T	RES
+U	RES
+V	RES
+W	RES
+X	RES
+Y	RES
+Z	RES
+a	RES
+b	RES
+c	RES
+d	RES
+e	RES
+f	RES
+g	RES
+h	RES
+i	RES
+j	PUNC
+k	RES
+l	N
+m	RES
+n	RES
+o	RES
+p	RES
+q	RES
+r	RES
+s	RES
+t	RES
+u	RES
+v	PUNC
+w	RES
+x	RES
+y	RES
+z	RES
 آ	N	*A
 ا	RES	*e
 و	CONJ	 va
@@ -114,14 +114,14 @@ z	RES
 و	CONJ	 va
 ی	RES	*y
 ی	RES	*y
-ً	ADV	*an
-ٌ	PUNC	*on
-ٍ	PUNC	*en
-َ	PUNC	*a
-ُ	PUNC	*o
-ِ	PUNC	*e
-ّ	N	*
-ْ	PUNC	*
+ً		*an
+ٌ		*on
+ٍ		*en
+َ		*a
+ُ		*o
+ِ		*e
+ّ		*
+ْ		*
 ٓ	PUNC	*
 ٔ	PUNC	*e
 ٕ	PUNC	*
@@ -224,79 +224,79 @@ _	PUNC	 zirxat
 ×	RES	 zarbdar
 ÷	NUM	 taqsimbar
 ƒ	PUNC	 _
-ˆ	N	 
+ˆ	N
 ،	PUNC	 virgol
 ٪	RES	 darsad
 ٫	PUNC	 _
 ٬	N	 _
 ؛	PUNC	 noqtevirgol
 ?	PUNC	 alAmateso?Al
-٭	N	 
+٭	N
 –	PUNC	 xattekutAh
 —	PUNC	 xatteboland
-―	PUNC	 
-‗	PUNC	 
-‘	PUNC	 
+―	PUNC
+‗	PUNC
+‘	PUNC
 ’	PUNC	 _
-‚	PUNC	 
-‛	PUNC	 
-“	PUNC	 
-”	PUNC	 
-„	PUNC	 
+‚	PUNC
+‛	PUNC
+“	PUNC
+”	PUNC
+„	PUNC
 †	PUNC	 _
 ‡	PUNC	 _
 •	PUNC	 boled
 …	PUNC	 senoqte
-‰	PUNC	 
-′	PUNC	 
-″	PUNC	 
-‹	PUNC	 
-›	PUNC	 
-‼	PUNC	 
-‾	PUNC	 
+‰	PUNC
+′	PUNC
+″	PUNC
+‹	PUNC
+›	PUNC
+‼	PUNC
+‾	PUNC
 ⁄	PUNC	 eslaS
-ⁿ	PUNC	 
-₣	PUNC	 
-₤	PUNC	 
-₧	PUNC	 
-₪	PUNC	 
-₫	PUNC	 
+ⁿ	PUNC
+₣	PUNC
+₤	PUNC
+₧	PUNC
+₪	PUNC
+₫	PUNC
 €	PUNC	 yoro
-℅	PUNC	 
-ℓ	PUNC	 
-№	PUNC	 
+℅	PUNC
+ℓ	PUNC
+№	PUNC
 ™	PUNC	 _
-Ω	PUNC	 
-℮	PUNC	 
-⅓	PUNC	 
-⅔	PUNC	 
-⅛	PUNC	 
-⅜	PUNC	 
-⅝	PUNC	 
-⅞	PUNC	 
-←	PUNC	 
-↑	PUNC	 
-→	PUNC	 
-↓	PUNC	 
-↔	PUNC	 
-↕	PUNC	 
-↨	PUNC	 
-∂	PUNC	 
-∆	PUNC	 
-∏	PUNC	 
-∑	PUNC	 
-−	PUNC	 
-∕	PUNC	 
-∙	PUNC	 
-√	PUNC	 
-∞	PUNC	 
-∟	PUNC	 
-∩	PUNC	 
-∫	PUNC	 
-≈	PUNC	 
-≠	PUNC	 
-≡	PUNC	 
-≤	PUNC	 
-≥	PUNC	 
+Ω	PUNC
+℮	PUNC
+⅓	PUNC
+⅔	PUNC
+⅛	PUNC
+⅜	PUNC
+⅝	PUNC
+⅞	PUNC
+←	PUNC
+↑	PUNC
+→	PUNC
+↓	PUNC
+↔	PUNC
+↕	PUNC
+↨	PUNC
+∂	PUNC
+∆	PUNC
+∏	PUNC
+∑	PUNC
+−	PUNC
+∕	PUNC
+∙	PUNC
+√	PUNC
+∞	PUNC
+∟	PUNC
+∩	PUNC
+∫	PUNC
+≈	PUNC
+≠	PUNC
+≡	PUNC
+≤	PUNC
+≥	PUNC
 سوئد	N	 so?ed
 سوئیس	N	 su?is

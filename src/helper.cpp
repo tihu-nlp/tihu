@@ -259,7 +259,11 @@ std::string ConcatPronunciations(const std::string &pronunciation_1,
     pronunciation += pronunciation_2.substr(1);
   } else if ((last_1 == 'e' || last_1 == 'i')&& first_2 == 'e') {
     pronunciation += "ye";
-  } else {
+  } else if ((last_1 == 'i')&& first_2 == 'A') {
+    pronunciation += "yA";
+  } else if ((last_1 == 'A')&& first_2 == 'i') {
+    pronunciation += "ye";
+  }else {
     pronunciation += pronunciation_2;
   }
 
@@ -340,4 +344,8 @@ std::string Substr(const std::string &str, const std::string &search) {
     return str.substr(0, n);
   }
   return str;
+}
+
+bool IsDiacriticChar(const char16_t &wcs) {
+  return (wcs >= 0x064B && wcs <= 0x0652);
 }

@@ -68,7 +68,7 @@ SFX se      هایتان         .            hAyetAn
 SFX se      هایشان         .            hAyeSAn
 
 SFX sf      1
-SFX sf      هاست           .            hAst
+SFX sf      هاست           V            hAst
 
 
 SFX sg      3
@@ -87,7 +87,7 @@ SFX sh      _هایشان        .            hAyeSAn
 
 
 SFX si      1
-SFX si      _هاست          .            hAst
+SFX si      _هاست          V            hAst
 
 
 SFX sj      2
@@ -150,10 +150,14 @@ SFX sr      ند             V            and
 
 
 SFX st      2
-SFX st      تر             .            tar
-SFX st      ترین           .            tarin
+SFX st      تر/sdslso             .            tar
+SFX st      ترین/sgso           .            tarin
 
 
 SFX su      2
-SFX su      _تر            .            tar
-SFX su      _ترین          .            tarin
+SFX su      _تر/sdslso            .            tar
+SFX su      _ترین/sgso          .            tarin
+
+## Ezafe
+SFX sv      1
+SFX sv      ی             *GEN          ye

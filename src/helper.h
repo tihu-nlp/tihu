@@ -50,7 +50,7 @@ static inline void TIHU_WARNING(FILE *, const char *, ...) {}
 #endif
 
 #define CHR_U8_ZWNJ         "\xe2\x80\x8c"
-#define CHR_U8_TANVIN_NASB  "\xd9\x8c"
+#define CHR_U8_TANVIN_NASB  "\xd9\x8b"
 #define CHR_U8_TANVIN_ZAM   "\xd9\x8c"
 #define CHR_U8_TANCIN_JAR   "\xd9\x8d"
 #define CHR_U8_FATHE        "\xd9\x8e"
@@ -150,5 +150,6 @@ std::u16string &ToLower(std::u16string &string);
 std::u16string &ToUpper(std::u16string &string);
 std::u16string UTF8ToUTF16(const std::string &utf8line);
 std::string UTF16ToUTF8(const std::u16string &utf16line);
+bool IsDiacriticChar(const char16_t &wcs);
 
 #endif

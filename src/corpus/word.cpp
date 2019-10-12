@@ -19,6 +19,7 @@
  *
  *******************************************************************************/
 #include "word.h"
+#include "../utf8/source/utf8.h"
 #include "entry.h"
 
 #define WORD_FLAG_END_OF_SENTENCE 0x0001
@@ -56,8 +57,18 @@ std::string CWord::GetText() const {
 }
 
 std::string CWord::GetTextWithoutDiacritics() const {
-  // TODO
-  return Text; //
+  if (!this->HasDiacritic()) {
+    return Text;
+  }
+  std::u16string text = UTF8ToUTF16(Text);
+  std::u16string striped;
+  for (const char16_t &c : text) {
+    if (!IsDiacriticChar(c)) {
+      striped += c;
+    }
+  }
+
+  return UTF16ToUTF8(striped);
 }
 
 TIHU_TOKEN_TYPE CWord::GetType() const {
@@ -192,7 +203,4 @@ bool CWord::IsAutoPhonetics() const {
   return IS_FLAG_SET(Flags, WORD_FLAG_AUTO_PHONETICS); //
 }
 
-
-bool CWord::EndsWithKasre() const {
-    return EndsWith(Text, CHR_U8_KASRE);
-}
+bool CWord::EndsWithKasre() const { return EndsWith(Text, CHR_U8_KASRE); }

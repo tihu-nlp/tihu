@@ -19,6 +19,7 @@
  *
  *******************************************************************************/
 #include "char_map.h"
+#include "../helper.h"
 
 CCharMap::CCharMap() : Code(0), Type(TIHU_TOKEN_TYPE::UNKNOWN) {}
 
@@ -53,7 +54,7 @@ uint16_t CCharMap::GetCode() const {
 }
 
 bool CCharMap::IsDiacritic() const {
-  return (Code >= 0x064B && Code <= 0x0652);
+  return IsDiacriticChar(Code);
 }
 
 bool CCharMap::IsLineBreak() const { return (Code == '\n' || Code == '\r'); }
