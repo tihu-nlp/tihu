@@ -44,6 +44,11 @@ Make sure you have installed [gRPC C++](https://github.com/grpc/grpc/tree/master
 To create Tihu docker with gRPC endpoint: type `make docker`
 
 
+## How Tihu works
+
+Check the [wiki](https://github.com/tihu-nlp/tihu/wiki) page to know how Tihu convert Persian text to speech.
+This document is in Persian and explain how Tihu works with an example.  
+
 ## About the Name
 
 Tihu is Persian name for Partridge.
