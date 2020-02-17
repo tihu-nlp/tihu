@@ -32,6 +32,15 @@ tihu_cpp:
 	@mkdir -p cpp
 	$(PROTOC) -I $(PROTOS_PATH) --grpc_out=./cpp --cpp_out=./cpp --plugin=protoc-gen-grpc=$(GRPC_CPP_PLUGIN_PATH) tihu.proto
 
+tihu_js:
+	@mkdir -p js
+	$(PROTOC) -I $(PROTOS_PATH) --js_out=./js tihu.proto
+
+tihu_go:
+	@mkdir -p go
+	@go get -u github.com/golang/protobuf/protoc-gen-go
+	$(PROTOC) -I $(PROTOS_PATH) --go_out=./go tihu.proto
+
 tihu_server: tihu.pb.o tihu.grpc.pb.o tihu_server.o
 	$(CXX) $^ $(LDFLAGS) -o ../../build/$@
 

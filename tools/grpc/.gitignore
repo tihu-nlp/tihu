@@ -2,3 +2,5 @@
 *.pb.h
 php
 cpp
+go
+js
