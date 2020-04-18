@@ -1,6 +1,5 @@
 syntax = "proto3";
 
-
 package tihu;
 
 service Tihu {
@@ -12,7 +11,14 @@ message Empty {}
 
 message SpeakRequest {
     string text = 1;
-    int32 voice = 2;
+    
+    enum Voice {
+      MBROLA_MALE = 0;
+      MBROLA_FEMALE = 1;
+      ESPEAK_MALE = 2;
+      ESPEAK_FEMALE = 3;
+    }
+    Voice voice = 2;
 }
 
 message SpeakReply {
