@@ -89,8 +89,7 @@ script:
 
 deploy:
   provider: releases
-  api_key:
-    secure: $GITHUB_OAUTH_TOKEN
+  api_key: $GITHUB_OAUTH_TOKEN
   file:
     - tihu-linux-x64.tar.gz
   skip_cleanup: true
