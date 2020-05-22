@@ -39,7 +39,7 @@ make console
 
 Make sure you have installed [gRPC C++](https://github.com/grpc/grpc/tree/master/src/cpp). Then type: `make grpc`
 
-### docekr
+### docker
 
 To create Tihu docker with the gRPC endpoint: type `make docker`
 
